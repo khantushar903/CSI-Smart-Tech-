@@ -35,7 +35,7 @@ export function About() {
   return (
     <section
       id="about"
-      className="relative py-24 lg:py-32 bg-background"
+      className="relative py-24 lg:py-32 bg-background/78"
       ref={ref}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">

@@ -71,7 +71,7 @@ function EnergyVisual() {
               duration: 2.1,
               delay: i * 0.05,
               ease: "easeInOut",
-              repeat: 1,
+              repeat: Infinity,
               repeatDelay: 0.45,
             }}
             viewport={{ once: false, amount: 0.35 }}
@@ -88,6 +88,8 @@ function EnergyVisual() {
 function TrackingVisual() {
   return (
     <div className="relative h-48 bg-linear-to-br from-accent/5 to-primary/5 rounded-xl p-4 overflow-hidden">
+      <div className="absolute inset-0 bg-linear-to-r from-transparent via-primary/6 to-transparent opacity-45" />
+
       <div className="grid grid-cols-4 gap-2 h-full">
         {Array.from({ length: 16 }).map((_, i) => (
           <motion.div
@@ -102,12 +104,8 @@ function TrackingVisual() {
           </motion.div>
         ))}
       </div>
-      <motion.div
-        className="absolute inset-0 bg-linear-to-r from-primary/20 via-transparent to-transparent"
-        whileInView={{ x: ["0%", "200%"] }}
-        transition={{ duration: 2, repeat: 1, ease: "linear" }}
-        viewport={{ once: false, amount: 0.35 }}
-      />
+      <div className="rfid-scan-sweep" />
+      <div className="rfid-scan-glow" />
     </div>
   );
 }
@@ -122,7 +120,7 @@ function FactoryVisual() {
             className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center"
             initial={{ scale: 1 }}
             whileInView={{ scale: [1, 1.08, 1] }}
-            transition={{ duration: 2, repeat: 1 }}
+            transition={{ duration: 2, repeat: Infinity }}
             viewport={{ once: false, amount: 0.45 }}
           >
             <Factory className="w-8 h-8 text-primary" />
@@ -136,7 +134,7 @@ function FactoryVisual() {
                 top: "calc(50% - 0.5rem)",
                 left: "calc(50% - 0.5rem)",
               }}
-              animate={{
+              whileInView={{
                 x: [
                   Math.cos((angle * Math.PI) / 180) * 50,
                   Math.cos(((angle + 60) * Math.PI) / 180) * 50,
@@ -148,7 +146,7 @@ function FactoryVisual() {
               }}
               transition={{
                 duration: 4,
-                repeat: 1,
+                repeat: Infinity,
                 ease: "linear",
                 delay: i * 0.3,
               }}
@@ -377,7 +375,7 @@ export function Capabilities() {
   return (
     <section
       id="capabilities"
-      className="relative py-24 lg:py-32 bg-background"
+      className="relative py-24 lg:py-32 bg-background/76"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section header */}

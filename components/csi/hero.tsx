@@ -12,7 +12,7 @@ export function Hero() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Background with layered elements */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-80">
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-48">
         <TechNeuralField />
       </div>
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_24%_18%,rgba(22,101,52,0.2),transparent_50%)] pointer-events-none" />

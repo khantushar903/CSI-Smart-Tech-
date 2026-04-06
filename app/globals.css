@@ -164,7 +164,7 @@ main {
   position: absolute;
   border-radius: 9999px;
   filter: blur(72px);
-  opacity: 0.15;
+  opacity: 0.11;
 }
 
 .ambient-orb-a {
@@ -233,6 +233,42 @@ main {
   animation: click-ripple 560ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+.rfid-scan-sweep {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(22, 101, 52, 0.02) 34%,
+    rgba(22, 101, 52, 0.13) 50%,
+    rgba(22, 101, 52, 0.02) 66%,
+    transparent 100%
+  );
+  transform: translateX(-110%);
+  animation: rfid-sweep 2.1s linear infinite;
+  will-change: transform, opacity;
+}
+
+.rfid-scan-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(16, 185, 129, 0.01) 36%,
+    rgba(16, 185, 129, 0.24) 50%,
+    rgba(16, 185, 129, 0.01) 64%,
+    transparent 100%
+  );
+  filter: blur(8px);
+  transform: translateX(-110%);
+  opacity: 0;
+  animation: rfid-glow 2.1s linear infinite;
+  will-change: transform, opacity;
+}
+
 @keyframes ambient-orb-float {
   0%,
   100% {
@@ -260,6 +296,40 @@ main {
   }
 }
 
+@keyframes rfid-sweep {
+  0% {
+    transform: translateX(-110%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(110%);
+    opacity: 0;
+  }
+}
+
+@keyframes rfid-glow {
+  0% {
+    transform: translateX(-110%);
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.7;
+  }
+  86% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translateX(110%);
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -267,6 +337,12 @@ main {
 
   .ambient-orb {
     animation: none !important;
+  }
+
+  .rfid-scan-sweep,
+  .rfid-scan-glow {
+    animation: none !important;
+    display: none;
   }
 
   .click-fx-ripple {

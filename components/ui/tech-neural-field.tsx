@@ -8,6 +8,7 @@ type TechNeuralFieldProps = {
   speed?: number;
   lineColor?: string;
   nodeColor?: string;
+  interactive?: boolean;
 };
 
 type NodePoint = {
@@ -29,6 +30,7 @@ export default function TechNeuralField({
   speed = 0.16,
   lineColor = "rgba(22, 101, 52, 0.28)",
   nodeColor = "rgba(22, 101, 52, 0.74)",
+  interactive = true,
 }: TechNeuralFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -171,7 +173,7 @@ export default function TechNeuralField({
         }
       }
 
-      if (hasPointer) {
+      if (interactive && hasPointer) {
         for (const node of nodes) {
           const dx = node.x - pointerX;
           const dy = node.y - pointerY;
@@ -233,10 +235,13 @@ export default function TechNeuralField({
 
     window.addEventListener("resize", handleResize);
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    canvas.addEventListener("pointermove", handlePointerMove, {
-      passive: true,
-    });
-    canvas.addEventListener("pointerleave", handlePointerLeave);
+
+    if (interactive) {
+      canvas.addEventListener("pointermove", handlePointerMove, {
+        passive: true,
+      });
+      canvas.addEventListener("pointerleave", handlePointerLeave);
+    }
 
     if (isPageVisible) {
       startLoop();
@@ -247,10 +252,13 @@ export default function TechNeuralField({
       observer?.disconnect();
       window.removeEventListener("resize", handleResize);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-      canvas.removeEventListener("pointermove", handlePointerMove);
-      canvas.removeEventListener("pointerleave", handlePointerLeave);
+
+      if (interactive) {
+        canvas.removeEventListener("pointermove", handlePointerMove);
+        canvas.removeEventListener("pointerleave", handlePointerLeave);
+      }
     };
-  }, [density, lineColor, nodeColor, speed]);
+  }, [density, interactive, lineColor, nodeColor, speed]);
 
   return (
     <canvas

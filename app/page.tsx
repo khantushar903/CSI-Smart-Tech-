@@ -7,7 +7,6 @@ import { Industries } from "@/components/csi/industries";
 import { WhyCSI } from "@/components/csi/why-csi";
 import { Future } from "@/components/csi/future";
 import { CTA } from "@/components/csi/cta";
-import { CTABand } from "@/components/csi/cta-band";
 import { SectionReveal } from "@/components/csi/section-reveal";
 import { Footer } from "@/components/csi/footer";
 
@@ -24,9 +23,6 @@ export default function Home() {
       </SectionReveal>
       <SectionReveal tone="emerald">
         <Capabilities />
-      </SectionReveal>
-      <SectionReveal tone="slate">
-        <CTABand />
       </SectionReveal>
       <SectionReveal tone="teal">
         <Industries />

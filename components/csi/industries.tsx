@@ -168,12 +168,8 @@ function IndustryCard({
           <div className="flex-1">
             <div className="flex items-center gap-4 mb-2">
               <motion.span
-                className="text-sm font-mono text-muted-foreground"
-                animate={
-                  isHovering
-                    ? { scale: 1.08, color: "rgb(22 101 52)" }
-                    : { scale: 1 }
-                }
+                className="text-sm font-mono text-muted-foreground transition-colors group-hover:text-primary"
+                animate={isHovering ? { scale: 1.08 } : { scale: 1 }}
                 transition={{ type: "spring", stiffness: 280, damping: 22 }}
               >
                 {String(index + 1).padStart(2, "0")}

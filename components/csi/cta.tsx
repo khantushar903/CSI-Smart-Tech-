@@ -13,7 +13,7 @@ export function CTA() {
   return (
     <section
       id="contact"
-      className="relative py-24 lg:py-32 bg-background overflow-hidden"
+      className="relative py-24 lg:py-32 bg-background/78 overflow-hidden"
       ref={ref}
     >
       {/* Background decoration */}
