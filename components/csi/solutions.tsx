@@ -163,10 +163,10 @@ function SolutionCard({
     if (prefersReducedMotion) {
       return { opacity: 0, y: 20 };
     }
-    
+
     const row = Math.floor(index / 3);
     const col = index % 3;
-    
+
     // Alternate pattern: diagonal wave
     if ((row + col) % 2 === 0) {
       return { opacity: 0, y: 44, x: -30, scale: 0.95, rotate: -2 };
@@ -253,9 +253,7 @@ function SolutionCard({
             className="relative w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover/card:bg-primary/20 transition-colors"
             animate={iconControls}
             whileHover={
-              prefersReducedMotion
-                ? undefined
-                : { scale: 1.08, rotate: 6 }
+              prefersReducedMotion ? undefined : { scale: 1.08, rotate: 6 }
             }
             transition={{ type: "spring", stiffness: 280, damping: 20 }}
           >
@@ -283,9 +281,7 @@ function SolutionCard({
                 key={i}
                 initial={{ opacity: 0, y: 10 }}
                 animate={
-                  isInView
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 10 }
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
                 }
                 transition={{
                   duration: 0.3,
@@ -313,9 +309,7 @@ function SolutionCard({
                 transition={{
                   duration: 0.4,
                   delay:
-                    index * SECTION_TIMING.stagger +
-                    0.5 +
-                    featureIndex * 0.08,
+                    index * SECTION_TIMING.stagger + 0.5 + featureIndex * 0.08,
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 whileHover={

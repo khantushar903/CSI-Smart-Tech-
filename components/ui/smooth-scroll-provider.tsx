@@ -9,14 +9,15 @@ export function SmoothScrollProvider() {
   useEffect(() => {
     // Initialize Lenis smooth scroll with optimized settings
     const lenis = new Lenis({
-      duration: 1,
+      duration: 0.8,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.8,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.8,
       infinite: false,
       autoResize: true,
+      syncTouch: true,
     });
 
     lenisRef.current = lenis;
@@ -31,10 +32,13 @@ export function SmoothScrollProvider() {
           if (target) {
             // Get navbar height dynamically
             const navbarHeight = window.innerWidth >= 1024 ? 96 : 80; // lg:h-20 = 80px, h-16 = 64px + padding
-            const targetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight;
-            
+            const targetPosition =
+              target.getBoundingClientRect().top +
+              window.scrollY -
+              navbarHeight;
+
             lenis.scrollTo(targetPosition, {
-              duration: 1,
+              duration: 0.8,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             });
           }
