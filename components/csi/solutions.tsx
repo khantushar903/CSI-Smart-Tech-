@@ -8,8 +8,9 @@ import {
   useReducedMotion,
   useSpring,
   useTransform,
+  useAnimationControls,
 } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { Cog, Radio, Cloud, Leaf, Brain, ArrowRight } from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
@@ -82,6 +83,7 @@ function SolutionCard({
 }) {
   const prefersReducedMotion = useReducedMotion();
   const [isHovering, setIsHovering] = useState(false);
+  const iconControls = useAnimationControls();
 
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
@@ -139,13 +141,47 @@ function SolutionCard({
     glowY.set(50);
   };
 
+  // Floating icon animation on hover
+  useEffect(() => {
+    if (isHovering && !prefersReducedMotion) {
+      iconControls.start({
+        y: [0, -4, 0],
+        transition: {
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+        },
+      });
+    } else {
+      iconControls.stop();
+      iconControls.set({ y: 0 });
+    }
+  }, [isHovering, prefersReducedMotion, iconControls]);
+
+  // Determine entry animation direction based on index
+  const getEntryAnimation = () => {
+    if (prefersReducedMotion) {
+      return { opacity: 0, y: 20 };
+    }
+    
+    const row = Math.floor(index / 3);
+    const col = index % 3;
+    
+    // Alternate pattern: diagonal wave
+    if ((row + col) % 2 === 0) {
+      return { opacity: 0, y: 44, x: -30, scale: 0.95, rotate: -2 };
+    } else {
+      return { opacity: 0, y: 44, x: 30, scale: 0.95, rotate: 2 };
+    }
+  };
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 44, scale: 0.98 }}
+      initial={getEntryAnimation()}
       animate={
         isInView
-          ? { opacity: 1, y: 0, scale: 1 }
-          : { opacity: 0, y: 44, scale: 0.98 }
+          ? { opacity: 1, y: 0, x: 0, scale: 1, rotate: 0 }
+          : getEntryAnimation()
       }
       transition={{
         duration: SECTION_TIMING.item,
@@ -214,15 +250,25 @@ function SolutionCard({
         >
           {/* Icon */}
           <motion.div
-            className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover/card:bg-primary/20 transition-colors"
-            animate={
-              isHovering
-                ? { scale: 1.08, rotate: 6, y: -2 }
-                : { scale: 1, rotate: 0, y: 0 }
+            className="relative w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover/card:bg-primary/20 transition-colors"
+            animate={iconControls}
+            whileHover={
+              prefersReducedMotion
+                ? undefined
+                : { scale: 1.08, rotate: 6 }
             }
             transition={{ type: "spring", stiffness: 280, damping: 20 }}
           >
-            <solution.icon className="w-7 h-7 text-primary" />
+            {/* Icon glow effect */}
+            <motion.div
+              className="absolute inset-0 rounded-xl bg-primary/20 blur-xl"
+              animate={{
+                opacity: isHovering ? 0.6 : 0,
+                scale: isHovering ? 1.2 : 0.8,
+              }}
+              transition={{ duration: 0.3 }}
+            />
+            <solution.icon className="relative w-7 h-7 text-primary" />
           </motion.div>
 
           {/* Title */}
@@ -230,20 +276,61 @@ function SolutionCard({
             {solution.title}
           </h3>
 
-          {/* Description */}
+          {/* Description with word reveal */}
           <p className="text-muted-foreground leading-relaxed mb-6">
-            {solution.description}
+            {solution.description.split(" ").map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={
+                  isInView
+                    ? { opacity: 1, y: 0 }
+                    : { opacity: 0, y: 10 }
+                }
+                transition={{
+                  duration: 0.3,
+                  delay: index * SECTION_TIMING.stagger + 0.3 + i * 0.02,
+                  ease: "easeOut",
+                }}
+                className="inline-block mr-[0.25em]"
+              >
+                {word}
+              </motion.span>
+            ))}
           </p>
 
-          {/* Features */}
+          {/* Features with stagger animation */}
           <div className="flex flex-wrap gap-2 mb-6">
-            {solution.features.map((feature) => (
-              <span
+            {solution.features.map((feature, featureIndex) => (
+              <motion.span
                 key={feature}
-                className="px-3 py-1 text-xs font-medium bg-muted rounded-full text-muted-foreground transition-colors duration-300 group-hover/card:bg-muted/80"
+                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                animate={
+                  isInView
+                    ? { opacity: 1, scale: 1, y: 0 }
+                    : { opacity: 0, scale: 0.8, y: 10 }
+                }
+                transition={{
+                  duration: 0.4,
+                  delay:
+                    index * SECTION_TIMING.stagger +
+                    0.5 +
+                    featureIndex * 0.08,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                whileHover={
+                  prefersReducedMotion
+                    ? undefined
+                    : {
+                        scale: 1.05,
+                        y: -2,
+                        transition: { duration: 0.2 },
+                      }
+                }
+                className="px-3 py-1 text-xs font-medium bg-muted rounded-full text-muted-foreground transition-colors duration-300 group-hover/card:bg-muted/80 cursor-default"
               >
                 {feature}
-              </span>
+              </motion.span>
             ))}
           </div>
 

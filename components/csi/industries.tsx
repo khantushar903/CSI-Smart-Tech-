@@ -7,8 +7,10 @@ import {
   useMotionValue,
   useReducedMotion,
   useSpring,
+  useTransform,
+  useAnimationControls,
 } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
@@ -59,6 +61,7 @@ function IndustryCard({
 }) {
   const prefersReducedMotion = useReducedMotion();
   const [isHovering, setIsHovering] = useState(false);
+  const numberControls = useAnimationControls();
 
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
@@ -86,6 +89,9 @@ function IndustryCard({
     mass: 0.33,
   });
 
+  const contentOffsetX = useTransform(smoothRotateY, [-7, 7], [-3, 3]);
+  const contentOffsetY = useTransform(smoothRotateX, [-6, 6], [2, -2]);
+
   const spotlight = useMotionTemplate`radial-gradient(380px circle at ${smoothGlowX}% ${smoothGlowY}%, rgba(20, 184, 166, 0.22), rgba(20, 184, 166, 0) 64%)`;
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -109,6 +115,23 @@ function IndustryCard({
     glowX.set(50);
     glowY.set(50);
   };
+
+  // Floating number animation on hover
+  useEffect(() => {
+    if (isHovering && !prefersReducedMotion) {
+      numberControls.start({
+        y: [0, -3, 0],
+        transition: {
+          duration: 1.8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        },
+      });
+    } else {
+      numberControls.stop();
+      numberControls.set({ y: 0 });
+    }
+  }, [isHovering, prefersReducedMotion, numberControls]);
 
   return (
     <motion.div
@@ -164,48 +187,130 @@ function IndustryCard({
           transition={{ duration: 0.3, ease: "easeOut" }}
         />
 
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <motion.div 
+          className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
+          style={
+            prefersReducedMotion
+              ? undefined
+              : { x: contentOffsetX, y: contentOffsetY }
+          }
+        >
           <div className="flex-1">
             <div className="flex items-center gap-4 mb-2">
               <motion.span
-                className="text-sm font-mono text-muted-foreground transition-colors group-hover:text-primary"
-                animate={isHovering ? { scale: 1.08 } : { scale: 1 }}
+                className="relative text-sm font-mono text-muted-foreground transition-colors group-hover:text-primary"
+                animate={numberControls}
+                whileHover={{ scale: 1.08 }}
                 transition={{ type: "spring", stiffness: 280, damping: 22 }}
               >
-                {String(index + 1).padStart(2, "0")}
+                {/* Number glow effect */}
+                <motion.span
+                  className="absolute inset-0 blur-md text-primary"
+                  animate={{
+                    opacity: isHovering ? 0.4 : 0,
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </motion.span>
+                <span className="relative">{String(index + 1).padStart(2, "0")}</span>
               </motion.span>
               <h3 className="text-xl lg:text-2xl font-semibold text-foreground group-hover:text-primary transition-colors">
                 {industry.name}
               </h3>
             </div>
+            
+            {/* Word-by-word description reveal */}
             <p className="text-muted-foreground lg:pl-10">
-              {industry.description}
+              {industry.description.split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={
+                    isInView
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 0, y: 8 }
+                  }
+                  transition={{
+                    duration: 0.25,
+                    delay: index * SECTION_TIMING.stagger + 0.25 + i * 0.015,
+                    ease: "easeOut",
+                  }}
+                  className="inline-block mr-[0.25em]"
+                >
+                  {word}
+                </motion.span>
+              ))}
             </p>
           </div>
 
           <div className="flex items-center gap-6 lg:pl-8">
             <motion.div
-              className="px-4 py-2 bg-primary/10 rounded-full"
-              animate={isHovering ? { scale: 1.03 } : { scale: 1 }}
-              transition={{ type: "spring", stiffness: 260, damping: 18 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={
+                isInView
+                  ? { opacity: 1, scale: 1 }
+                  : { opacity: 0, scale: 0.9 }
+              }
+              transition={{
+                duration: 0.4,
+                delay: index * SECTION_TIMING.stagger + 0.4,
+                ease: SECTION_EASE,
+              }}
+              className="relative px-4 py-2 bg-primary/10 rounded-full overflow-hidden"
+              whileHover={
+                prefersReducedMotion
+                  ? undefined
+                  : { scale: 1.05, y: -2 }
+              }
             >
-              <span className="text-sm font-medium text-primary whitespace-nowrap">
+              {/* Shimmer effect on metric badge */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent"
+                animate={{
+                  x: isHovering ? ["0%", "200%"] : "0%",
+                }}
+                transition={{
+                  duration: 0.8,
+                  ease: "easeInOut",
+                }}
+              />
+              <span className="relative text-sm font-medium text-primary whitespace-nowrap">
                 {industry.metric}
               </span>
             </motion.div>
             <motion.div
-              className="w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+              initial={{ opacity: 0, scale: 0.8, rotate: -45 }}
               animate={
-                isHovering
-                  ? { scale: 1.1, rotate: 10 }
-                  : { scale: 1, rotate: 0 }
+                isInView
+                  ? { opacity: 1, scale: 1, rotate: 0 }
+                  : { opacity: 0, scale: 0.8, rotate: -45 }
               }
-              transition={{ type: "spring", stiffness: 280, damping: 20 }}
+              transition={{
+                duration: 0.5,
+                delay: index * SECTION_TIMING.stagger + 0.5,
+                ease: SECTION_EASE,
+              }}
+              whileHover={
+                prefersReducedMotion
+                  ? undefined
+                  : { scale: 1.1, rotate: 10 }
+              }
+              className="relative w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
             >
-              <ArrowUpRight className="w-5 h-5" />
+              {/* Arrow glow effect */}
+              <motion.div
+                className="absolute inset-0 rounded-full bg-primary/30 blur-lg"
+                animate={{
+                  opacity: isHovering ? 0.6 : 0,
+                  scale: isHovering ? 1.3 : 0.8,
+                }}
+                transition={{ duration: 0.3 }}
+              />
+              <ArrowUpRight className="relative w-5 h-5" />
             </motion.div>
           </div>
-        </div>
+        </motion.div>
 
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
       </motion.div>

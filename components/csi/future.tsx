@@ -7,8 +7,10 @@ import {
   useMotionValue,
   useReducedMotion,
   useSpring,
+  useTransform,
+  useAnimationControls,
 } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { Database, Code2, Sparkles, ArrowRight } from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
@@ -50,6 +52,7 @@ function FutureCard({
 }) {
   const prefersReducedMotion = useReducedMotion();
   const [isHovering, setIsHovering] = useState(false);
+  const iconControls = useAnimationControls();
 
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
@@ -77,6 +80,9 @@ function FutureCard({
     mass: 0.34,
   });
 
+  const contentOffsetX = useTransform(smoothRotateY, [-5, 5], [-3, 3]);
+  const contentOffsetY = useTransform(smoothRotateX, [-4, 4], [2, -2]);
+
   const spotlight = useMotionTemplate`radial-gradient(360px circle at ${smoothGlowX}% ${smoothGlowY}%, rgba(34, 197, 94, 0.24), rgba(34, 197, 94, 0) 63%)`;
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -100,6 +106,23 @@ function FutureCard({
     glowX.set(50);
     glowY.set(50);
   };
+
+  // Floating icon animation
+  useEffect(() => {
+    if (isHovering && !prefersReducedMotion) {
+      iconControls.start({
+        y: [0, -5, 0],
+        transition: {
+          duration: 2.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        },
+      });
+    } else {
+      iconControls.stop();
+      iconControls.set({ y: 0 });
+    }
+  }, [isHovering, prefersReducedMotion, iconControls]);
 
   return (
     <motion.div
@@ -156,12 +179,33 @@ function FutureCard({
           transition={{ duration: 0.3, ease: "easeOut" }}
         />
 
-        <div className="relative z-10">
+        <motion.div 
+          className="relative z-10"
+          style={
+            prefersReducedMotion
+              ? undefined
+              : { x: contentOffsetX, y: contentOffsetY }
+          }
+        >
           {/* Status badge */}
           <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: 20 }}
+            animate={
+              isInView
+                ? { opacity: 1, scale: 1, x: 0 }
+                : { opacity: 0, scale: 0.8, x: 20 }
+            }
+            transition={{
+              duration: 0.5,
+              delay: index * SECTION_TIMING.stagger + 0.2,
+              ease: SECTION_EASE,
+            }}
+            whileHover={
+              prefersReducedMotion
+                ? undefined
+                : { y: -2, scale: 1.05 }
+            }
             className="absolute top-6 right-6"
-            animate={isHovering ? { y: -1 } : { y: 0 }}
-            transition={{ type: "spring", stiffness: 260, damping: 22 }}
           >
             <span className="px-3 py-1 text-xs font-medium rounded-full bg-emerald-400/15 text-emerald-200 ring-1 ring-emerald-300/25">
               {service.status}
@@ -170,21 +214,53 @@ function FutureCard({
 
           {/* Icon */}
           <motion.div
-            className="w-14 h-14 rounded-xl bg-emerald-400/15 flex items-center justify-center mb-6 group-hover:bg-emerald-400/25 transition-colors"
-            animate={
-              isHovering ? { scale: 1.08, rotate: 6 } : { scale: 1, rotate: 0 }
+            className="relative w-14 h-14 rounded-xl bg-emerald-400/15 flex items-center justify-center mb-6 group-hover:bg-emerald-400/25 transition-colors"
+            animate={iconControls}
+            whileHover={
+              prefersReducedMotion
+                ? undefined
+                : { scale: 1.08, rotate: 6 }
             }
             transition={{ type: "spring", stiffness: 280, damping: 20 }}
           >
-            <service.icon className="w-7 h-7 text-emerald-200" />
+            {/* Icon glow */}
+            <motion.div
+              className="absolute inset-0 rounded-xl bg-emerald-400/30 blur-xl"
+              animate={{
+                opacity: isHovering ? 0.7 : 0,
+                scale: isHovering ? 1.4 : 0.8,
+              }}
+              transition={{ duration: 0.3 }}
+            />
+            <service.icon className="relative w-7 h-7 text-emerald-200" />
           </motion.div>
 
           {/* Content */}
-          <h3 className="text-xl font-semibold mb-3 text-background">
+          <h3 className="text-xl font-semibold mb-3 text-background group-hover:text-emerald-50 transition-colors">
             {service.title}
           </h3>
+          
+          {/* Word-by-word description */}
           <p className="text-background/78 leading-relaxed mb-6">
-            {service.description}
+            {service.description.split(" ").map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 8 }}
+                animate={
+                  isInView
+                    ? { opacity: 1, y: 0 }
+                    : { opacity: 0, y: 8 }
+                }
+                transition={{
+                  duration: 0.25,
+                  delay: index * SECTION_TIMING.stagger + 0.3 + i * 0.015,
+                  ease: "easeOut",
+                }}
+                className="inline-block mr-[0.25em]"
+              >
+                {word}
+              </motion.span>
+            ))}
           </p>
 
           {/* Learn more */}
@@ -192,12 +268,23 @@ function FutureCard({
             href="#contact"
             data-track-click={`future-get-notified-${service.title.toLowerCase().replace(/\s+/g, "-")}`}
             className="inline-flex items-center text-sm font-medium text-emerald-200 group/link"
+            initial={{ opacity: 0, x: -10 }}
+            animate={
+              isInView
+                ? { opacity: 1, x: 0 }
+                : { opacity: 0, x: -10 }
+            }
+            transition={{
+              duration: 0.4,
+              delay: index * SECTION_TIMING.stagger + 0.5,
+              ease: SECTION_EASE,
+            }}
             whileHover={{ x: 4 }}
           >
             Get notified
             <ArrowRight className="ml-1 w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
           </motion.a>
-        </div>
+        </motion.div>
       </motion.div>
     </motion.div>
   );
