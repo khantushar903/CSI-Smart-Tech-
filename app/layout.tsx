@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SiteInsights } from "@/components/csi/site-insights";
 import { ClickFeedback } from "@/components/ui/click-feedback";
 import { SiteAmbientBackground } from "@/components/ui/site-ambient-background";
+import { SmoothScrollProvider } from "@/components/ui/smooth-scroll-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -66,6 +67,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${geist.variable}`}>
       <body className="font-sans antialiased relative overflow-x-hidden">
+        <SmoothScrollProvider />
         <SiteAmbientBackground />
         <div className="relative z-10">{children}</div>
         <ClickFeedback />

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X } from "lucide-react"
-import { Logo } from "./logo"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import { Logo } from "./logo";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "#about", label: "About" },
@@ -13,19 +13,19 @@ const navLinks = [
   { href: "#capabilities", label: "Capabilities" },
   { href: "#industries", label: "Industries" },
   { href: "#why-csi", label: "Why CSI" },
-]
+];
 
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
@@ -37,7 +37,7 @@ export function Navbar() {
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
           isScrolled
             ? "bg-background/90 backdrop-blur-xl border-b border-border/50 shadow-sm"
-            : "bg-transparent"
+            : "bg-transparent",
         )}
       >
         <nav className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -142,8 +142,14 @@ export function Navbar() {
                   transition={{ delay: 0.3 }}
                   className="pt-4"
                 >
-                  <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                    <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button
+                    asChild
+                    className="w-full bg-primary hover:bg-primary/90"
+                  >
+                    <a
+                      href="#contact"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
                       Get Started
                     </a>
                   </Button>
@@ -154,5 +160,7 @@ export function Navbar() {
         )}
       </AnimatePresence>
     </>
-  )
+  );
 }
+
+

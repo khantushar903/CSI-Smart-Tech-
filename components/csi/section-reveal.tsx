@@ -1,7 +1,13 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import type { ReactNode } from "react";
+import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
 
@@ -23,29 +29,40 @@ export function SectionReveal({
   tone = "emerald",
 }: SectionRevealProps) {
   const prefersReducedMotion = useReducedMotion();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Lighter parallax for smoother performance
+  const y = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.15, 0.85, 1],
+    [0, 1, 1, 0.3],
+  );
 
   return (
     <motion.div
+      ref={containerRef}
       className="relative isolate"
-      initial={
-        prefersReducedMotion ? undefined : { opacity: 0, y: 28, scale: 0.99 }
-      }
-      whileInView={
-        prefersReducedMotion ? undefined : { opacity: 1, y: 0, scale: 1 }
-      }
-      viewport={{ once: false, amount: 0.14, margin: "-90px 0px -90px 0px" }}
-      transition={{ duration: SECTION_TIMING.container, ease: SECTION_EASE }}
+      initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+      whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.1, margin: "-80px 0px -80px 0px" }}
+      transition={{
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
     >
       <motion.div
         aria-hidden
+        style={prefersReducedMotion ? undefined : { y, opacity }}
         className={cn(
-          "pointer-events-none absolute inset-x-0 top-8 h-24 blur-2xl",
+          "pointer-events-none absolute inset-x-0 top-8 h-32 blur-3xl will-change-transform",
           toneStyles[tone],
         )}
-        initial={prefersReducedMotion ? undefined : { opacity: 0 }}
-        whileInView={prefersReducedMotion ? undefined : { opacity: 0.36 }}
-        viewport={{ once: false, amount: 0.2 }}
-        transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
       />
       <div className="relative">{children}</div>
     </motion.div>
