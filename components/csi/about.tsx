@@ -32,6 +32,15 @@ const pillars = [
   },
 ];
 
+const orbitalNodes = [
+  { cx: 380, cy: 200 },
+  { cx: 290, cy: 355.8846 },
+  { cx: 110, cy: 355.8846 },
+  { cx: 20, cy: 200 },
+  { cx: 110, cy: 44.1154 },
+  { cx: 290, cy: 44.1154 },
+];
+
 function GeometricVisualization() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -65,11 +74,11 @@ function GeometricVisualization() {
             className="text-border"
           />
           {/* Orbital nodes */}
-          {[0, 60, 120, 180, 240, 300].map((angle, i) => (
+          {orbitalNodes.map((node, i) => (
             <circle
               key={i}
-              cx={200 + 180 * Math.cos((angle * Math.PI) / 180)}
-              cy={200 + 180 * Math.sin((angle * Math.PI) / 180)}
+              cx={node.cx}
+              cy={node.cy}
               r="6"
               fill="currentColor"
               className={i % 2 === 0 ? "text-primary/40" : "text-accent/40"}
