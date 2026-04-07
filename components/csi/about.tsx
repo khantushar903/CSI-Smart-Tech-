@@ -1,220 +1,260 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { Leaf, Cpu, Cloud, Zap } from "lucide-react";
-import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
+
+const spring = {
+  type: "spring",
+  stiffness: 100,
+  damping: 30,
+};
 
 const pillars = [
   {
-    icon: Cpu,
+    number: "01",
     title: "Intelligent Automation",
-    description: "Smart systems that learn and adapt",
+    description: "Smart systems that learn, adapt, and optimize",
   },
   {
-    icon: Cloud,
-    title: "Cloud-Native",
-    description: "Scalable infrastructure built for growth",
+    number: "02",
+    title: "Cloud-Native Architecture",
+    description: "Scalable infrastructure built for global operations",
   },
   {
-    icon: Leaf,
+    number: "03",
     title: "Sustainability First",
     description: "Green solutions for responsible manufacturing",
   },
   {
-    icon: Zap,
-    title: "Future-Ready",
-    description: "Technologies designed for tomorrow",
+    number: "04",
+    title: "Future-Ready Design",
+    description: "Technologies engineered for tomorrow",
   },
 ];
 
+function GeometricVisualization() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 180]);
+  const rotate2 = useTransform(scrollYProgress, [0, 1], [0, -120]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.9]);
+
+  return (
+    <div ref={ref} className="relative aspect-square w-full max-w-md mx-auto">
+      {/* Ambient glow */}
+      <div className="absolute inset-[15%] bg-primary/10 rounded-full blur-3xl" />
+
+      {/* Outer rotating ring */}
+      <motion.div
+        className="absolute inset-0"
+        style={{ rotate: rotate1, scale }}
+      >
+        <svg viewBox="0 0 400 400" className="w-full h-full">
+          <circle
+            cx="200"
+            cy="200"
+            r="180"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1"
+            strokeDasharray="8 12"
+            className="text-border"
+          />
+          {/* Orbital nodes */}
+          {[0, 60, 120, 180, 240, 300].map((angle, i) => (
+            <circle
+              key={i}
+              cx={200 + 180 * Math.cos((angle * Math.PI) / 180)}
+              cy={200 + 180 * Math.sin((angle * Math.PI) / 180)}
+              r="6"
+              fill="currentColor"
+              className={i % 2 === 0 ? "text-primary/40" : "text-accent/40"}
+            />
+          ))}
+        </svg>
+      </motion.div>
+
+      {/* Middle ring */}
+      <motion.div className="absolute inset-[15%]" style={{ rotate: rotate2 }}>
+        <svg viewBox="0 0 400 400" className="w-full h-full">
+          <polygon
+            points="200,40 360,200 200,360 40,200"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            className="text-primary/30"
+          />
+        </svg>
+      </motion.div>
+
+      {/* Inner static elements */}
+      <div className="absolute inset-[30%]">
+        <svg viewBox="0 0 400 400" className="w-full h-full">
+          <rect
+            x="100"
+            y="100"
+            width="200"
+            height="200"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1"
+            className="text-border"
+          />
+        </svg>
+      </div>
+
+      {/* Center core */}
+      <div className="absolute inset-[40%] flex items-center justify-center">
+        <motion.div
+          className="w-full h-full rounded-full bg-linear-to-br from-primary/20 to-accent/20 flex items-center justify-center"
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="w-3/4 h-3/4 rounded-full bg-card border border-border flex items-center justify-center">
+            <div className="w-1/2 h-1/2 rounded-full bg-primary" />
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Data points */}
+      <motion.div
+        className="absolute top-[10%] right-[20%] px-3 py-2 bg-card border border-border rounded-lg shadow-lg"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">
+          Efficiency
+        </div>
+        <div className="text-sm font-bold text-foreground">+40%</div>
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-[15%] left-[15%] px-3 py-2 bg-card border border-border rounded-lg shadow-lg"
+        animate={{ y: [0, 10, 0] }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.5,
+        }}
+      >
+        <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">
+          Carbon
+        </div>
+        <div className="text-sm font-bold text-primary">-32%</div>
+      </motion.div>
+    </div>
+  );
+}
+
 export function About() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section
       id="about"
-      className="relative py-24 lg:py-32 bg-background/78"
+      className="relative py-32 lg:py-40 bg-background overflow-hidden"
       ref={ref}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 opacity-[0.02]">
+        <svg className="w-full h-full">
+          <defs>
+            <pattern
+              id="about-grid"
+              width="80"
+              height="80"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M80 0V80H0"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#about-grid)" />
+        </svg>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-center">
           {/* Left column - Text content */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
-            transition={{
-              duration: SECTION_TIMING.container,
-              ease: SECTION_EASE,
-            }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, ...spring }}
           >
-            <span className="text-sm font-semibold text-primary uppercase tracking-wider">
-              Our Vision
-            </span>
-            <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight text-balance">
-              Building the Future of Industrial Intelligence
-            </h2>
-            <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-              CSI Smart Tech is a modern industrial technology company
-              pioneering the convergence of IoT, cloud manufacturing, and
-              artificial intelligence. We believe in creating systems that are
-              not only efficient but sustainable.
-            </p>
-            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
-              From intelligent automation to real-time data insights, we help
-              manufacturers transform their operations while reducing
-              environmental impact. Our future roadmap includes custom ERP
-              systems and comprehensive digital transformation solutions.
-            </p>
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-px bg-primary" />
+              <span className="text-xs font-semibold text-primary uppercase tracking-[0.2em]">
+                Our Vision
+              </span>
+            </div>
 
-            {/* Pillars grid */}
-            <div className="mt-10 grid grid-cols-2 gap-6">
+            {/* Headline */}
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+              Building the Future of{" "}
+              <span className="text-primary">Industrial Intelligence</span>
+            </h2>
+
+            {/* Body text */}
+            <div className="mt-8 space-y-5 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                CSI Smart Tech pioneers the convergence of IoT, cloud
+                manufacturing, and artificial intelligence. We create systems
+                that are not only efficient but fundamentally sustainable.
+              </p>
+              <p>
+                From intelligent automation to real-time insights, we transform
+                operations while reducing environmental impact. Our roadmap
+                includes custom ERP systems and comprehensive digital
+                transformation solutions.
+              </p>
+            </div>
+
+            {/* Pillars */}
+            <div className="mt-12 grid grid-cols-2 gap-6">
               {pillars.map((pillar, index) => (
                 <motion.div
                   key={pillar.title}
                   initial={{ opacity: 0, y: 20 }}
-                  animate={
-                    isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-                  }
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{
-                    duration: SECTION_TIMING.detail,
-                    ease: SECTION_EASE,
-                    delay: 0.18 + index * SECTION_TIMING.microStagger,
+                    duration: 0.5,
+                    delay: 0.3 + index * 0.1,
+                    ...spring,
                   }}
-                  className="flex items-start gap-3"
+                  className="group"
                 >
-                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <pillar.icon className="w-5 h-5 text-primary" />
+                  <div className="text-xs font-mono text-primary/60 mb-2">
+                    {pillar.number}
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground text-sm">
-                      {pillar.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground mt-0.5">
-                      {pillar.description}
-                    </p>
-                  </div>
+                  <h3 className="font-semibold text-foreground text-sm mb-1 group-hover:text-primary transition-colors">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {pillar.description}
+                  </p>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
-          {/* Right column - Visual element */}
+          {/* Right column - Geometric visualization */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
-            transition={{
-              duration: SECTION_TIMING.container,
-              ease: SECTION_EASE,
-              delay: 0.14,
-            }}
-            className="relative"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="relative aspect-square max-w-lg mx-auto">
-              {/* Abstract system visualization */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-transparent rounded-3xl" />
-
-              {/* Layered cards representing different systems */}
-              <motion.div
-                className="absolute top-8 left-8 right-16 bg-card border border-border rounded-2xl p-6 shadow-lg"
-                animate={isInView ? { y: [0, -10, 0] } : { y: 0 }}
-                transition={
-                  isInView
-                    ? {
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }
-                    : { duration: 0.25 }
-                }
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-3 h-3 rounded-full bg-primary" />
-                  <div className="w-3 h-3 rounded-full bg-accent" />
-                  <div className="w-3 h-3 rounded-full bg-muted" />
-                </div>
-                <div className="space-y-2">
-                  <div className="h-2 bg-primary/20 rounded-full w-3/4" />
-                  <div className="h-2 bg-muted rounded-full w-1/2" />
-                  <div className="h-2 bg-muted rounded-full w-2/3" />
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="absolute top-32 right-8 left-16 bg-card border border-border rounded-2xl p-6 shadow-lg"
-                animate={isInView ? { y: [0, 10, 0] } : { y: 0 }}
-                transition={
-                  isInView
-                    ? {
-                        duration: 5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 0.5,
-                      }
-                    : { duration: 0.25 }
-                }
-              >
-                <div className="grid grid-cols-3 gap-3 mb-4">
-                  {[40, 65, 85, 55, 75, 45].map((height, i) => (
-                    <div key={i} className="flex flex-col justify-end h-16">
-                      <motion.div
-                        className="bg-primary/20 rounded-t"
-                        initial={{ height: 0 }}
-                        animate={
-                          isInView ? { height: `${height}%` } : { height: 0 }
-                        }
-                        transition={{
-                          duration: SECTION_TIMING.item,
-                          ease: SECTION_EASE,
-                          delay: 0.42 + i * SECTION_TIMING.microStagger,
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div className="h-2 bg-muted rounded-full w-full" />
-              </motion.div>
-
-              <motion.div
-                className="absolute bottom-8 left-12 right-12 bg-card border border-border rounded-2xl p-6 shadow-lg"
-                animate={isInView ? { y: [0, -8, 0] } : { y: 0 }}
-                transition={
-                  isInView
-                    ? {
-                        duration: 4.5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 1,
-                      }
-                    : { duration: 0.25 }
-                }
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                      <Leaf className="w-4 h-4 text-primary" />
-                    </div>
-                    <span className="text-sm font-medium text-foreground">
-                      Sustainability Score
-                    </span>
-                  </div>
-                  <span className="text-lg font-bold text-primary">94%</span>
-                </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-primary rounded-full"
-                    initial={{ width: 0 }}
-                    animate={isInView ? { width: "94%" } : { width: 0 }}
-                    transition={{
-                      duration: SECTION_TIMING.item,
-                      ease: SECTION_EASE,
-                      delay: 0.55,
-                    }}
-                  />
-                </div>
-              </motion.div>
-            </div>
+            <GeometricVisualization />
           </motion.div>
         </div>
       </div>
