@@ -92,12 +92,12 @@ export function CTA() {
             }}
             className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-8 text-muted-foreground text-sm"
           >
-            <a
-              href="mailto:anonymas903@gmail.com"
-              className="hover:text-foreground transition-colors"
+            <button
+              onClick={() => setIsContactModalOpen(true)}
+              className="hover:text-foreground transition-colors cursor-pointer"
             >
               anonymas903@gmail.com
-            </a>
+            </button>
             <span className="hidden sm:block">•</span>
             <a
               href="tel:+1234567890"
@@ -112,9 +112,9 @@ export function CTA() {
       </div>
 
       {/* Contact Form Modal */}
-      <ContactFormModal 
-        open={isContactModalOpen} 
-        onOpenChange={setIsContactModalOpen} 
+      <ContactFormModal
+        open={isContactModalOpen}
+        onOpenChange={setIsContactModalOpen}
       />
     </section>
   );
