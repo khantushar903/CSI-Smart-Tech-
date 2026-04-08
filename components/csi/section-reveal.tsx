@@ -9,7 +9,6 @@ import {
 import type { ReactNode } from "react";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
-import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
 
 type SectionTone = "emerald" | "teal" | "slate";
 

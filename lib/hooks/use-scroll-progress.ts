@@ -29,9 +29,14 @@ export function useScrollProgress() {
   }, []);
 
   useEffect(() => {
-    handleScroll();
+    // Call handleScroll after mount to set initial state
+    const timer = setTimeout(() => handleScroll(), 0);
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [handleScroll]);
 
   return progress;

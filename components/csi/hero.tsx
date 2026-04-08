@@ -3,7 +3,89 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import TechNeuralField from "@/components/ui/tech-neural-field";
+import {
+  TechNeuralField,
+  MatrixRain,
+  CircuitBoard,
+  GeometricWaves,
+  DataFlow,
+  TechGrid,
+  ParticleNetwork,
+  type AnimationType,
+} from "@/components/ui/bg-animations";
+
+// ===== ANIMATION SELECTOR =====
+// Change this value to switch between different background animations:
+// Options: "neural-field" | "matrix-rain" | "circuit-board" | "geometric-waves" | "data-flow" | "tech-grid" | "particle-network"
+const ACTIVE_ANIMATION = "neural-field" as AnimationType;
+// ==============================
+
+// Render the selected background animation
+const BackgroundAnimation = () => {
+  switch (ACTIVE_ANIMATION) {
+    case "neural-field":
+      return (
+        <TechNeuralField
+          density={22000}
+          speed={0.18}
+          lineColor="rgba(22, 101, 52, 0.34)"
+          nodeColor="rgba(22, 101, 52, 0.82)"
+          sweepOpacity={0.24}
+        />
+      );
+    case "matrix-rain":
+      return (
+        <MatrixRain speed={1} density={0.95} color="rgba(22, 101, 52, 0.8)" />
+      );
+    case "circuit-board":
+      return (
+        <CircuitBoard
+          speed={0.5}
+          lineColor="rgba(22, 101, 52, 0.3)"
+          nodeColor="rgba(22, 101, 52, 0.6)"
+          pulseColor="rgba(20, 184, 166, 0.9)"
+        />
+      );
+    case "geometric-waves":
+      return (
+        <GeometricWaves
+          speed={1}
+          waveCount={4}
+          color="rgba(22, 101, 52, 0.3)"
+        />
+      );
+    case "data-flow":
+      return (
+        <DataFlow
+          speed={1}
+          particleCount={30}
+          lineColor="rgba(22, 101, 52, 0.3)"
+          particleColor="rgba(20, 184, 166, 0.8)"
+        />
+      );
+    case "tech-grid":
+      return (
+        <TechGrid
+          speed={0.5}
+          gridSize={60}
+          lineColor="rgba(22, 101, 52, 0.15)"
+          dotColor="rgba(22, 101, 52, 0.4)"
+        />
+      );
+    case "particle-network":
+      return (
+        <ParticleNetwork
+          speed={0.5}
+          particleCount={50}
+          lineColor="rgba(22, 101, 52, 0.2)"
+          particleColor="rgba(20, 184, 166, 0.7)"
+          connectionDistance={120}
+        />
+      );
+    default:
+      return null;
+  }
+};
 
 export function Hero() {
   return (
@@ -13,17 +95,11 @@ export function Hero() {
     >
       {/* Background with layered elements */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-88">
-        <TechNeuralField
-          density={22000}
-          speed={0.18}
-          lineColor="rgba(22, 101, 52, 0.34)"
-          nodeColor="rgba(22, 101, 52, 0.82)"
-          sweepOpacity={0.24}
-        />
+        <BackgroundAnimation />
       </div>
-      <div className="absolute inset-0 z-1 bg-[radial-gradient(circle_at_24%_18%,rgba(22,101,52,0.2),transparent_50%)] pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_24%_18%,rgba(22,101,52,0.2),transparent_50%)] pointer-events-none" />
       {/* Abstract grid pattern */}
-      <div className="absolute inset-0 z-1 opacity-[0.03]">
+      <div className="absolute inset-0 z-0 opacity-[0.03]">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern
@@ -46,7 +122,7 @@ export function Hero() {
 
       {/* Animated accent circles */}
       <motion.div
-        className="absolute top-1/4 right-1/4 z-2 w-125 h-125 rounded-full bg-primary/5 blur-3xl"
+        className="absolute top-1/4 right-1/4 z-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl"
         animate={{
           scale: [1, 1.2, 1],
           opacity: [0.3, 0.5, 0.3],
@@ -58,7 +134,7 @@ export function Hero() {
         }}
       />
       <motion.div
-        className="absolute bottom-1/4 left-1/4 z-2 w-100 h-100 rounded-full bg-accent/5 blur-3xl"
+        className="absolute bottom-1/4 left-1/4 z-0 w-[400px] h-[400px] rounded-full bg-accent/5 blur-3xl"
         animate={{
           scale: [1.2, 1, 1.2],
           opacity: [0.2, 0.4, 0.2],
@@ -170,7 +246,7 @@ export function Hero() {
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 }

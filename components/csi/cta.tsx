@@ -64,7 +64,7 @@ export function CTA() {
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-14 text-base font-medium group"
             >
               <a
-                href="mailto:hello@csismart.tech"
+                href="mailto:anonymas903@gmail.com"
                 data-track-click="contact-start-conversation"
               >
                 Start a Conversation
@@ -95,10 +95,10 @@ export function CTA() {
             className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-8 text-muted-foreground text-sm"
           >
             <a
-              href="mailto:hello@csismart.tech"
+              href="mailto:anonymas903@gmail.com"
               className="hover:text-foreground transition-colors"
             >
-              hello@csismart.tech
+              anonymas903@gmail.com
             </a>
             <span className="hidden sm:block">•</span>
             <a
