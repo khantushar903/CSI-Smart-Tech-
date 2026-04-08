@@ -17,54 +17,48 @@ import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
 const solutions = [
   {
     icon: Cog,
-    title: "Industrial Automation",
-    description:
-      "End-to-end automation systems that streamline production workflows, reduce manual intervention, and maximize operational efficiency across your manufacturing floor.",
-    features: ["Process Control", "Robotic Integration", "Quality Assurance"],
+    title: "Smart Automation",
+    description: "Production lines that think. Less manual work, more output.",
+    features: ["Auto-Control", "Robot Integration", "Quality Check"],
     color: "from-primary/20 to-primary/5",
   },
   {
     icon: Radio,
-    title: "IoT-Based Systems",
-    description:
-      "Connected sensor networks and intelligent devices that provide real-time visibility into every aspect of your operations, from equipment health to environmental conditions.",
-    features: ["Sensor Networks", "Edge Computing", "Real-Time Analytics"],
+    title: "Connected Operations",
+    description: "Every machine speaks. Real-time insights from sensors that never sleep.",
+    features: ["Live Sensors", "Edge Computing", "Instant Data"],
     color: "from-accent/20 to-accent/5",
   },
   {
     icon: Cloud,
     title: "Cloud Manufacturing",
-    description:
-      "Scalable cloud infrastructure that enables seamless data management, collaborative workflows, and instant access to critical manufacturing insights from anywhere.",
-    features: ["Data Lakes", "Hybrid Cloud", "API Integration"],
+    description: "Your factory in the cloud. Access everything, anywhere.",
+    features: ["Smart Data", "Global Access", "Easy Integration"],
     color: "from-primary/15 to-accent/5",
   },
   {
     icon: Leaf,
-    title: "Sustainability Solutions",
-    description:
-      "Environmental monitoring and optimization systems that help you track, reduce, and report your carbon footprint while meeting regulatory compliance requirements.",
-    features: ["Energy Monitoring", "Waste Reduction", "Carbon Tracking"],
+    title: "Green Operations",
+    description: "Cut carbon, not corners. Track CO2, meet regulations effortlessly.",
+    features: ["Energy Monitor", "Waste Reduction", "Carbon Tracker"],
     color: "from-accent/15 to-primary/5",
   },
   {
     icon: Brain,
-    title: "AI-Based ERP Integration",
-    description:
-      "Intelligent enterprise resource planning systems enhanced with machine learning for predictive analytics, demand forecasting, and autonomous decision-making.",
+    title: "AI-Powered ERP",
+    description: "ERP that predicts the future. Smart decisions on autopilot.",
     features: [
-      "Predictive Analytics",
+      "Predict Trends",
       "Smart Scheduling",
-      "Demand Forecasting",
+      "Auto Decisions",
     ],
     color: "from-primary/20 to-accent/10",
   },
   {
     icon: Cloud,
-    title: "Digital Twin Operations",
-    description:
-      "Virtual replicas of production lines and assets that let teams simulate outcomes, optimize scheduling, and reduce downtime before changes hit the shop floor.",
-    features: ["Scenario Modeling", "Downtime Prediction", "Live Sync"],
+    title: "Digital Twins",
+    description: "Test before you build. Virtual factories, zero-risk optimization.",
+    features: ["Virtual Testing", "Predict Problems", "Live Mirror"],
     color: "from-accent/20 to-primary/10",
   },
 ];
@@ -368,9 +362,7 @@ export function Solutions() {
             Technology That Drives Transformation
           </h2>
           <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-            Our integrated suite of solutions addresses every aspect of modern
-            manufacturing, from shop floor automation to enterprise-wide
-            intelligence.
+            Smart solutions that boost efficiency, cut costs, and future-proof operations.
           </p>
         </motion.div>
 
