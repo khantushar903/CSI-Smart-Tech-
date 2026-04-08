@@ -24,28 +24,28 @@ const capabilities = [
     icon: Activity,
     title: "Energy Monitoring & Sustainability Tracking",
     description:
-      "Real-time energy consumption analytics with AI-powered recommendations. Track carbon footprint, identify inefficiencies, and generate comprehensive sustainability reports for stakeholders.",
+      "Cut energy waste by 32% with AI insights. Track your carbon footprint. Generate reports that impress stakeholders and boost sustainability scores.",
     visual: "energy",
   },
   {
     icon: ScanLine,
     title: "IoT-based RFID / QR Tracking",
     description:
-      "Complete asset visibility from raw materials to finished goods. Our intelligent tracking system ensures full traceability, reduces losses, and streamlines inventory management.",
+      "See every asset, everywhere, instantly. From raw materials to finished products. Zero blind spots. Maximum control.",
     visual: "tracking",
   },
   {
     icon: Factory,
     title: "Factory Automation & Cloud Manufacturing",
     description:
-      "Seamlessly connect your production lines to the cloud. Enable remote monitoring, predictive maintenance, and collaborative manufacturing across multiple facilities.",
+      "Connect any production line to the cloud in hours. Monitor remotely. Predict failures before they happen. Scale across facilities effortlessly.",
     visual: "factory",
   },
   {
     icon: LayoutDashboard,
     title: "Real-Time Data & ERP Dashboards",
     description:
-      "Unified dashboards that bring together data from every corner of your operation. Make informed decisions with live KPIs, trend analysis, and customizable reporting.",
+      "One dashboard. All your data. Live updates from every corner of your operation. Make decisions fast with instant KPIs and custom reports.",
     visual: "dashboard",
   },
 ];
@@ -387,15 +387,14 @@ export function Capabilities() {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <span className="text-sm font-semibold text-primary uppercase tracking-wider">
-            Featured Capabilities
+            Core Capabilities
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight text-balance">
-            Products That Power Progress
+            See Everything. Control Everything.
           </h2>
           <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-            Discover how our specialized capabilities transform raw data into
-            actionable intelligence and manual processes into automated
-            excellence.
+            Transform chaos into clarity. Turn manual work into automated
+            precision.
           </p>
         </motion.div>
 

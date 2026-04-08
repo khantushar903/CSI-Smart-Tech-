@@ -19,22 +19,19 @@ const futureServices = [
   {
     icon: Database,
     title: "Custom ERP Systems",
-    description:
-      "Tailored enterprise resource planning solutions designed specifically for your business processes and growth trajectory.",
+    description: "Built for your business. Track everything. Scale anywhere.",
     status: "Coming 2026",
   },
   {
     icon: Code2,
     title: "Custom Software Development",
-    description:
-      "Bespoke software solutions built from the ground up to address your unique operational challenges and opportunities.",
+    description: "Your vision. Our code. Zero compromises.",
     status: "In Development",
   },
   {
     icon: Sparkles,
     title: "Digital Transformation Solutions",
-    description:
-      "Comprehensive transformation roadmaps and implementation services to modernize your entire technology ecosystem.",
+    description: "Old tech out. Smart systems in. Future-ready business.",
     status: "Expanding",
   },
 ];
@@ -179,7 +176,7 @@ function FutureCard({
           transition={{ duration: 0.3, ease: "easeOut" }}
         />
 
-        <motion.div 
+        <motion.div
           className="relative z-10"
           style={
             prefersReducedMotion
@@ -201,9 +198,7 @@ function FutureCard({
               ease: SECTION_EASE,
             }}
             whileHover={
-              prefersReducedMotion
-                ? undefined
-                : { y: -2, scale: 1.05 }
+              prefersReducedMotion ? undefined : { y: -2, scale: 1.05 }
             }
             className="absolute top-6 right-6"
           >
@@ -217,9 +212,7 @@ function FutureCard({
             className="relative w-14 h-14 rounded-xl bg-emerald-400/15 flex items-center justify-center mb-6 group-hover:bg-emerald-400/25 transition-colors"
             animate={iconControls}
             whileHover={
-              prefersReducedMotion
-                ? undefined
-                : { scale: 1.08, rotate: 6 }
+              prefersReducedMotion ? undefined : { scale: 1.08, rotate: 6 }
             }
             transition={{ type: "spring", stiffness: 280, damping: 20 }}
           >
@@ -239,18 +232,14 @@ function FutureCard({
           <h3 className="text-xl font-semibold mb-3 text-background group-hover:text-emerald-50 transition-colors">
             {service.title}
           </h3>
-          
+
           {/* Word-by-word description */}
           <p className="text-background/78 leading-relaxed mb-6">
             {service.description.split(" ").map((word, i) => (
               <motion.span
                 key={i}
                 initial={{ opacity: 0, y: 8 }}
-                animate={
-                  isInView
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 8 }
-                }
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
                 transition={{
                   duration: 0.25,
                   delay: index * SECTION_TIMING.stagger + 0.3 + i * 0.015,
@@ -269,11 +258,7 @@ function FutureCard({
             data-track-click={`future-get-notified-${service.title.toLowerCase().replace(/\s+/g, "-")}`}
             className="inline-flex items-center text-sm font-medium text-emerald-200 group/link"
             initial={{ opacity: 0, x: -10 }}
-            animate={
-              isInView
-                ? { opacity: 1, x: 0 }
-                : { opacity: 0, x: -10 }
-            }
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
             transition={{
               duration: 0.4,
               delay: index * SECTION_TIMING.stagger + 0.5,
@@ -329,14 +314,13 @@ export function Future() {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <span className="text-sm font-semibold text-primary uppercase tracking-wider">
-            Future Scope
+            What's Next
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-balance">
-            The Road Ahead
+            Tomorrow's Solutions
           </h2>
           <p className="mt-6 text-lg text-background/70 leading-relaxed">
-            As we continue to innovate, our expanding portfolio will encompass
-            comprehensive digital solutions for the modern enterprise.
+            Big ideas coming soon. Enterprise solutions that actually work.
           </p>
         </motion.div>
 
@@ -364,8 +348,7 @@ export function Future() {
           className="mt-16 text-center"
         >
           <p className="text-background/50 text-sm">
-            Join our early access program to be the first to experience our
-            upcoming solutions.
+            Want early access? Get notified when these launch.
           </p>
         </motion.div>
       </div>

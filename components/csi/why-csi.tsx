@@ -15,7 +15,7 @@ const reasons = [
     icon: Award,
     title: "Industry Expertise",
     description:
-      "Deep domain knowledge across manufacturing sectors with proven implementation experience.",
+      "Real manufacturing knowledge. Proven results across multiple sectors.",
     value: "15+",
     label: "Years Combined Experience",
   },
@@ -23,7 +23,7 @@ const reasons = [
     icon: TrendingUp,
     title: "Scalable Systems",
     description:
-      "Architecture designed to grow with your business, from single facilities to global operations.",
+      "Start small. Scale big. From one facility to global operations.",
     value: "10x",
     label: "Growth Capacity",
   },
@@ -31,7 +31,7 @@ const reasons = [
     icon: Wrench,
     title: "Field-Tested Solutions",
     description:
-      "Every solution is validated in real-world manufacturing environments before deployment.",
+      "Every solution works in real factories before it reaches yours.",
     value: "50+",
     label: "Live Deployments",
   },
@@ -39,15 +39,14 @@ const reasons = [
     icon: Zap,
     title: "Efficiency Focus",
     description:
-      "Measurable improvements in operational efficiency, energy usage, and resource optimization.",
+      "Cut costs. Save energy. Boost productivity. See measurable results.",
     value: "40%",
     label: "Average Efficiency Gain",
   },
   {
     icon: Shield,
     title: "Future-Ready Foundation",
-    description:
-      "Built on modern standards ensuring compatibility with emerging technologies and protocols.",
+    description: "Built on modern standards. Ready for tomorrow's technology.",
     value: "100%",
     label: "Cloud-Native",
   },
@@ -97,13 +96,15 @@ function ReasonCard({
         delay: index * SECTION_TIMING.stagger,
         ease: SECTION_EASE,
       }}
-      whileHover={prefersReducedMotion ? undefined : { x: 4, y: -3, scale: 1.01 }}
+      whileHover={
+        prefersReducedMotion ? undefined : { x: 4, y: -3, scale: 1.01 }
+      }
       onPointerEnter={() => setIsHovering(true)}
       onPointerLeave={() => setIsHovering(false)}
     >
       <div className="group/reason relative bg-card border border-border rounded-2xl p-6 hover:border-primary/30 hover:shadow-xl transition-all duration-300 overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-primary/8 via-transparent to-accent/8 opacity-0 transition-opacity duration-300 group-hover/reason:opacity-100" />
-        
+
         {/* Shimmer effect */}
         <motion.div
           className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent"
@@ -144,7 +145,7 @@ function ReasonCard({
                 <h3 className="text-lg font-semibold text-foreground mb-2 group-hover/reason:text-primary transition-colors">
                   {reason.title}
                 </h3>
-                
+
                 {/* Word-by-word description */}
                 <p className="text-muted-foreground text-sm leading-relaxed">
                   {reason.description.split(" ").map((word, i) => (
@@ -152,9 +153,7 @@ function ReasonCard({
                       key={i}
                       initial={{ opacity: 0, y: 6 }}
                       animate={
-                        isInView
-                          ? { opacity: 1, y: 0 }
-                          : { opacity: 0, y: 6 }
+                        isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }
                       }
                       transition={{
                         duration: 0.2,
@@ -185,9 +184,7 @@ function ReasonCard({
                     ease: SECTION_EASE,
                   }}
                   whileHover={
-                    prefersReducedMotion
-                      ? undefined
-                      : { scale: 1.1, rotate: 2 }
+                    prefersReducedMotion ? undefined : { scale: 1.1, rotate: 2 }
                   }
                 >
                   {/* Value glow */}
@@ -205,11 +202,7 @@ function ReasonCard({
                 <motion.div
                   className="text-xs text-muted-foreground whitespace-nowrap mt-1"
                   initial={{ opacity: 0 }}
-                  animate={
-                    isInView
-                      ? { opacity: 1 }
-                      : { opacity: 0 }
-                  }
+                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                   transition={{
                     duration: 0.4,
                     delay: index * SECTION_TIMING.stagger + 0.4,
@@ -256,12 +249,11 @@ export function WhyCSI() {
                 Why CSI Smart Tech
               </span>
               <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight text-balance">
-                Built for Results, Designed for Tomorrow
+                Smart Tech That Actually Works
               </h2>
               <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-                We combine deep industrial expertise with cutting-edge
-                technology to deliver solutions that work today and scale for
-                the future. Our track record speaks for itself.
+                Industrial expertise meets cutting-edge technology. Solutions
+                that work today and scale tomorrow. Results you can measure.
               </p>
 
               {/* Trust indicators */}
@@ -285,7 +277,9 @@ export function WhyCSI() {
                     className={`relative px-4 py-2 rounded-full ${badge.className} cursor-default overflow-hidden`}
                     initial={{ opacity: 0, y: 10, scale: 0.9 }}
                     animate={
-                      isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 10, scale: 0.9 }
+                      isInView
+                        ? { opacity: 1, y: 0, scale: 1 }
+                        : { opacity: 0, y: 10, scale: 0.9 }
                     }
                     transition={{
                       duration: SECTION_TIMING.detail,
@@ -296,7 +290,9 @@ export function WhyCSI() {
                       prefersReducedMotion ? undefined : { y: -3, scale: 1.05 }
                     }
                   >
-                    <span className="relative text-sm font-medium">{badge.label}</span>
+                    <span className="relative text-sm font-medium">
+                      {badge.label}
+                    </span>
                   </motion.div>
                 ))}
               </div>
