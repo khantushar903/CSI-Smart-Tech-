@@ -1,14 +1,16 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ArrowRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ContactFormModal } from "@/components/csi/contact-form-modal";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
 
 export function CTA() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: "-100px" });
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   return (
     <section
@@ -59,17 +61,13 @@ export function CTA() {
             className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Button
-              asChild
               size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-14 text-base font-medium group"
+              onClick={() => setIsContactModalOpen(true)}
+              data-track-click="contact-start-conversation"
             >
-              <a
-                href="mailto:anonymas903@gmail.com"
-                data-track-click="contact-start-conversation"
-              >
-                Start a Conversation
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </a>
+              Start a Conversation
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button
               asChild
@@ -112,6 +110,12 @@ export function CTA() {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Contact Form Modal */}
+      <ContactFormModal 
+        open={isContactModalOpen} 
+        onOpenChange={setIsContactModalOpen} 
+      />
     </section>
   );
 }

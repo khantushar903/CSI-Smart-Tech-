@@ -30,7 +30,7 @@ const footerLinks = {
 const socialLinks = [
   { icon: Linkedin, href: "#", label: "LinkedIn" },
   { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Mail, href: "mailto:hello@csismart.tech", label: "Email" },
+  { icon: Mail, href: "mailto:anonymas903@gmail.com", label: "Email" },
 ]
 
 export function Footer() {
@@ -157,8 +157,8 @@ export function Footer() {
             </h3>
             <ul className="space-y-3 text-sm text-background/60">
               <li>
-                <a href="mailto:hello@csismart.tech" className="hover:text-background transition-colors">
-                  hello@csismart.tech
+                <a href="mailto:anonymas903@gmail.com" className="hover:text-background transition-colors">
+                  anonymas903@gmail.com
                 </a>
               </li>
               <li>
