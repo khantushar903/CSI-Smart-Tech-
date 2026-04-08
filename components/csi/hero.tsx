@@ -12,10 +12,16 @@ export function Hero() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Background with layered elements */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-48">
-        <TechNeuralField />
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-88">
+        <TechNeuralField
+          density={22000}
+          speed={0.18}
+          lineColor="rgba(22, 101, 52, 0.34)"
+          nodeColor="rgba(22, 101, 52, 0.82)"
+          sweepOpacity={0.24}
+        />
       </div>
-      <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_24%_18%,rgba(22,101,52,0.2),transparent_50%)] pointer-events-none" />
+      <div className="absolute inset-0 z-1 bg-[radial-gradient(circle_at_24%_18%,rgba(22,101,52,0.2),transparent_50%)] pointer-events-none" />
       {/* Abstract grid pattern */}
       <div className="absolute inset-0 z-1 opacity-[0.03]">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">

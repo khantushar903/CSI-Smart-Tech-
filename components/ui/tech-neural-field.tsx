@@ -8,6 +8,7 @@ type TechNeuralFieldProps = {
   speed?: number;
   lineColor?: string;
   nodeColor?: string;
+  sweepOpacity?: number;
   interactive?: boolean;
 };
 
@@ -30,6 +31,7 @@ export default function TechNeuralField({
   speed = 0.16,
   lineColor = "rgba(22, 101, 52, 0.28)",
   nodeColor = "rgba(22, 101, 52, 0.74)",
+  sweepOpacity = 0.1,
   interactive = true,
 }: TechNeuralFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -209,7 +211,7 @@ export default function TechNeuralField({
           0,
         );
         sweep.addColorStop(0, "rgba(22, 101, 52, 0)");
-        sweep.addColorStop(0.5, "rgba(22, 101, 52, 0.1)");
+        sweep.addColorStop(0.5, `rgba(22, 101, 52, ${sweepOpacity})`);
         sweep.addColorStop(1, "rgba(22, 101, 52, 0)");
         context.fillStyle = sweep;
         context.fillRect(0, 0, width, height);
@@ -258,7 +260,7 @@ export default function TechNeuralField({
         canvas.removeEventListener("pointerleave", handlePointerLeave);
       }
     };
-  }, [density, interactive, lineColor, nodeColor, speed]);
+  }, [density, interactive, lineColor, nodeColor, speed, sweepOpacity]);
 
   return (
     <canvas

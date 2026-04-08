@@ -2,7 +2,6 @@
 
 import {
   motion,
-  useInView,
   useMotionTemplate,
   useMotionValue,
   useReducedMotion,
@@ -10,7 +9,7 @@ import {
   useTransform,
   useAnimationControls,
 } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { Cog, Radio, Cloud, Leaf, Brain, ArrowRight } from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
@@ -75,11 +74,9 @@ type Solution = (typeof solutions)[number];
 function SolutionCard({
   solution,
   index,
-  isInView,
 }: {
   solution: Solution;
   index: number;
-  isInView: boolean;
 }) {
   const prefersReducedMotion = useReducedMotion();
   const [isHovering, setIsHovering] = useState(false);
@@ -175,21 +172,20 @@ function SolutionCard({
     }
   };
 
+  const entryAnimation = getEntryAnimation();
+
   return (
     <motion.div
-      initial={getEntryAnimation()}
-      animate={
-        isInView
-          ? { opacity: 1, y: 0, x: 0, scale: 1, rotate: 0 }
-          : getEntryAnimation()
-      }
+      initial={entryAnimation}
+      whileInView={{ opacity: 1, y: 0, x: 0, scale: 1, rotate: 0 }}
+      viewport={{ once: false, amount: 0.22, margin: "-60px 0px -60px 0px" }}
       transition={{
-        duration: SECTION_TIMING.item,
-        delay: index * SECTION_TIMING.stagger,
+        duration: 0.56,
+        delay: (index % 3) * 0.06,
         ease: SECTION_EASE,
       }}
       whileHover={prefersReducedMotion ? undefined : { y: -6 }}
-      className="relative group/card"
+      className="relative group/card will-change-transform"
       onPointerEnter={() => setIsHovering(true)}
       onPointerMove={handlePointerMove}
       onPointerLeave={() => {
@@ -274,26 +270,22 @@ function SolutionCard({
             {solution.title}
           </h3>
 
-          {/* Description with word reveal */}
-          <p className="text-muted-foreground leading-relaxed mb-6">
-            {solution.description.split(" ").map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                animate={
-                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
-                }
-                transition={{
-                  duration: 0.3,
-                  delay: index * SECTION_TIMING.stagger + 0.3 + i * 0.02,
-                  ease: "easeOut",
-                }}
-                className="inline-block mr-[0.25em]"
-              >
-                {word}
-              </motion.span>
-            ))}
-          </p>
+          {/* Lighter description animation for smoother scroll performance */}
+          <motion.p
+            className="text-muted-foreground leading-relaxed mb-6"
+            initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
+            whileInView={
+              prefersReducedMotion ? undefined : { opacity: 1, y: 0 }
+            }
+            viewport={{ once: false, amount: 0.65 }}
+            transition={{
+              duration: 0.36,
+              delay: 0.14,
+              ease: "easeOut",
+            }}
+          >
+            {solution.description}
+          </motion.p>
 
           {/* Features with stagger animation */}
           <div className="flex flex-wrap gap-2 mb-6">
@@ -301,15 +293,11 @@ function SolutionCard({
               <motion.span
                 key={feature}
                 initial={{ opacity: 0, scale: 0.8, y: 10 }}
-                animate={
-                  isInView
-                    ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 0, scale: 0.8, y: 10 }
-                }
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.8 }}
                 transition={{
-                  duration: 0.4,
-                  delay:
-                    index * SECTION_TIMING.stagger + 0.5 + featureIndex * 0.08,
+                  duration: 0.32,
+                  delay: 0.2 + featureIndex * 0.05,
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 whileHover={
@@ -345,15 +333,8 @@ function SolutionCard({
 }
 
 export function Solutions() {
-  const ref = useRef<HTMLElement | null>(null);
-  const isInView = useInView(ref, { once: false, margin: "-100px" });
-
   return (
-    <section
-      id="solutions"
-      className="relative py-24 lg:py-32 bg-secondary/30"
-      ref={ref}
-    >
+    <section id="solutions" className="relative py-24 lg:py-32 bg-secondary/30">
       {/* Subtle pattern overlay */}
       <div className="absolute inset-0 opacity-[0.02]">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -375,7 +356,8 @@ export function Solutions() {
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.5, margin: "-60px 0px -80px 0px" }}
           transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
@@ -399,7 +381,6 @@ export function Solutions() {
               key={solution.title}
               solution={solution}
               index={index}
-              isInView={isInView}
             />
           ))}
         </div>
