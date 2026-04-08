@@ -12,23 +12,23 @@ const spring = {
 const pillars = [
   {
     number: "01",
-    title: "Intelligent Automation",
-    description: "Smart systems that learn, adapt, and optimize",
+    title: "AI That Learns",
+    description: "Systems that get smarter with every operation",
   },
   {
     number: "02",
-    title: "Cloud-Native Architecture",
-    description: "Scalable infrastructure built for global operations",
+    title: "Global Scale",
+    description: "Cloud infrastructure that grows with you",
   },
   {
     number: "03",
-    title: "Sustainability First",
-    description: "Green solutions for responsible manufacturing",
+    title: "Planet-First",
+    description: "Green tech that cuts waste, not corners",
   },
   {
     number: "04",
-    title: "Future-Ready Design",
-    description: "Technologies engineered for tomorrow",
+    title: "Tomorrow-Ready",
+    description: "Built for what's next, not what's now",
   },
 ];
 
@@ -53,7 +53,7 @@ function GeometricVisualization() {
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.9]);
 
   return (
-    <div ref={ref} className="relative aspect-square w-full max-w-md mx-auto">
+    <div ref={ref} className="relative aspect-square w-full max-w-sm mx-auto">
       {/* Ambient glow */}
       <div className="absolute inset-[15%] bg-primary/10 rounded-full blur-3xl" />
 
@@ -210,22 +210,19 @@ export function About() {
 
             {/* Headline */}
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
-              Building the Future of{" "}
-              <span className="text-primary">Industrial Intelligence</span>
+              Smart Industry.{" "}
+              <span className="text-primary">Sustainable Future.</span>
             </h2>
 
             {/* Body text */}
             <div className="mt-8 space-y-5 text-lg text-muted-foreground leading-relaxed">
               <p>
-                CSI Smart Tech pioneers the convergence of IoT, cloud
-                manufacturing, and artificial intelligence. We create systems
-                that are not only efficient but fundamentally sustainable.
+                We merge AI, IoT, and cloud tech to build manufacturing systems
+                that work smarter—not harder.
               </p>
               <p>
-                From intelligent automation to real-time insights, we transform
-                operations while reducing environmental impact. Our roadmap
-                includes custom ERP systems and comprehensive digital
-                transformation solutions.
+                Boost efficiency by 40%. Cut carbon by 32%. Transform operations
+                with intelligent automation that adapts and evolves.
               </p>
             </div>
 
@@ -246,10 +243,10 @@ export function About() {
                   <div className="text-xs font-mono text-primary/60 mb-2">
                     {pillar.number}
                   </div>
-                  <h3 className="font-semibold text-foreground text-sm mb-1 group-hover:text-primary transition-colors">
+                  <h3 className="font-semibold text-foreground text-base mb-2 group-hover:text-primary transition-colors">
                     {pillar.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {pillar.description}
                   </p>
                 </motion.div>
