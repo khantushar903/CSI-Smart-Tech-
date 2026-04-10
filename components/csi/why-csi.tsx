@@ -102,7 +102,7 @@ function ReasonCard({
       onPointerEnter={() => setIsHovering(true)}
       onPointerLeave={() => setIsHovering(false)}
     >
-      <div className="group/reason relative bg-card border border-border rounded-2xl p-6 hover:border-primary/30 hover:shadow-xl transition-all duration-300 overflow-hidden">
+      <div className="group/reason relative bg-card border border-border rounded-2xl p-4 sm:p-6 hover:border-primary/30 hover:shadow-xl transition-all duration-300 overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-primary/8 via-transparent to-accent/8 opacity-0 transition-opacity duration-300 group-hover/reason:opacity-100" />
 
         {/* Shimmer effect */}
@@ -117,7 +117,7 @@ function ReasonCard({
           }}
         />
 
-        <div className="flex gap-5 relative z-10">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 relative z-10">
           {/* Icon */}
           <div className="flex-shrink-0">
             <motion.div
@@ -140,14 +140,14 @@ function ReasonCard({
 
           {/* Content */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-2 group-hover/reason:text-primary transition-colors">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+              <div className="flex-1">
+                <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 group-hover/reason:text-primary transition-colors">
                   {reason.title}
                 </h3>
 
                 {/* Word-by-word description */}
-                <p className="text-muted-foreground text-sm leading-relaxed">
+                <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
                   {reason.description.split(" ").map((word, i) => (
                     <motion.span
                       key={i}
@@ -169,9 +169,9 @@ function ReasonCard({
               </div>
 
               {/* Value badge */}
-              <div className="flex-shrink-0 text-right">
+              <div className="flex-shrink-0 sm:text-right">
                 <motion.div
-                  className="relative text-2xl font-bold text-primary"
+                  className="relative text-xl sm:text-2xl font-bold text-primary"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={
                     isInView
@@ -227,14 +227,14 @@ export function WhyCSI() {
   return (
     <section
       id="why-csi"
-      className="relative py-24 lg:py-32 bg-background/78 overflow-hidden"
+      className="relative py-16 sm:py-24 lg:py-32 bg-background/78 overflow-hidden"
       ref={ref}
     >
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-start">
           {/* Left column - sticky header */}
           <div className="lg:sticky lg:top-32">
             <motion.div
@@ -257,7 +257,7 @@ export function WhyCSI() {
               </p>
 
               {/* Trust indicators */}
-              <div className="mt-10 flex flex-wrap gap-4">
+              <div className="mt-8 sm:mt-10 flex flex-wrap gap-2 sm:gap-4">
                 {[
                   {
                     label: "ISO Certified",
@@ -274,7 +274,7 @@ export function WhyCSI() {
                 ].map((badge, index) => (
                   <motion.div
                     key={badge.label}
-                    className={`relative px-4 py-2 rounded-full ${badge.className} cursor-default overflow-hidden`}
+                    className={`relative px-3 sm:px-4 py-2 rounded-full ${badge.className} cursor-default overflow-hidden`}
                     initial={{ opacity: 0, y: 10, scale: 0.9 }}
                     animate={
                       isInView
@@ -300,7 +300,7 @@ export function WhyCSI() {
           </div>
 
           {/* Right column - reasons list */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {reasons.map((reason, index) => (
               <ReasonCard
                 key={reason.title}

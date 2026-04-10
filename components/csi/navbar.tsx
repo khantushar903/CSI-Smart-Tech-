@@ -30,6 +30,7 @@ export function Navbar() {
   return (
     <>
       <motion.header
+        data-site-header="true"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -162,5 +163,3 @@ export function Navbar() {
     </>
   );
 }
-
-
