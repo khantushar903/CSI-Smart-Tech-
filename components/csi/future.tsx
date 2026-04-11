@@ -80,7 +80,7 @@ function FutureCard({
   const contentOffsetX = useTransform(smoothRotateY, [-5, 5], [-3, 3]);
   const contentOffsetY = useTransform(smoothRotateX, [-4, 4], [2, -2]);
 
-  const spotlight = useMotionTemplate`radial-gradient(360px circle at ${smoothGlowX}% ${smoothGlowY}%, rgba(34, 197, 94, 0.24), rgba(34, 197, 94, 0) 63%)`;
+  const spotlight = useMotionTemplate`radial-gradient(360px circle at ${smoothGlowX}% ${smoothGlowY}%, rgba(13, 110, 253, 0.24), rgba(13, 110, 253, 0) 63%)`;
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (prefersReducedMotion) return;
@@ -202,14 +202,14 @@ function FutureCard({
             }
             className="absolute top-6 right-6"
           >
-            <span className="px-3 py-1 text-xs font-medium rounded-full bg-emerald-400/15 text-emerald-200 ring-1 ring-emerald-300/25">
+            <span className="px-3 py-1 text-xs font-medium rounded-full bg-blue-400/15 text-blue-200 ring-1 ring-blue-300/25">
               {service.status}
             </span>
           </motion.div>
 
           {/* Icon */}
           <motion.div
-            className="relative w-14 h-14 rounded-xl bg-emerald-400/15 flex items-center justify-center mb-6 group-hover:bg-emerald-400/25 transition-colors"
+            className="relative w-14 h-14 rounded-xl bg-blue-400/15 flex items-center justify-center mb-6 group-hover:bg-blue-400/25 transition-colors"
             animate={iconControls}
             whileHover={
               prefersReducedMotion ? undefined : { scale: 1.08, rotate: 6 }
@@ -218,18 +218,18 @@ function FutureCard({
           >
             {/* Icon glow */}
             <motion.div
-              className="absolute inset-0 rounded-xl bg-emerald-400/30 blur-xl"
+              className="absolute inset-0 rounded-xl bg-blue-400/30 blur-xl"
               animate={{
                 opacity: isHovering ? 0.7 : 0,
                 scale: isHovering ? 1.4 : 0.8,
               }}
               transition={{ duration: 0.3 }}
             />
-            <service.icon className="relative w-7 h-7 text-emerald-200" />
+            <service.icon className="relative w-7 h-7 text-blue-200" />
           </motion.div>
 
           {/* Content */}
-          <h3 className="text-xl font-semibold mb-3 text-background group-hover:text-emerald-50 transition-colors">
+          <h3 className="text-xl font-semibold mb-3 text-background group-hover:text-blue-50 transition-colors">
             {service.title}
           </h3>
 
@@ -256,7 +256,7 @@ function FutureCard({
           <motion.a
             href="#contact"
             data-track-click={`future-get-notified-${service.title.toLowerCase().replace(/\s+/g, "-")}`}
-            className="inline-flex items-center text-sm font-medium text-emerald-200 group/link"
+            className="inline-flex items-center text-sm font-medium text-blue-200 group/link"
             initial={{ opacity: 0, x: -10 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
             transition={{
