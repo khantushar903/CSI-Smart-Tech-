@@ -4,10 +4,7 @@ export { default as CircuitBoard } from "./circuit-board";
 export { default as GeometricWaves } from "./geometric-waves";
 export { default as DataFlow } from "./data-flow";
 export { default as TechGrid } from "./tech-grid";
-export { default as DotMatrix } from "./dot-matrix";
-export { default as RadarScan } from "./radar-scan";
 export { default as ParticleNetwork } from "./particle-network";
-export { default as CodeStream } from "./code-stream";
 
 export type AnimationType =
   | "neural-field"
@@ -16,7 +13,4 @@ export type AnimationType =
   | "geometric-waves"
   | "data-flow"
   | "tech-grid"
-  | "dot-matrix"
-  | "radar-scan"
-  | "particle-network"
-  | "code-stream";
+  | "particle-network";
