@@ -3,6 +3,7 @@
 import { useCallback, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { getBlogPostsByTag, searchBlogPosts } from "@/lib/blog";
+import { SECTION_EASE, SECTION_TIMING } from "./motion-presets";
 import BlogCard from "./blog-card";
 import type { BlogMeta } from "@/lib/blog";
 
@@ -56,18 +57,42 @@ export default function BlogListingClient({
     <section id="blog" className="relative px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
         {/* Section Header */}
-        <div className="mb-12 text-center">
-          <p className="mb-4 text-sm uppercase tracking-widest text-accent font-semibold">
+        <motion.div
+          className="mb-12 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          <motion.p
+            className="mb-4 text-sm uppercase tracking-widest text-accent font-semibold"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true, amount: 0.3 }}
+          >
             Insights & Articles
-          </p>
-          <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          </motion.p>
+          <motion.h2
+            className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            viewport={{ once: true, amount: 0.3 }}
+          >
             Our Blog
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+          </motion.h2>
+          <motion.p
+            className="mx-auto max-w-2xl text-lg text-muted-foreground"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true, amount: 0.3 }}
+          >
             Explore the latest insights, trends, and expertise from the CSI
             Smart Tech team
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Search */}
         <div className="mb-10">
@@ -111,20 +136,19 @@ export default function BlogListingClient({
 
         {/* Blog Posts Grid */}
         {filteredPosts.length > 0 && (
-          <motion.div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post, index) => (
               <motion.div
                 key={post.slug}
-                layoutId={post.slug}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.3, delay: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                viewport={{ once: true, amount: 0.15 }}
               >
                 <BlogCard {...post} />
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         )}
 
         {/* Empty State */}

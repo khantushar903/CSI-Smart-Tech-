@@ -40,18 +40,42 @@ export default function NewsletterSection() {
     <section id="newsletter" className="relative px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
         {/* Section Header */}
-        <div className="mb-16 text-center">
-          <p className="mb-4 text-sm uppercase tracking-widest text-accent font-semibold">
+        <motion.div
+          className="mb-16 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          <motion.p
+            className="mb-4 text-sm uppercase tracking-widest text-accent font-semibold"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true, amount: 0.3 }}
+          >
             Stay Updated
-          </p>
-          <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          </motion.p>
+          <motion.h2
+            className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            viewport={{ once: true, amount: 0.3 }}
+          >
             Newsletter & Updates
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+          </motion.h2>
+          <motion.p
+            className="mx-auto max-w-2xl text-lg text-muted-foreground"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true, amount: 0.3 }}
+          >
             Get insights, industry trends, and CSI updates delivered to your
             inbox
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Newsletter Signup Form */}
         <div className="mb-20 rounded-lg border border-border bg-card p-8 sm:p-10">
@@ -63,7 +87,7 @@ export default function NewsletterSection() {
 
         {/* Featured Newsletters */}
         {!isLoading && newsletters.length > 0 && (
-          <motion.div>
+          <div>
             <h3 className="mb-8 text-2xl font-semibold text-foreground">
               Latest Newsletters
             </h3>
@@ -71,15 +95,10 @@ export default function NewsletterSection() {
               {newsletters.map((newsletter, index) => (
                 <motion.div
                   key={newsletter.id}
-                  layoutId={newsletter.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.5 }}
-                  transition={{
-                    duration: 0.4,
-                    delay: 0,
-                    ease: SECTION_EASE,
-                  }}
+                  transition={{ duration: 0.4, delay: index * 0.08 }}
+                  viewport={{ once: true, amount: 0.15 }}
                 >
                   <NewsletterCard
                     title={newsletter.title}
@@ -90,7 +109,7 @@ export default function NewsletterSection() {
                 </motion.div>
               ))}
             </div>
-          </motion.div>
+          </div>
         )}
 
         {isLoading && (

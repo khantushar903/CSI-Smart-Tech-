@@ -23,10 +23,8 @@ export default function NewsletterCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      viewport={{ once: false, margin: "-100px" }}
+      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+      whileTap={{ scale: 0.98 }}
       className="group relative h-full overflow-hidden rounded-lg border border-border bg-card p-6 transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
     >
       <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-linear-to-r from-primary/5 to-transparent pointer-events-none" />
