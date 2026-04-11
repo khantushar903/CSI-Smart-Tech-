@@ -10,6 +10,8 @@ import { CTA } from "@/components/csi/cta";
 import { FAQ } from "@/components/csi/faq";
 import { SectionReveal } from "@/components/csi/section-reveal";
 import { Footer } from "@/components/csi/footer";
+import NewsletterSection from "@/components/csi/newsletter";
+import BlogListing from "@/components/csi/blog-listing";
 
 export default function Home() {
   return (
@@ -36,6 +38,12 @@ export default function Home() {
       </SectionReveal>
       <SectionReveal tone="teal">
         <CTA />
+      </SectionReveal>
+      <SectionReveal tone="emerald">
+        <BlogListing />
+      </SectionReveal>
+      <SectionReveal tone="teal">
+        <NewsletterSection />
       </SectionReveal>
       <SectionReveal tone="emerald">
         <FAQ />

@@ -59,7 +59,14 @@ export function SmoothScrollProvider() {
         return;
       }
 
-      const section = document.querySelector(href);
+      let section: Element | null = null;
+      try {
+        section = document.querySelector(href);
+      } catch (e) {
+        // Invalid selector, silently ignore
+        return;
+      }
+
       if (!section) {
         return;
       }

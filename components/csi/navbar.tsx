@@ -13,6 +13,8 @@ const navLinks = [
   { href: "#capabilities", label: "Capabilities" },
   { href: "#industries", label: "Industries" },
   { href: "#why-csi", label: "Why CSI" },
+  { href: "#blog", label: "Blog" },
+  { href: "#newsletter", label: "Newsletter" },
 ];
 
 export function Navbar() {

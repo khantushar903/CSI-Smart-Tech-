@@ -1,0 +1,37 @@
+[
+  {
+    "id": "nl-2024-04",
+    "title": "April 2024: AI Innovation & Smart Tech Trends",
+    "excerpt": "This month's newsletter covers the latest breakthroughs in artificial intelligence, emerging smart tech trends, and exclusive insights from industry leaders.",
+    "date": "2024-04-10",
+    "link": "#newsletter/april-2024"
+  },
+  {
+    "id": "nl-2024-03",
+    "title": "March 2024: Digital Transformation Success Stories",
+    "excerpt": "Discover how leading organizations are successfully transforming their digital infrastructure and the key lessons learned from their journeys.",
+    "date": "2024-03-15",
+    "link": "#newsletter/march-2024"
+  },
+  {
+    "id": "nl-2024-02",
+    "title": "February 2024: Cloud Security & Compliance Updates",
+    "excerpt": "Essential security best practices for cloud infrastructure, latest compliance requirements, and expert recommendations for protecting your data.",
+    "date": "2024-02-20",
+    "link": "#newsletter/february-2024"
+  },
+  {
+    "id": "nl-2024-01",
+    "title": "January 2024: Technology Outlook & Strategic Planning",
+    "excerpt": "Start the year with insights on technology trends, strategic planning considerations, and how to prepare your organization for digital evolution.",
+    "date": "2024-01-25",
+    "link": "#newsletter/january-2024"
+  },
+  {
+    "id": "nl-2023-12",
+    "title": "December 2023: Year-End Tech Summary & Looking Ahead",
+    "excerpt": "A comprehensive review of major technology developments in 2023 and predictions for what's coming in 2024.",
+    "date": "2023-12-28",
+    "link": "#newsletter/december-2023"
+  }
+]

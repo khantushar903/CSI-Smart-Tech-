@@ -49,7 +49,7 @@ export function SectionReveal({
       className="relative isolate"
       initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
       whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.1, margin: "-80px 0px -80px 0px" }}
+      viewport={{ once: true, amount: 0.1, margin: "-80px 0px -80px 0px" }}
       transition={{
         duration: 0.6,
         ease: [0.25, 0.46, 0.45, 0.94],
