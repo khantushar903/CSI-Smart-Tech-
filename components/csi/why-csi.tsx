@@ -247,7 +247,9 @@ function ReasonCard({
           </p>
 
           <div className="mt-auto flex items-center justify-between gap-3 border-t border-border/60 pt-4">
-            <span className="text-xs text-muted-foreground">{reason.label}</span>
+            <span className="text-xs text-muted-foreground">
+              {reason.label}
+            </span>
             <span className="text-xl font-bold leading-none text-primary">
               {reason.value}
             </span>
