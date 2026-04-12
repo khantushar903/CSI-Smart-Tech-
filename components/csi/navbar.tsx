@@ -39,7 +39,7 @@ export function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
           isScrolled
-            ? "bg-background/90 backdrop-blur-xl border-b border-border/50 shadow-sm"
+            ? "bg-background/96 backdrop-blur-none md:bg-background/90 md:backdrop-blur-xl border-b border-border/50 shadow-sm"
             : "bg-transparent",
         )}
       >
@@ -115,7 +115,7 @@ export function Navbar() {
             className="fixed inset-0 z-40 lg:hidden"
           >
             <div
-              className="absolute inset-0 bg-background/80 backdrop-blur-xl"
+              className="absolute inset-0 bg-background/90 backdrop-blur-none"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.nav
