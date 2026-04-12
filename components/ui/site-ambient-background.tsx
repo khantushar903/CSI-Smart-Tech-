@@ -2,7 +2,7 @@ export function SiteAmbientBackground() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden opacity-45 md:opacity-100"
       style={{
         contain: "layout style paint",
         willChange: "transform",

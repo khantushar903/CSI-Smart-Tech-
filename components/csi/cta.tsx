@@ -15,13 +15,13 @@ export function CTA() {
   return (
     <section
       id="contact"
-      className="relative py-14 lg:py-20 bg-background/78 overflow-hidden"
+      className="relative py-14 lg:py-20 bg-background/95 md:bg-background/78 overflow-hidden"
       ref={ref}
     >
       {/* Background decoration */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+        <div className="hidden md:block absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="hidden md:block absolute bottom-0 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative max-w-4xl mx-auto px-6 lg:px-8 text-center">

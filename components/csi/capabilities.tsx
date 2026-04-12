@@ -372,7 +372,7 @@ export function Capabilities() {
   return (
     <section
       id="capabilities"
-      className="relative py-14 lg:py-20 bg-background/76"
+      className="relative py-14 lg:py-20 bg-background/94 md:bg-background/76"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section header */}

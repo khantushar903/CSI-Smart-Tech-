@@ -267,10 +267,10 @@ export function WhyCSI() {
   return (
     <section
       id="why-csi"
-      className="relative overflow-hidden bg-background/78 py-14 sm:py-16 lg:py-20"
+      className="relative overflow-hidden bg-background/94 md:bg-background/78 py-14 sm:py-16 lg:py-20"
       ref={ref}
     >
-      <div className="pointer-events-none absolute top-0 right-0 h-full w-1/2 bg-gradient-to-l from-primary/5 to-transparent" />
+      <div className="pointer-events-none absolute top-0 right-0 h-full w-1/2 bg-linear-to-l from-primary/5 to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div

@@ -65,7 +65,7 @@ function GeometricVisualization() {
   return (
     <div ref={ref} className="relative aspect-square w-full max-w-sm mx-auto">
       {/* Ambient glow */}
-      <div className="absolute inset-[15%] bg-primary/10 rounded-full blur-3xl" />
+      <div className="hidden md:block absolute inset-[15%] bg-primary/10 rounded-full blur-3xl" />
 
       {/* Outer rotating ring */}
       <motion.div

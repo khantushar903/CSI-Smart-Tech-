@@ -44,7 +44,10 @@ export function FAQ() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   return (
-    <section ref={ref} className="relative py-14 lg:py-20 bg-background/50">
+    <section
+      ref={ref}
+      className="relative py-14 lg:py-20 bg-background/95 md:bg-background/50"
+    >
       <div className="max-w-4xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -111,7 +114,7 @@ export function FAQ() {
                       initial={false}
                       animate={{ rotate: 0 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex-shrink-0"
+                      className="shrink-0"
                     >
                       <ChevronDown className="w-5 h-5 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
                     </motion.div>
@@ -147,7 +150,7 @@ export function FAQ() {
           }}
           className="text-center mt-8"
         >
-          <div className="p-5 rounded-3xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+          <div className="p-5 rounded-3xl bg-linear-to-br from-primary/5 to-accent/5 border border-primary/10">
             <h3 className="text-xl font-semibold text-foreground mb-3">
               Still have questions?
             </h3>

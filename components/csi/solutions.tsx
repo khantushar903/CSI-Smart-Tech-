@@ -334,7 +334,10 @@ function SolutionCard({
 
 export function Solutions() {
   return (
-    <section id="solutions" className="relative py-14 lg:py-20 bg-secondary/30">
+    <section
+      id="solutions"
+      className="relative py-14 lg:py-20 bg-secondary/70 md:bg-secondary/30"
+    >
       {/* Subtle pattern overlay */}
       <div className="absolute inset-0 opacity-[0.02]">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
