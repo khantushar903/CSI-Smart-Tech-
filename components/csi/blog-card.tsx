@@ -11,6 +11,7 @@ export interface BlogCardProps {
   author: string;
   tags: string[];
   image?: string;
+  onReadClick: (slug: string) => void;
 }
 
 export default function BlogCard({
@@ -21,6 +22,7 @@ export default function BlogCard({
   author,
   tags,
   image,
+  onReadClick,
 }: BlogCardProps) {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
@@ -34,7 +36,7 @@ export default function BlogCard({
       whileTap={{ scale: 0.98 }}
       className="group overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 h-full"
     >
-      <a href={`#blog/${slug}`} className="flex flex-col h-full">
+      <div className="flex h-full flex-col">
         {/* Featured Image */}
         {image && (
           <div className="relative h-48 w-full overflow-hidden bg-linear-to-br from-primary/20 to-accent/20">
@@ -81,7 +83,9 @@ export default function BlogCard({
           )}
 
           {/* CTA */}
-          <motion.div
+          <motion.button
+            type="button"
+            onClick={() => onReadClick(slug)}
             className="inline-flex items-center gap-2 text-sm font-medium text-accent group-hover:text-accent/80"
             whileHover={{ x: 4 }}
           >
@@ -89,9 +93,9 @@ export default function BlogCard({
             <span className="inline-block transition-transform group-hover:translate-x-1">
               →
             </span>
-          </motion.div>
+          </motion.button>
         </div>
-      </a>
+      </div>
     </motion.article>
   );
 }

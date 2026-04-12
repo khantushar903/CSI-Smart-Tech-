@@ -4,19 +4,16 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import NewsletterCard from "./newsletter-card";
 import NewsletterForm from "./newsletter-form";
+import { NewsletterModal } from "./newsletter-modal";
 import { SECTION_EASE, SECTION_TIMING } from "./motion-presets";
-
-export interface Newsletter {
-  id: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  link?: string;
-}
+import type { Newsletter } from "./newsletter-types";
 
 export default function NewsletterSection() {
   const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedNewsletter, setSelectedNewsletter] =
+    useState<Newsletter | null>(null);
+  const [isNewsletterModalOpen, setIsNewsletterModalOpen] = useState(false);
 
   useEffect(() => {
     const loadNewsletters = async () => {
@@ -35,6 +32,18 @@ export default function NewsletterSection() {
 
     loadNewsletters();
   }, []);
+
+  const handleReadNewsletter = (newsletter: Newsletter) => {
+    setSelectedNewsletter(newsletter);
+    setIsNewsletterModalOpen(true);
+  };
+
+  const handleNewsletterModalOpenChange = (open: boolean) => {
+    setIsNewsletterModalOpen(open);
+    if (!open) {
+      setSelectedNewsletter(null);
+    }
+  };
 
   return (
     <section id="newsletter" className="relative px-4 py-20 sm:px-6 lg:px-8">
@@ -104,7 +113,7 @@ export default function NewsletterSection() {
                     title={newsletter.title}
                     excerpt={newsletter.excerpt}
                     date={newsletter.date}
-                    link={newsletter.link}
+                    onReadClick={() => handleReadNewsletter(newsletter)}
                   />
                 </motion.div>
               ))}
@@ -117,6 +126,12 @@ export default function NewsletterSection() {
             Loading newsletters...
           </div>
         )}
+
+        <NewsletterModal
+          open={isNewsletterModalOpen}
+          newsletter={selectedNewsletter}
+          onOpenChange={handleNewsletterModalOpenChange}
+        />
       </div>
     </section>
   );

@@ -6,14 +6,14 @@ export interface NewsletterCardProps {
   title: string;
   excerpt: string;
   date: string;
-  link?: string;
+  onReadClick: () => void;
 }
 
 export default function NewsletterCard({
   title,
   excerpt,
   date,
-  link,
+  onReadClick,
 }: NewsletterCardProps) {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
@@ -45,20 +45,17 @@ export default function NewsletterCard({
           {excerpt}
         </p>
 
-        {link && (
-          <motion.a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ x: 4 }}
-            className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors"
-          >
-            Read Newsletter
-            <span className="inline-block transition-transform group-hover:translate-x-1">
-              →
-            </span>
-          </motion.a>
-        )}
+        <motion.button
+          type="button"
+          onClick={onReadClick}
+          whileHover={{ x: 4 }}
+          className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors"
+        >
+          Read Newsletter
+          <span className="inline-block transition-transform group-hover:translate-x-1">
+            →
+          </span>
+        </motion.button>
       </div>
     </motion.div>
   );

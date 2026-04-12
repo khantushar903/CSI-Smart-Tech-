@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { getBlogPostsByTag, searchBlogPosts } from "@/lib/blog";
 import { SECTION_EASE, SECTION_TIMING } from "./motion-presets";
 import BlogCard from "./blog-card";
+import { BlogModal } from "./blog-modal";
 import type { BlogMeta } from "@/lib/blog";
 
 interface BlogListingClientProps {
@@ -20,6 +21,8 @@ export default function BlogListingClient({
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [filteredPosts, setFilteredPosts] = useState<BlogMeta[]>(initialPosts);
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  const [isBlogModalOpen, setIsBlogModalOpen] = useState(false);
 
   // Update filtered posts when search query or tag changes
   useEffect(() => {
@@ -50,6 +53,18 @@ export default function BlogListingClient({
     setSearchQuery(query);
     if (!query.trim()) {
       setSelectedTag(null);
+    }
+  };
+
+  const handleReadArticle = (slug: string) => {
+    setSelectedSlug(slug);
+    setIsBlogModalOpen(true);
+  };
+
+  const handleBlogModalOpenChange = (open: boolean) => {
+    setIsBlogModalOpen(open);
+    if (!open) {
+      setSelectedSlug(null);
     }
   };
 
@@ -145,7 +160,7 @@ export default function BlogListingClient({
                 transition={{ duration: 0.4, delay: index * 0.08 }}
                 viewport={{ once: true, amount: 0.15 }}
               >
-                <BlogCard {...post} />
+                <BlogCard {...post} onReadClick={handleReadArticle} />
               </motion.div>
             ))}
           </div>
@@ -158,6 +173,12 @@ export default function BlogListingClient({
             <p className="text-sm mt-2">Try a different search or tag</p>
           </div>
         )}
+
+        <BlogModal
+          open={isBlogModalOpen}
+          slug={selectedSlug}
+          onOpenChange={handleBlogModalOpenChange}
+        />
       </div>
     </section>
   );
