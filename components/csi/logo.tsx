@@ -22,39 +22,96 @@ export function Logo({
   const { icon, text } = sizes[size];
 
   return (
-    <div className={cn("flex items-center gap-3", className)}>
-      {/* CSI Smart Tech Hexagon Logo */}
+    <div className={cn("flex items-center gap-2.5", className)}>
+      {/* CSI Smart Tech Premium Logo */}
       <svg
         width={icon}
         height={icon}
-        viewBox="0 0 48 48"
+        viewBox="0 0 64 64"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="flex-shrink-0 text-primary"
+        className="flex-shrink-0"
       >
-        {/* Outer hexagon - primary blue */}
+        {/* Outer hexagon with gradient effect */}
         <path
-          d="M24 2L43.3 12V36L24 46L4.7 36V12L24 2Z"
+          d="M32 2L58 16V48L32 62L6 48V16L32 2Z"
           stroke="currentColor"
-          strokeWidth="2.5"
+          strokeWidth="2"
           fill="none"
+          opacity="0.9"
         />
-        {/* Inner hexagon - lighter construction line */}
+
+        {/* Subtle inner hexagon */}
         <path
-          d="M24 8L38.1 15.5V32.5L24 40L9.9 32.5V15.5L24 8Z"
+          d="M32 10L50 20V44L32 54L14 44V20L32 10Z"
           stroke="currentColor"
-          strokeWidth="1.5"
-          strokeOpacity="0.6"
+          strokeWidth="1"
           fill="none"
+          opacity="0.4"
         />
-        {/* Center accent point */}
-        <circle cx="24" cy="24" r="3" fill="currentColor" />
+
+        {/* Premium geometric design - tech pattern */}
+        <g opacity="0.85">
+          {/* Top point accent */}
+          <line
+            x1="32"
+            y1="10"
+            x2="32"
+            y2="22"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+
+          {/* Bottom point accent */}
+          <line
+            x1="32"
+            y1="42"
+            x2="32"
+            y2="54"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+
+          {/* Left center accent */}
+          <line
+            x1="14"
+            y1="32"
+            x2="26"
+            y2="32"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+
+          {/* Right center accent */}
+          <line
+            x1="38"
+            y1="32"
+            x2="50"
+            y2="32"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </g>
+
+        {/* Center accent circle - premium dot */}
+        <circle cx="32" cy="32" r="2.5" fill="currentColor" opacity="0.9" />
       </svg>
 
       {showWordmark && (
         <div className={cn("flex flex-col leading-tight", text)}>
-          <span className="font-bold text-primary">CSI</span>
-          <span className="text-xs font-semibold text-primary/70">SMART TECH</span>
+          <span className="font-bold" style={{ color: "inherit" }}>
+            CSI
+          </span>
+          <span
+            className="text-xs font-semibold"
+            style={{ color: "currentColor", opacity: 0.7 }}
+          >
+            SMART TECH
+          </span>
         </div>
       )}
     </div>
