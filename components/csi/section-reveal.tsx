@@ -58,16 +58,14 @@ export function SectionReveal({
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
-      {!isTouchDevice ? (
-        <motion.div
-          aria-hidden
-          style={reducedMotion ? undefined : { y, opacity }}
-          className={cn(
-            "pointer-events-none absolute inset-x-0 top-8 h-32 blur-3xl will-change-transform",
-            toneStyles[tone],
-          )}
-        />
-      ) : null}
+      <motion.div
+        aria-hidden
+        style={reducedMotion ? undefined : { y, opacity }}
+        className={cn(
+          "pointer-events-none absolute inset-x-0 top-8 hidden h-32 blur-3xl will-change-transform lg:block",
+          toneStyles[tone],
+        )}
+      />
       <div className="relative">{children}</div>
     </motion.div>
   );
