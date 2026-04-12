@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
+import { modalLockEventName } from "@/components/ui/modal-scroll-lock";
 
 export function SmoothScrollProvider() {
   const lenisRef = useRef<Lenis | null>(null);
@@ -21,6 +22,19 @@ export function SmoothScrollProvider() {
     });
 
     lenisRef.current = lenis;
+
+    const syncLenisModalState = () => {
+      const count = Number.parseInt(
+        document.body.getAttribute("data-modal-lock-count") || "0",
+        10,
+      );
+
+      if (Number.isFinite(count) && count > 0) {
+        lenis.stop();
+      } else {
+        lenis.start();
+      }
+    };
 
     const getNavbarHeight = () => {
       const header = document.querySelector(
@@ -83,6 +97,9 @@ export function SmoothScrollProvider() {
 
     // Delegate hash-link handling so dynamically rendered menu links also scroll correctly.
     document.addEventListener("click", handleDocumentClick);
+    window.addEventListener(modalLockEventName, syncLenisModalState);
+
+    syncLenisModalState();
 
     // Optimized animation frame loop with RAF
     let rafId: number;
@@ -97,6 +114,7 @@ export function SmoothScrollProvider() {
     // Cleanup
     return () => {
       document.removeEventListener("click", handleDocumentClick);
+      window.removeEventListener(modalLockEventName, syncLenisModalState);
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };

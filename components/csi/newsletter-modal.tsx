@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { CalendarDays, ExternalLink } from "lucide-react";
 import {
@@ -9,6 +10,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  lockModalScroll,
+  unlockModalScroll,
+} from "@/components/ui/modal-scroll-lock";
 import { ContentRenderer } from "./content-renderer";
 import type { Newsletter } from "./newsletter-types";
 
@@ -23,9 +28,21 @@ export function NewsletterModal({
   newsletter,
   onOpenChange,
 }: NewsletterModalProps) {
+  useEffect(() => {
+    if (open) {
+      lockModalScroll();
+      return () => {
+        unlockModalScroll();
+      };
+    }
+
+    unlockModalScroll();
+    return undefined;
+  }, [open]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto bg-background/95">
+      <DialogContent className="sm:max-w-4xl bg-background/95">
         <DialogHeader className="space-y-4 text-left">
           <div className="space-y-3">
             <DialogTitle className="text-3xl font-bold tracking-tight text-foreground">

@@ -10,6 +10,10 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import {
+  lockModalScroll,
+  unlockModalScroll,
+} from "@/components/ui/modal-scroll-lock";
 import { Button } from "@/components/ui/button";
 import {
   Loader2,
@@ -54,16 +58,13 @@ export function ContactFormModal({
   // Prevent background scrolling when modal is open
   useEffect(() => {
     if (open) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = '0px'; // Prevent layout shift
+      lockModalScroll();
     } else {
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
+      unlockModalScroll();
     }
 
     return () => {
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
+      unlockModalScroll();
     };
   }, [open]);
 
@@ -120,7 +121,7 @@ export function ContactFormModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[525px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Mail className="w-6 h-6 text-primary" />

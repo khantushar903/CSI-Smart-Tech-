@@ -11,6 +11,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  lockModalScroll,
+  unlockModalScroll,
+} from "@/components/ui/modal-scroll-lock";
 import { ContentRenderer } from "./content-renderer";
 import type { BlogPost } from "@/lib/blog";
 
@@ -66,13 +70,13 @@ export function BlogModal({ open, slug, onOpenChange }: BlogModalProps) {
 
   useEffect(() => {
     if (open) {
-      document.body.style.overflow = "hidden";
+      lockModalScroll();
       return () => {
-        document.body.style.overflow = "";
+        unlockModalScroll();
       };
     }
 
-    document.body.style.overflow = "";
+    unlockModalScroll();
     return undefined;
   }, [open]);
 
@@ -94,7 +98,7 @@ export function BlogModal({ open, slug, onOpenChange }: BlogModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto bg-background/95">
+      <DialogContent className="sm:max-w-4xl bg-background/95 [&>div]:pr-6">
         <DialogHeader className="space-y-4 text-left">
           <div className="space-y-3">
             <DialogTitle className="text-3xl font-bold tracking-tight text-foreground">
@@ -141,18 +145,21 @@ export function BlogModal({ open, slug, onOpenChange }: BlogModalProps) {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2 }}
-            className="space-y-6"
+            className="mt-4 space-y-6 sm:mt-5"
           >
             {post.image && (
-              <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-border bg-muted">
-                <Image
-                  src={post.image}
-                  alt={post.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 768px"
-                />
-              </div>
+              <figure className="relative overflow-hidden rounded-2xl border border-border/80 bg-linear-to-br from-muted/70 via-muted/40 to-muted/80 shadow-sm">
+                <div className="relative aspect-[16/10] sm:aspect-[16/9]">
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    className="object-cover object-[54%_58%]"
+                    sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 1024px) 90vw, 896px"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-foreground/15 via-transparent to-transparent" />
+                </div>
+              </figure>
             )}
 
             {post.tags.length > 0 && (
