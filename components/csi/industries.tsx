@@ -187,7 +187,7 @@ function IndustryCard({
           transition={{ duration: 0.3, ease: "easeOut" }}
         />
 
-        <motion.div 
+        <motion.div
           className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
           style={
             prefersReducedMotion
@@ -213,23 +213,23 @@ function IndustryCard({
                 >
                   {String(index + 1).padStart(2, "0")}
                 </motion.span>
-                <span className="relative">{String(index + 1).padStart(2, "0")}</span>
+                <span className="relative">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
               </motion.span>
               <h3 className="text-xl lg:text-2xl font-semibold text-foreground group-hover:text-primary transition-colors">
                 {industry.name}
               </h3>
             </div>
-            
+
             {/* Word-by-word description reveal */}
-            <p className="text-muted-foreground lg:pl-10">
+            <p className="text-muted-foreground text-sm sm:text-base lg:pl-10">
               {industry.description.split(" ").map((word, i) => (
                 <motion.span
                   key={i}
                   initial={{ opacity: 0, y: 8 }}
                   animate={
-                    isInView
-                      ? { opacity: 1, y: 0 }
-                      : { opacity: 0, y: 8 }
+                    isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }
                   }
                   transition={{
                     duration: 0.25,
@@ -248,9 +248,7 @@ function IndustryCard({
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={
-                isInView
-                  ? { opacity: 1, scale: 1 }
-                  : { opacity: 0, scale: 0.9 }
+                isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }
               }
               transition={{
                 duration: 0.4,
@@ -259,9 +257,7 @@ function IndustryCard({
               }}
               className="relative px-4 py-2 bg-primary/10 rounded-full overflow-hidden"
               whileHover={
-                prefersReducedMotion
-                  ? undefined
-                  : { scale: 1.05, y: -2 }
+                prefersReducedMotion ? undefined : { scale: 1.05, y: -2 }
               }
             >
               {/* Shimmer effect on metric badge */}
@@ -292,9 +288,7 @@ function IndustryCard({
                 ease: SECTION_EASE,
               }}
               whileHover={
-                prefersReducedMotion
-                  ? undefined
-                  : { scale: 1.1, rotate: 10 }
+                prefersReducedMotion ? undefined : { scale: 1.1, rotate: 10 }
               }
               className="relative w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
             >
@@ -336,7 +330,7 @@ export function Industries() {
           transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
           className="max-w-2xl mb-16"
         >
-          <span className="text-sm font-semibold text-primary uppercase tracking-wider">
+          <span className="text-base sm:text-lg font-semibold text-primary uppercase tracking-wider">
             Industries We Serve
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">

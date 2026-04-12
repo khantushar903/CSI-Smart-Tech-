@@ -12,14 +12,15 @@ import {
 } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
-import { Database, Code2, Sparkles, ArrowRight } from "lucide-react";
+import { Bot, Code2, Sparkles, ArrowRight } from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
 
 const futureServices = [
   {
-    icon: Database,
-    title: "Custom ERP Systems",
-    description: "Built for your business. Track everything. Scale anywhere.",
+    icon: Bot,
+    title: "AI & Robotics",
+    description:
+      "Intelligent automation. Smart operations. Technology that works for you.",
     status: "Coming 2026",
   },
   {
@@ -313,7 +314,7 @@ export function Future() {
           transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="text-sm font-semibold text-primary uppercase tracking-wider">
+          <span className="text-base sm:text-lg font-semibold text-cyan-400 uppercase tracking-wider">
             What's Next
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-balance">

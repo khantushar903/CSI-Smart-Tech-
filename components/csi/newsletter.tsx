@@ -48,7 +48,7 @@ export default function NewsletterSection() {
           viewport={{ once: true, amount: 0.3 }}
         >
           <motion.p
-            className="mb-4 text-sm uppercase tracking-widest text-accent font-semibold"
+            className="mb-4 text-base sm:text-lg uppercase tracking-widest text-accent font-semibold"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}

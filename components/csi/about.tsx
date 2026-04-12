@@ -203,7 +203,7 @@ export function About() {
             {/* Eyebrow */}
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-px bg-primary" />
-              <span className="text-xs font-semibold text-primary uppercase tracking-[0.2em]">
+              <span className="text-base sm:text-lg font-semibold text-primary uppercase tracking-[0.2em]">
                 Our Vision
               </span>
             </div>

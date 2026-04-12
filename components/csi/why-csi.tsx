@@ -147,7 +147,7 @@ function ReasonCard({
                 </h3>
 
                 {/* Word-by-word description */}
-                <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
+                <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
                   {reason.description.split(" ").map((word, i) => (
                     <motion.span
                       key={i}
@@ -245,7 +245,7 @@ export function WhyCSI() {
                 ease: SECTION_EASE,
               }}
             >
-              <span className="text-sm font-semibold text-primary uppercase tracking-wider">
+              <span className="text-base sm:text-lg font-semibold text-primary uppercase tracking-wider">
                 Why CSI Smart Tech
               </span>
               <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight text-balance">

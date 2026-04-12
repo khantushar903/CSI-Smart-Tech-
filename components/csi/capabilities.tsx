@@ -386,7 +386,7 @@ export function Capabilities() {
           transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="text-sm font-semibold text-primary uppercase tracking-wider">
+          <span className="text-base sm:text-lg font-semibold text-primary uppercase tracking-wider">
             Core Capabilities
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight text-balance">
