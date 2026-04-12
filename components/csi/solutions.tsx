@@ -11,24 +11,10 @@ import {
 } from "framer-motion";
 import { useState, useEffect } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
-import { Cog, Radio, Cloud, Leaf, Brain, ArrowRight } from "lucide-react";
+import { Cog, Share2, Cloud, Leaf, Brain, TrendingUp, ArrowRight } from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
 
 const solutions = [
-  {
-    icon: Cog,
-    title: "Smart Automation",
-    description: "Production lines that think. Less manual work, more output.",
-    features: ["Auto-Control", "Robot Integration", "Quality Check"],
-    color: "from-primary/20 to-primary/5",
-  },
-  {
-    icon: Radio,
-    title: "Connected Operations",
-    description: "Every machine speaks. Real-time insights from sensors that never sleep.",
-    features: ["Live Sensors", "Edge Computing", "Instant Data"],
-    color: "from-accent/20 to-accent/5",
-  },
   {
     icon: Cloud,
     title: "Cloud Manufacturing",
@@ -37,15 +23,22 @@ const solutions = [
     color: "from-primary/15 to-accent/5",
   },
   {
-    icon: Leaf,
-    title: "Green Operations",
-    description: "Cut carbon, not corners. Track CO2, meet regulations effortlessly.",
-    features: ["Energy Monitor", "Waste Reduction", "Carbon Tracker"],
-    color: "from-accent/15 to-primary/5",
+    icon: Share2,
+    title: "IoT Based Digital Transformation",
+    description: "Every device connected. Raw data becomes real-time intelligence.",
+    features: ["Live Sensors", "Data Intelligence", "Smart Integration"],
+    color: "from-accent/20 to-accent/5",
+  },
+  {
+    icon: Cog,
+    title: "Smart Automation",
+    description: "Production lines that think. Less manual work, more output.",
+    features: ["Auto-Control", "Robot Integration", "Quality Check"],
+    color: "from-primary/20 to-primary/5",
   },
   {
     icon: Brain,
-    title: "AI-Powered ERP",
+    title: "AI-Powered ERP System",
     description: "ERP that predicts the future. Smart decisions on autopilot.",
     features: [
       "Predict Trends",
@@ -55,11 +48,18 @@ const solutions = [
     color: "from-primary/20 to-accent/10",
   },
   {
-    icon: Cloud,
-    title: "Digital Twins",
-    description: "Test before you build. Virtual factories, zero-risk optimization.",
-    features: ["Virtual Testing", "Predict Problems", "Live Mirror"],
-    color: "from-accent/20 to-primary/10",
+    icon: TrendingUp,
+    title: "Sustainability Tracking",
+    description: "Measure every impact. Turn compliance into competitive advantage.",
+    features: ["Emissions Tracking", "ESG Metrics", "Impact Reports"],
+    color: "from-accent/15 to-primary/5",
+  },
+  {
+    icon: Leaf,
+    title: "Green Operations",
+    description: "Cut carbon, not corners. Track CO2, meet regulations effortlessly.",
+    features: ["Energy Monitor", "Waste Reduction", "Carbon Tracker"],
+    color: "from-accent/15 to-primary/5",
   },
 ];
 
