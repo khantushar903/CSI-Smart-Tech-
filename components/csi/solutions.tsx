@@ -11,7 +11,15 @@ import {
 } from "framer-motion";
 import { useState, useEffect } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
-import { Cog, Share2, Cloud, Leaf, Brain, TrendingUp, ArrowRight } from "lucide-react";
+import {
+  Cog,
+  Share2,
+  Cloud,
+  Leaf,
+  Brain,
+  TrendingUp,
+  ArrowRight,
+} from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
 
 const solutions = [
@@ -25,7 +33,8 @@ const solutions = [
   {
     icon: Share2,
     title: "IoT Based Digital Transformation",
-    description: "Every device connected. Raw data becomes real-time intelligence.",
+    description:
+      "Every device connected. Raw data becomes real-time intelligence.",
     features: ["Live Sensors", "Data Intelligence", "Smart Integration"],
     color: "from-accent/20 to-accent/5",
   },
@@ -40,24 +49,22 @@ const solutions = [
     icon: Brain,
     title: "AI-Powered ERP System",
     description: "ERP that predicts the future. Smart decisions on autopilot.",
-    features: [
-      "Predict Trends",
-      "Smart Scheduling",
-      "Auto Decisions",
-    ],
+    features: ["Predict Trends", "Smart Scheduling", "Auto Decisions"],
     color: "from-primary/20 to-accent/10",
   },
   {
     icon: TrendingUp,
     title: "Sustainability Tracking",
-    description: "Measure every impact. Turn compliance into competitive advantage.",
+    description:
+      "Measure every impact. Turn compliance into competitive advantage.",
     features: ["Emissions Tracking", "ESG Metrics", "Impact Reports"],
     color: "from-accent/15 to-primary/5",
   },
   {
     icon: Leaf,
     title: "Green Operations",
-    description: "Cut carbon, not corners. Track CO2, meet regulations effortlessly.",
+    description:
+      "Cut carbon, not corners. Track CO2, meet regulations effortlessly.",
     features: ["Energy Monitor", "Waste Reduction", "Carbon Tracker"],
     color: "from-accent/15 to-primary/5",
   },
@@ -362,7 +369,8 @@ export function Solutions() {
             Technology That Drives Transformation
           </h2>
           <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-            Smart solutions that boost efficiency, cut costs, and future-proof operations.
+            Smart solutions that boost efficiency, cut costs, and future-proof
+            operations.
           </p>
         </motion.div>
 
