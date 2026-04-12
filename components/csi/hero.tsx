@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import TechNeuralField from "@/components/ui/tech-neural-field";
 // Keeping old animation imports commented out for future use
 // import {
 //   TechNeuralField,
@@ -96,20 +96,17 @@ export function Hero() {
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Lottie Animation Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-60">
-        <DotLottieReact
-          src="https://lottie.host/4565e8ab-c068-4f27-a16d-2f4f651cf84a/kOnfEsUe6b.lottie"
-          loop
-          autoplay
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
+      {/* Neural field background */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-100">
+        <TechNeuralField
+          density={21000}
+          speed={0.13}
+          lineColor="rgba(22, 101, 52, 0.5)"
+          nodeColor="rgba(22, 101, 52, 0.98)"
+          sweepOpacity={0}
         />
       </div>
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_24%_18%,rgba(22,101,52,0.2),transparent_50%)] pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_24%_18%,rgba(22,101,52,0.24),transparent_50%)] pointer-events-none" />
       {/* Abstract grid pattern */}
       <div className="absolute inset-0 z-0 opacity-[0.03]">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -132,34 +129,8 @@ export function Hero() {
         </svg>
       </div>
 
-      {/* Animated accent circles */}
-      <motion.div
-        className="absolute top-1/4 right-1/4 z-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl"
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 left-1/4 z-0 w-[400px] h-[400px] rounded-full bg-accent/5 blur-3xl"
-        animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.2, 0.4, 0.2],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-24 pb-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-8">
         <div className="text-center max-w-4xl mx-auto">
           {/* Badge */}
           <motion.div
@@ -231,7 +202,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto"
+          className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto"
         >
           {[
             { value: "50+", label: "Active Deployments" },

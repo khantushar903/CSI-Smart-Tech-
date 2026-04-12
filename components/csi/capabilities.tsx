@@ -18,6 +18,7 @@ import {
   Shield,
 } from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
+import { useIsTouchDevice } from "@/lib/hooks/use-is-touch-device";
 
 const capabilities = [
   {
@@ -237,6 +238,8 @@ function CapabilityRow({
 }) {
   const isEven = index % 2 === 0;
   const prefersReducedMotion = useReducedMotion();
+  const isTouchDevice = useIsTouchDevice();
+  const reducedMotion = prefersReducedMotion || isTouchDevice;
 
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
@@ -273,7 +276,7 @@ function CapabilityRow({
   const spotlight = useMotionTemplate`radial-gradient(420px circle at ${smoothGlowX}% ${smoothGlowY}%, rgba(22, 101, 52, 0.2), rgba(22, 101, 52, 0) 58%)`;
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (prefersReducedMotion) return;
+    if (reducedMotion) return;
 
     const rect = event.currentTarget.getBoundingClientRect();
     const px = (event.clientX - rect.left) / rect.width;
@@ -299,17 +302,17 @@ function CapabilityRow({
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -6 }}
-      viewport={{ once: false, amount: 0.25 }}
+      whileHover={reducedMotion ? undefined : { y: -6 }}
+      viewport={{ once: true, amount: 0.25 }}
       transition={{
         duration: SECTION_TIMING.item,
         delay: index * SECTION_TIMING.stagger,
         ease: SECTION_EASE,
       }}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={resetTilt}
+      onPointerMove={reducedMotion ? undefined : handlePointerMove}
+      onPointerLeave={reducedMotion ? undefined : resetTilt}
       style={
-        prefersReducedMotion
+        reducedMotion
           ? undefined
           : {
               rotateX: smoothRotateX,
@@ -324,17 +327,13 @@ function CapabilityRow({
       <div className="pointer-events-none absolute inset-0 rounded-3xl bg-linear-to-r from-primary/5 via-transparent to-accent/5 opacity-0 transition-opacity duration-300 group-hover/capability:opacity-100" />
       <motion.div
         className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover/capability:opacity-100"
-        style={
-          prefersReducedMotion ? undefined : { backgroundImage: spotlight }
-        }
+        style={reducedMotion ? undefined : { backgroundImage: spotlight }}
       />
 
       {/* Text content */}
       <motion.div
         className={`relative ${isEven ? "lg:order-1" : "lg:order-2"}`}
-        style={
-          prefersReducedMotion ? undefined : { x: textOffsetX, y: textOffsetY }
-        }
+        style={reducedMotion ? undefined : { x: textOffsetX, y: textOffsetY }}
       >
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center transition-all duration-300 group-hover/capability:scale-105 group-hover/capability:bg-primary/20 group-hover/capability:shadow-lg group-hover/capability:shadow-primary/15">
@@ -356,11 +355,9 @@ function CapabilityRow({
       <motion.div
         className={`relative ${isEven ? "lg:order-2" : "lg:order-1"}`}
         style={
-          prefersReducedMotion
-            ? undefined
-            : { x: visualOffsetX, y: visualOffsetY }
+          reducedMotion ? undefined : { x: visualOffsetX, y: visualOffsetY }
         }
-        whileHover={{ scale: 1.02 }}
+        whileHover={reducedMotion ? undefined : { scale: 1.02 }}
         transition={{ type: "spring", stiffness: 220, damping: 18 }}
       >
         <div className="rounded-2xl border border-border/70 bg-card/40 p-2 shadow-sm transition-all duration-300 group-hover/capability:border-primary/25 group-hover/capability:shadow-xl group-hover/capability:shadow-primary/10">
@@ -375,18 +372,18 @@ export function Capabilities() {
   return (
     <section
       id="capabilities"
-      className="relative py-24 lg:py-32 bg-background/76"
+      className="relative py-14 lg:py-20 bg-background/76"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-8 lg:mb-10"
         >
-          <span className="text-base sm:text-lg font-semibold text-primary uppercase tracking-wider">
+          <span className="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-primary">
             Core Capabilities
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight text-balance">
@@ -399,7 +396,7 @@ export function Capabilities() {
         </motion.div>
 
         {/* Capabilities list - alternating layout */}
-        <div className="space-y-16 lg:space-y-24">
+        <div className="space-y-8 lg:space-y-12">
           {capabilities.map((capability, index) => {
             const Visual = visuals[capability.visual];
 

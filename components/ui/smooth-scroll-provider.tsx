@@ -8,18 +8,22 @@ export function SmoothScrollProvider() {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // Initialize Lenis smooth scroll with optimized settings
-    const lenis = new Lenis({
-      duration: 0.8,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.8,
-      infinite: false,
-      autoResize: true,
-      syncTouch: true,
-    });
+    const isTouchDevice = window.matchMedia(
+      "(hover: none), (pointer: coarse)",
+    ).matches;
+    const lenis = isTouchDevice
+      ? null
+      : new Lenis({
+          duration: 0.8,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: "vertical",
+          smoothWheel: true,
+          wheelMultiplier: 0.9,
+          touchMultiplier: 1,
+          infinite: false,
+          autoResize: true,
+          syncTouch: false,
+        });
 
     lenisRef.current = lenis;
 
@@ -30,9 +34,9 @@ export function SmoothScrollProvider() {
       );
 
       if (Number.isFinite(count) && count > 0) {
-        lenis.stop();
+        lenis?.stop();
       } else {
-        lenis.start();
+        lenis?.start();
       }
     };
 
@@ -66,10 +70,14 @@ export function SmoothScrollProvider() {
       event.preventDefault();
 
       if (href === "#") {
-        lenis.scrollTo(0, {
-          duration: 0.8,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        });
+        if (lenis) {
+          lenis.scrollTo(0, {
+            duration: 0.8,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          });
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
         return;
       }
 
@@ -89,10 +97,14 @@ export function SmoothScrollProvider() {
       const targetPosition =
         section.getBoundingClientRect().top + window.scrollY - navbarHeight;
 
-      lenis.scrollTo(targetPosition, {
-        duration: 0.8,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
+      if (lenis) {
+        lenis.scrollTo(targetPosition, {
+          duration: 0.8,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        });
+      } else {
+        window.scrollTo({ top: targetPosition, behavior: "smooth" });
+      }
     };
 
     // Delegate hash-link handling so dynamically rendered menu links also scroll correctly.
@@ -101,22 +113,25 @@ export function SmoothScrollProvider() {
 
     syncLenisModalState();
 
-    // Optimized animation frame loop with RAF
-    let rafId: number;
+    let rafId = 0;
 
-    function raf(time: number) {
-      lenis.raf(time);
+    if (lenis) {
+      const raf = (time: number) => {
+        lenis.raf(time);
+        rafId = requestAnimationFrame(raf);
+      };
+
       rafId = requestAnimationFrame(raf);
     }
-
-    rafId = requestAnimationFrame(raf);
 
     // Cleanup
     return () => {
       document.removeEventListener("click", handleDocumentClick);
       window.removeEventListener(modalLockEventName, syncLenisModalState);
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
+      lenis?.destroy();
     };
   }, []);
 

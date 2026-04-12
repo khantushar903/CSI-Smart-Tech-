@@ -21,6 +21,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
+import { useIsTouchDevice } from "@/lib/hooks/use-is-touch-device";
 
 const solutions = [
   {
@@ -80,6 +81,8 @@ function SolutionCard({
   index: number;
 }) {
   const prefersReducedMotion = useReducedMotion();
+  const isTouchDevice = useIsTouchDevice();
+  const reducedMotion = prefersReducedMotion || isTouchDevice;
   const [isHovering, setIsHovering] = useState(false);
   const iconControls = useAnimationControls();
 
@@ -116,7 +119,7 @@ function SolutionCard({
   const spotlight = useMotionTemplate`radial-gradient(340px circle at ${smoothGlowX}% ${smoothGlowY}%, rgba(22, 101, 52, 0.22), rgba(22, 101, 52, 0) 62%)`;
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (prefersReducedMotion) return;
+    if (reducedMotion) return;
 
     const rect = event.currentTarget.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
@@ -141,7 +144,7 @@ function SolutionCard({
 
   // Floating icon animation on hover
   useEffect(() => {
-    if (isHovering && !prefersReducedMotion) {
+    if (isHovering && !reducedMotion) {
       iconControls.start({
         y: [0, -4, 0],
         transition: {
@@ -154,7 +157,7 @@ function SolutionCard({
       iconControls.stop();
       iconControls.set({ y: 0 });
     }
-  }, [isHovering, prefersReducedMotion, iconControls]);
+  }, [isHovering, reducedMotion, iconControls]);
 
   // Determine entry animation direction based on index
   const getEntryAnimation = () => {
@@ -179,16 +182,20 @@ function SolutionCard({
     <motion.div
       initial={entryAnimation}
       whileInView={{ opacity: 1, y: 0, x: 0, scale: 1, rotate: 0 }}
-      viewport={{ once: false, amount: 0.22, margin: "-60px 0px -60px 0px" }}
+      viewport={{
+        once: isTouchDevice,
+        amount: 0.22,
+        margin: "-60px 0px -60px 0px",
+      }}
       transition={{
         duration: 0.56,
         delay: (index % 3) * 0.06,
         ease: SECTION_EASE,
       }}
-      whileHover={prefersReducedMotion ? undefined : { y: -6 }}
+      whileHover={reducedMotion ? undefined : { y: -6 }}
       className="relative group/card will-change-transform"
-      onPointerEnter={() => setIsHovering(true)}
-      onPointerMove={handlePointerMove}
+      onPointerEnter={reducedMotion ? undefined : () => setIsHovering(true)}
+      onPointerMove={reducedMotion ? undefined : handlePointerMove}
       onPointerLeave={() => {
         setIsHovering(false);
         resetParallax();
@@ -201,7 +208,7 @@ function SolutionCard({
             : "hover:border-muted-foreground/20"
         }`}
         style={
-          prefersReducedMotion
+          reducedMotion
             ? undefined
             : {
                 rotateX: smoothRotateX,
@@ -230,9 +237,7 @@ function SolutionCard({
 
         <motion.div
           className="pointer-events-none absolute inset-0"
-          style={
-            prefersReducedMotion ? undefined : { backgroundImage: spotlight }
-          }
+          style={reducedMotion ? undefined : { backgroundImage: spotlight }}
           animate={{ opacity: isHovering ? 1 : 0 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
         />
@@ -240,18 +245,14 @@ function SolutionCard({
         <motion.div
           className="relative z-10"
           style={
-            prefersReducedMotion
-              ? undefined
-              : { x: contentOffsetX, y: contentOffsetY }
+            reducedMotion ? undefined : { x: contentOffsetX, y: contentOffsetY }
           }
         >
           {/* Icon */}
           <motion.div
             className="relative w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover/card:bg-primary/20 transition-colors"
             animate={iconControls}
-            whileHover={
-              prefersReducedMotion ? undefined : { scale: 1.08, rotate: 6 }
-            }
+            whileHover={reducedMotion ? undefined : { scale: 1.08, rotate: 6 }}
             transition={{ type: "spring", stiffness: 280, damping: 20 }}
           >
             {/* Icon glow effect */}
@@ -275,10 +276,8 @@ function SolutionCard({
           <motion.p
             className="text-muted-foreground leading-relaxed mb-6"
             initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
-            whileInView={
-              prefersReducedMotion ? undefined : { opacity: 1, y: 0 }
-            }
-            viewport={{ once: false, amount: 0.65 }}
+            whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: isTouchDevice, amount: 0.65 }}
             transition={{
               duration: 0.36,
               delay: 0.14,
@@ -295,14 +294,14 @@ function SolutionCard({
                 key={feature}
                 initial={{ opacity: 0, scale: 0.8, y: 10 }}
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.8 }}
+                viewport={{ once: isTouchDevice, amount: 0.8 }}
                 transition={{
                   duration: 0.32,
                   delay: 0.2 + featureIndex * 0.05,
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 whileHover={
-                  prefersReducedMotion
+                  reducedMotion
                     ? undefined
                     : {
                         scale: 1.05,
@@ -335,7 +334,7 @@ function SolutionCard({
 
 export function Solutions() {
   return (
-    <section id="solutions" className="relative py-24 lg:py-32 bg-secondary/30">
+    <section id="solutions" className="relative py-14 lg:py-20 bg-secondary/30">
       {/* Subtle pattern overlay */}
       <div className="absolute inset-0 opacity-[0.02]">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -358,11 +357,11 @@ export function Solutions() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.5, margin: "-60px 0px -80px 0px" }}
+          viewport={{ once: true, amount: 0.5, margin: "-60px 0px -80px 0px" }}
           transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-8 lg:mb-10"
         >
-          <span className="text-base sm:text-lg font-semibold text-primary uppercase tracking-wider">
+          <span className="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-primary">
             Core Solutions
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight text-balance">

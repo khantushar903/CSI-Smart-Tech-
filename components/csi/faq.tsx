@@ -44,7 +44,7 @@ export function FAQ() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   return (
-    <section ref={ref} className="relative py-24 lg:py-32 bg-background/50">
+    <section ref={ref} className="relative py-14 lg:py-20 bg-background/50">
       <div className="max-w-4xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -54,7 +54,7 @@ export function FAQ() {
             duration: SECTION_TIMING.header,
             ease: SECTION_EASE,
           }}
-          className="text-center mb-16"
+          className="text-center mb-8 lg:mb-10"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -145,9 +145,9 @@ export function FAQ() {
             delay: faqs.length * SECTION_TIMING.stagger + 0.4,
             ease: SECTION_EASE,
           }}
-          className="text-center mt-16"
+          className="text-center mt-8"
         >
-          <div className="p-8 rounded-3xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+          <div className="p-5 rounded-3xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
             <h3 className="text-xl font-semibold text-foreground mb-3">
               Still have questions?
             </h3>
@@ -166,11 +166,11 @@ export function FAQ() {
           </div>
         </motion.div>
       </div>
-      
+
       {/* Contact Form Modal */}
-      <ContactFormModal 
-        open={isContactModalOpen} 
-        onOpenChange={setIsContactModalOpen} 
+      <ContactFormModal
+        open={isContactModalOpen}
+        onOpenChange={setIsContactModalOpen}
       />
     </section>
   );

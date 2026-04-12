@@ -14,6 +14,7 @@ import { useRef, useState, useEffect } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { Bot, Code2, Sparkles, ArrowRight } from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
+import { useIsTouchDevice } from "@/lib/hooks/use-is-touch-device";
 
 const futureServices = [
   {
@@ -49,6 +50,8 @@ function FutureCard({
   isInView: boolean;
 }) {
   const prefersReducedMotion = useReducedMotion();
+  const isTouchDevice = useIsTouchDevice();
+  const reducedMotion = prefersReducedMotion || isTouchDevice;
   const [isHovering, setIsHovering] = useState(false);
   const iconControls = useAnimationControls();
 
@@ -84,7 +87,7 @@ function FutureCard({
   const spotlight = useMotionTemplate`radial-gradient(360px circle at ${smoothGlowX}% ${smoothGlowY}%, rgba(13, 110, 253, 0.24), rgba(13, 110, 253, 0) 63%)`;
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (prefersReducedMotion) return;
+    if (reducedMotion) return;
 
     const rect = event.currentTarget.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
@@ -107,7 +110,7 @@ function FutureCard({
 
   // Floating icon animation
   useEffect(() => {
-    if (isHovering && !prefersReducedMotion) {
+    if (isHovering && !reducedMotion) {
       iconControls.start({
         y: [0, -5, 0],
         transition: {
@@ -120,7 +123,7 @@ function FutureCard({
       iconControls.stop();
       iconControls.set({ y: 0 });
     }
-  }, [isHovering, prefersReducedMotion, iconControls]);
+  }, [isHovering, reducedMotion, iconControls]);
 
   return (
     <motion.div
@@ -136,13 +139,13 @@ function FutureCard({
         delay: index * SECTION_TIMING.stagger,
         ease: SECTION_EASE,
       }}
-      whileHover={prefersReducedMotion ? undefined : { y: -4 }}
+      whileHover={reducedMotion ? undefined : { y: -4 }}
       className="group"
     >
       <motion.div
         className="relative h-full bg-background/5 border border-background/10 rounded-2xl p-8 hover:bg-background/10 hover:border-background/20 transition-all duration-300 overflow-hidden"
         style={
-          prefersReducedMotion
+          reducedMotion
             ? undefined
             : {
                 rotateX: smoothRotateX,
@@ -150,8 +153,8 @@ function FutureCard({
                 transformPerspective: 1200,
               }
         }
-        onPointerEnter={() => setIsHovering(true)}
-        onPointerMove={handlePointerMove}
+        onPointerEnter={reducedMotion ? undefined : () => setIsHovering(true)}
+        onPointerMove={reducedMotion ? undefined : handlePointerMove}
         onPointerLeave={() => {
           setIsHovering(false);
           resetCard();
@@ -160,9 +163,7 @@ function FutureCard({
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0 z-0"
-          style={
-            prefersReducedMotion ? undefined : { backgroundImage: spotlight }
-          }
+          style={reducedMotion ? undefined : { backgroundImage: spotlight }}
           animate={{ opacity: isHovering ? 0.62 : 0 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
         />
@@ -180,9 +181,7 @@ function FutureCard({
         <motion.div
           className="relative z-10"
           style={
-            prefersReducedMotion
-              ? undefined
-              : { x: contentOffsetX, y: contentOffsetY }
+            reducedMotion ? undefined : { x: contentOffsetX, y: contentOffsetY }
           }
         >
           {/* Status badge */}
@@ -198,9 +197,7 @@ function FutureCard({
               delay: index * SECTION_TIMING.stagger + 0.2,
               ease: SECTION_EASE,
             }}
-            whileHover={
-              prefersReducedMotion ? undefined : { y: -2, scale: 1.05 }
-            }
+            whileHover={reducedMotion ? undefined : { y: -2, scale: 1.05 }}
             className="absolute top-6 right-6"
           >
             <span className="px-3 py-1 text-xs font-medium rounded-full bg-blue-400/15 text-blue-200 ring-1 ring-blue-300/25">
@@ -212,9 +209,7 @@ function FutureCard({
           <motion.div
             className="relative w-14 h-14 rounded-xl bg-blue-400/15 flex items-center justify-center mb-6 group-hover:bg-blue-400/25 transition-colors"
             animate={iconControls}
-            whileHover={
-              prefersReducedMotion ? undefined : { scale: 1.08, rotate: 6 }
-            }
+            whileHover={reducedMotion ? undefined : { scale: 1.08, rotate: 6 }}
             transition={{ type: "spring", stiffness: 280, damping: 20 }}
           >
             {/* Icon glow */}
@@ -235,23 +230,31 @@ function FutureCard({
           </h3>
 
           {/* Word-by-word description */}
-          <p className="text-background/78 leading-relaxed mb-6">
-            {service.description.split(" ").map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 8 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-                transition={{
-                  duration: 0.25,
-                  delay: index * SECTION_TIMING.stagger + 0.3 + i * 0.015,
-                  ease: "easeOut",
-                }}
-                className="inline-block mr-[0.25em]"
-              >
-                {word}
-              </motion.span>
-            ))}
-          </p>
+          {isTouchDevice ? (
+            <p className="text-background/78 leading-relaxed mb-6">
+              {service.description}
+            </p>
+          ) : (
+            <p className="text-background/78 leading-relaxed mb-6">
+              {service.description.split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={
+                    isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }
+                  }
+                  transition={{
+                    duration: 0.25,
+                    delay: index * SECTION_TIMING.stagger + 0.3 + i * 0.015,
+                    ease: "easeOut",
+                  }}
+                  className="inline-block mr-[0.25em]"
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </p>
+          )}
 
           {/* Learn more */}
           <motion.a
@@ -278,12 +281,12 @@ function FutureCard({
 
 export function Future() {
   const ref = useRef<HTMLElement | null>(null);
-  const isInView = useInView(ref, { once: false, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section
       id="future"
-      className="relative py-24 lg:py-32 bg-foreground text-background overflow-hidden"
+      className="relative py-14 lg:py-20 bg-foreground text-background overflow-hidden"
       ref={ref}
     >
       {/* Background pattern */}
@@ -312,9 +315,9 @@ export function Future() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-8 lg:mb-10"
         >
-          <span className="text-base sm:text-lg font-semibold text-cyan-400 uppercase tracking-wider">
+          <span className="inline-flex items-center rounded-full border border-cyan-300/35 bg-cyan-400/12 px-4 py-1.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-cyan-300">
             What's Next
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-balance">
@@ -346,7 +349,7 @@ export function Future() {
             ease: SECTION_EASE,
             delay: 0.45,
           }}
-          className="mt-16 text-center"
+          className="mt-8 text-center"
         >
           <p className="text-background/50 text-sm">
             Want early access? Get notified when these launch.

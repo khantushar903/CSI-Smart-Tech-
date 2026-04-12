@@ -9,6 +9,7 @@ import {
 import type { ReactNode } from "react";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
+import { useIsTouchDevice } from "@/lib/hooks/use-is-touch-device";
 
 type SectionTone = "emerald" | "teal" | "slate";
 
@@ -28,6 +29,8 @@ export function SectionReveal({
   tone = "emerald",
 }: SectionRevealProps) {
   const prefersReducedMotion = useReducedMotion();
+  const isTouchDevice = useIsTouchDevice();
+  const reducedMotion = prefersReducedMotion || isTouchDevice;
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -47,8 +50,8 @@ export function SectionReveal({
     <motion.div
       ref={containerRef}
       className="relative isolate"
-      initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-      whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+      initial={reducedMotion ? undefined : { opacity: 0, y: 20 }}
+      whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1, margin: "-80px 0px -80px 0px" }}
       transition={{
         duration: 0.6,
@@ -57,7 +60,7 @@ export function SectionReveal({
     >
       <motion.div
         aria-hidden
-        style={prefersReducedMotion ? undefined : { y, opacity }}
+        style={reducedMotion ? undefined : { y, opacity }}
         className={cn(
           "pointer-events-none absolute inset-x-0 top-8 h-32 blur-3xl will-change-transform",
           toneStyles[tone],

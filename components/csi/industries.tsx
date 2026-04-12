@@ -14,6 +14,7 @@ import { useRef, useState, useEffect } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
+import { useIsTouchDevice } from "@/lib/hooks/use-is-touch-device";
 
 const industries = [
   {
@@ -60,6 +61,8 @@ function IndustryCard({
   isInView: boolean;
 }) {
   const prefersReducedMotion = useReducedMotion();
+  const isTouchDevice = useIsTouchDevice();
+  const reducedMotion = prefersReducedMotion || isTouchDevice;
   const [isHovering, setIsHovering] = useState(false);
   const numberControls = useAnimationControls();
 
@@ -95,7 +98,7 @@ function IndustryCard({
   const spotlight = useMotionTemplate`radial-gradient(380px circle at ${smoothGlowX}% ${smoothGlowY}%, rgba(20, 184, 166, 0.22), rgba(20, 184, 166, 0) 64%)`;
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (prefersReducedMotion) return;
+    if (reducedMotion) return;
 
     const rect = event.currentTarget.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
@@ -118,7 +121,7 @@ function IndustryCard({
 
   // Floating number animation on hover
   useEffect(() => {
-    if (isHovering && !prefersReducedMotion) {
+    if (isHovering && !reducedMotion) {
       numberControls.start({
         y: [0, -3, 0],
         transition: {
@@ -131,7 +134,7 @@ function IndustryCard({
       numberControls.stop();
       numberControls.set({ y: 0 });
     }
-  }, [isHovering, prefersReducedMotion, numberControls]);
+  }, [isHovering, reducedMotion, numberControls]);
 
   return (
     <motion.div
@@ -146,12 +149,12 @@ function IndustryCard({
         delay: index * SECTION_TIMING.stagger,
         ease: SECTION_EASE,
       }}
-      whileHover={prefersReducedMotion ? undefined : { y: -3 }}
+      whileHover={reducedMotion ? undefined : { y: -3 }}
     >
       <motion.div
         className="group relative bg-card border border-border rounded-xl p-6 lg:p-8 transition-all duration-400 cursor-pointer overflow-hidden"
         style={
-          prefersReducedMotion
+          reducedMotion
             ? undefined
             : {
                 rotateX: smoothRotateX,
@@ -159,8 +162,8 @@ function IndustryCard({
                 transformPerspective: 1200,
               }
         }
-        onPointerEnter={() => setIsHovering(true)}
-        onPointerMove={handlePointerMove}
+        onPointerEnter={reducedMotion ? undefined : () => setIsHovering(true)}
+        onPointerMove={reducedMotion ? undefined : handlePointerMove}
         onPointerLeave={() => {
           setIsHovering(false);
           resetTilt();
@@ -170,9 +173,7 @@ function IndustryCard({
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0 rounded-xl"
-          style={
-            prefersReducedMotion ? undefined : { backgroundImage: spotlight }
-          }
+          style={reducedMotion ? undefined : { backgroundImage: spotlight }}
           animate={{ opacity: isHovering ? 1 : 0 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
         />
@@ -190,9 +191,7 @@ function IndustryCard({
         <motion.div
           className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
           style={
-            prefersReducedMotion
-              ? undefined
-              : { x: contentOffsetX, y: contentOffsetY }
+            reducedMotion ? undefined : { x: contentOffsetX, y: contentOffsetY }
           }
         >
           <div className="flex-1">
@@ -223,25 +222,31 @@ function IndustryCard({
             </div>
 
             {/* Word-by-word description reveal */}
-            <p className="text-muted-foreground text-sm sm:text-base lg:pl-10">
-              {industry.description.split(" ").map((word, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={
-                    isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }
-                  }
-                  transition={{
-                    duration: 0.25,
-                    delay: index * SECTION_TIMING.stagger + 0.25 + i * 0.015,
-                    ease: "easeOut",
-                  }}
-                  className="inline-block mr-[0.25em]"
-                >
-                  {word}
-                </motion.span>
-              ))}
-            </p>
+            {isTouchDevice ? (
+              <p className="text-muted-foreground text-sm sm:text-base lg:pl-10">
+                {industry.description}
+              </p>
+            ) : (
+              <p className="text-muted-foreground text-sm sm:text-base lg:pl-10">
+                {industry.description.split(" ").map((word, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={
+                      isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }
+                    }
+                    transition={{
+                      duration: 0.25,
+                      delay: index * SECTION_TIMING.stagger + 0.25 + i * 0.015,
+                      ease: "easeOut",
+                    }}
+                    className="inline-block mr-[0.25em]"
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </p>
+            )}
           </div>
 
           <div className="flex items-center gap-6 lg:pl-8">
@@ -256,9 +261,7 @@ function IndustryCard({
                 ease: SECTION_EASE,
               }}
               className="relative px-4 py-2 bg-primary/10 rounded-full overflow-hidden"
-              whileHover={
-                prefersReducedMotion ? undefined : { scale: 1.05, y: -2 }
-              }
+              whileHover={reducedMotion ? undefined : { scale: 1.05, y: -2 }}
             >
               {/* Shimmer effect on metric badge */}
               <motion.div
@@ -288,7 +291,7 @@ function IndustryCard({
                 ease: SECTION_EASE,
               }}
               whileHover={
-                prefersReducedMotion ? undefined : { scale: 1.1, rotate: 10 }
+                reducedMotion ? undefined : { scale: 1.1, rotate: 10 }
               }
               className="relative w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
             >
@@ -314,12 +317,12 @@ function IndustryCard({
 
 export function Industries() {
   const ref = useRef<HTMLElement | null>(null);
-  const isInView = useInView(ref, { once: false, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section
       id="industries"
-      className="relative py-24 lg:py-32 bg-secondary/30"
+      className="relative py-14 lg:py-20 bg-secondary/30"
       ref={ref}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -328,9 +331,9 @@ export function Industries() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
-          className="max-w-2xl mb-16"
+          className="max-w-2xl mb-8 lg:mb-10"
         >
-          <span className="text-base sm:text-lg font-semibold text-primary uppercase tracking-wider">
+          <span className="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-primary">
             Industries We Serve
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">

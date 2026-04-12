@@ -202,7 +202,7 @@ export default function TechNeuralField({
         context.fill();
       }
 
-      if (!prefersReducedMotion.matches) {
+      if (!prefersReducedMotion.matches && sweepOpacity > 0) {
         const sweepX = ((time * 66) % (width + 260)) - 130;
         const sweep = context.createLinearGradient(
           sweepX - 90,

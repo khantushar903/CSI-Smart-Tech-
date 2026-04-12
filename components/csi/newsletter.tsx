@@ -46,18 +46,21 @@ export default function NewsletterSection() {
   };
 
   return (
-    <section id="newsletter" className="relative px-4 py-20 sm:px-6 lg:px-8">
+    <section
+      id="newsletter"
+      className="relative px-4 py-12 sm:py-14 sm:px-6 lg:px-8"
+    >
       <div className="mx-auto max-w-6xl">
         {/* Section Header */}
         <motion.div
-          className="mb-16 text-center"
+          className="mb-8 lg:mb-10 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
           viewport={{ once: true, amount: 0.3 }}
         >
           <motion.p
-            className="mb-4 text-base sm:text-lg uppercase tracking-widest text-accent font-semibold"
+            className="mb-4 inline-flex items-center rounded-full border border-accent/25 bg-accent/10 px-4 py-1.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-accent"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -87,7 +90,7 @@ export default function NewsletterSection() {
         </motion.div>
 
         {/* Newsletter Signup Form */}
-        <div className="mb-20 rounded-lg border border-border bg-card p-8 sm:p-10">
+        <div className="mb-10 rounded-lg border border-border bg-card p-8 sm:p-10">
           <h3 className="mb-6 text-2xl font-semibold text-foreground">
             Subscribe to Our Newsletter
           </h3>

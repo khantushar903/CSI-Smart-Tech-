@@ -513,8 +513,15 @@ main {
 }
 
 @media (max-width: 1024px) {
+  .ambient-orb-a,
   .ambient-orb-b,
   .ambient-orb-c {
     display: none;
+  }
+
+  .rfid-scan-sweep,
+  .rfid-scan-glow {
+    display: none;
+    animation: none !important;
   }
 }

@@ -44,7 +44,7 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       <div
-        className="relative flex max-h-[calc(100dvh-1rem)] flex-col overflow-y-auto overscroll-contain p-6 pr-12"
+        className="relative flex max-h-[90dvh] flex-col overflow-y-auto overscroll-contain p-6 pr-12 sm:max-h-[calc(100dvh-1rem)]"
         data-lenis-prevent
         data-lenis-prevent-wheel
         data-lenis-prevent-touch

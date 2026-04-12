@@ -15,7 +15,7 @@ export function CTA() {
   return (
     <section
       id="contact"
-      className="relative py-24 lg:py-32 bg-background/78 overflow-hidden"
+      className="relative py-14 lg:py-20 bg-background/78 overflow-hidden"
       ref={ref}
     >
       {/* Background decoration */}
@@ -31,7 +31,7 @@ export function CTA() {
           transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium text-primary mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium text-primary mb-5">
             <Mail className="w-4 h-4" />
             {"Let's Connect"}
           </div>
@@ -58,7 +58,7 @@ export function CTA() {
               ease: SECTION_EASE,
               delay: 0.18,
             }}
-            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Button
               size="lg"
@@ -90,7 +90,7 @@ export function CTA() {
               ease: SECTION_EASE,
               delay: 0.3,
             }}
-            className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-8 text-muted-foreground text-sm"
+            className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-8 text-muted-foreground text-sm"
           >
             <button
               onClick={() => setIsContactModalOpen(true)}

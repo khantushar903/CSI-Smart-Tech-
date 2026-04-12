@@ -227,7 +227,7 @@ export function WhyCSI() {
   return (
     <section
       id="why-csi"
-      className="relative py-16 sm:py-24 lg:py-32 bg-background/78 overflow-hidden"
+      className="relative py-10 sm:py-14 lg:py-20 bg-background/78 overflow-hidden"
       ref={ref}
     >
       {/* Background decoration */}
@@ -245,7 +245,7 @@ export function WhyCSI() {
                 ease: SECTION_EASE,
               }}
             >
-              <span className="text-base sm:text-lg font-semibold text-primary uppercase tracking-wider">
+              <span className="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-primary">
                 Why CSI Smart Tech
               </span>
               <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight text-balance">

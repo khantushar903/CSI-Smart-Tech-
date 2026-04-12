@@ -43,7 +43,7 @@ export function Footer() {
     <footer className="bg-foreground text-background">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Main footer content */}
-        <div className="py-16 lg:py-20 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
+        <div className="py-8 lg:py-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand column */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
             <motion.div
@@ -194,7 +194,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="py-6 border-t border-background/10">
+        <div className="py-3 border-t border-background/10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-background/50">
             <p>© {currentYear} CSI Smart Tech. All rights reserved.</p>
             <div className="flex items-center gap-6">

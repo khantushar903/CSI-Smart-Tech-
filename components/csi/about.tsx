@@ -1,7 +1,14 @@
 "use client";
 
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { useRef } from "react";
+import { useIsTouchDevice } from "@/lib/hooks/use-is-touch-device";
 
 const spring = {
   type: "spring",
@@ -43,6 +50,9 @@ const orbitalNodes = [
 
 function GeometricVisualization() {
   const ref = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
+  const isTouchDevice = useIsTouchDevice();
+  const reducedMotion = prefersReducedMotion || isTouchDevice;
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -60,7 +70,7 @@ function GeometricVisualization() {
       {/* Outer rotating ring */}
       <motion.div
         className="absolute inset-0"
-        style={{ rotate: rotate1, scale }}
+        style={reducedMotion ? undefined : { rotate: rotate1, scale }}
       >
         <svg viewBox="0 0 400 400" className="w-full h-full">
           <circle
@@ -88,7 +98,10 @@ function GeometricVisualization() {
       </motion.div>
 
       {/* Middle ring */}
-      <motion.div className="absolute inset-[15%]" style={{ rotate: rotate2 }}>
+      <motion.div
+        className="absolute inset-[15%]"
+        style={reducedMotion ? undefined : { rotate: rotate2 }}
+      >
         <svg viewBox="0 0 400 400" className="w-full h-full">
           <polygon
             points="200,40 360,200 200,360 40,200"
@@ -120,8 +133,12 @@ function GeometricVisualization() {
       <div className="absolute inset-[40%] flex items-center justify-center">
         <motion.div
           className="w-full h-full rounded-full bg-linear-to-br from-primary/20 to-accent/20 flex items-center justify-center"
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          animate={reducedMotion ? undefined : { scale: [1, 1.05, 1] }}
+          transition={
+            reducedMotion
+              ? undefined
+              : { duration: 4, repeat: Infinity, ease: "easeInOut" }
+          }
         >
           <div className="w-3/4 h-3/4 rounded-full bg-card border border-border flex items-center justify-center">
             <div className="w-1/2 h-1/2 rounded-full bg-primary" />
@@ -132,8 +149,12 @@ function GeometricVisualization() {
       {/* Data points */}
       <motion.div
         className="absolute top-[10%] right-[20%] px-3 py-2 bg-card border border-border rounded-lg shadow-lg"
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        animate={reducedMotion ? undefined : { y: [0, -8, 0] }}
+        transition={
+          reducedMotion
+            ? undefined
+            : { duration: 5, repeat: Infinity, ease: "easeInOut" }
+        }
       >
         <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">
           Efficiency
@@ -143,13 +164,17 @@ function GeometricVisualization() {
 
       <motion.div
         className="absolute bottom-[15%] left-[15%] px-3 py-2 bg-card border border-border rounded-lg shadow-lg"
-        animate={{ y: [0, 10, 0] }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0.5,
-        }}
+        animate={reducedMotion ? undefined : { y: [0, 10, 0] }}
+        transition={
+          reducedMotion
+            ? undefined
+            : {
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.5,
+              }
+        }
       >
         <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">
           Carbon
@@ -167,7 +192,7 @@ export function About() {
   return (
     <section
       id="about"
-      className="relative py-32 lg:py-40 bg-background overflow-hidden"
+      className="relative py-16 lg:py-24 bg-background overflow-hidden"
       ref={ref}
     >
       {/* Subtle grid pattern */}
@@ -193,7 +218,7 @@ export function About() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Left column - Text content */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -201,9 +226,8 @@ export function About() {
             transition={{ duration: 0.8, ...spring }}
           >
             {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-px bg-primary" />
-              <span className="text-base sm:text-lg font-semibold text-primary uppercase tracking-[0.2em]">
+            <div className="mb-6">
+              <span className="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-primary">
                 Our Vision
               </span>
             </div>
