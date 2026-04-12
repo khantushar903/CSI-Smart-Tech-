@@ -2,13 +2,18 @@
 
 import {
   motion,
-  useInView,
-  useReducedMotion,
   useAnimationControls,
+  useInView,
+  useMotionTemplate,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
 } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
-import { Award, TrendingUp, Wrench, Zap, Shield } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Award, LifeBuoy, Shield, TrendingUp, Wrench, Zap } from "lucide-react";
 import { SECTION_EASE, SECTION_TIMING } from "@/components/csi/motion-presets";
+import { useIsTouchDevice } from "@/lib/hooks/use-is-touch-device";
 
 const reasons = [
   {
@@ -50,266 +55,244 @@ const reasons = [
     value: "100%",
     label: "Cloud-Native",
   },
+  {
+    icon: LifeBuoy,
+    title: "Dedicated Support",
+    description:
+      "Direct access to the team. Fast responses, clear ownership, and steady follow-through.",
+    value: "24/7",
+    label: "Available Support",
+  },
 ];
 
 function ReasonCard({
   reason,
   index,
-  isInView,
 }: {
   reason: (typeof reasons)[number];
   index: number;
-  isInView: boolean;
 }) {
   const prefersReducedMotion = useReducedMotion();
+  const isTouchDevice = useIsTouchDevice();
+  const reducedMotion = prefersReducedMotion || isTouchDevice;
   const [isHovering, setIsHovering] = useState(false);
   const iconControls = useAnimationControls();
 
-  // Floating icon animation
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const glowX = useMotionValue(50);
+  const glowY = useMotionValue(50);
+
+  const smoothRotateX = useSpring(rotateX, {
+    stiffness: 220,
+    damping: 24,
+    mass: 0.4,
+  });
+  const smoothRotateY = useSpring(rotateY, {
+    stiffness: 220,
+    damping: 24,
+    mass: 0.4,
+  });
+  const smoothGlowX = useSpring(glowX, {
+    stiffness: 240,
+    damping: 27,
+    mass: 0.34,
+  });
+  const smoothGlowY = useSpring(glowY, {
+    stiffness: 240,
+    damping: 27,
+    mass: 0.34,
+  });
+
+  const contentOffsetX = useTransform(smoothRotateY, [-5, 5], [-3, 3]);
+  const contentOffsetY = useTransform(smoothRotateX, [-4, 4], [2, -2]);
+
+  const spotlight = useMotionTemplate`radial-gradient(360px circle at ${smoothGlowX}% ${smoothGlowY}%, rgba(13, 110, 253, 0.22), rgba(13, 110, 253, 0) 63%)`;
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (reducedMotion) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    const px = (event.clientX - rect.left) / rect.width;
+    const py = (event.clientY - rect.top) / rect.height;
+
+    rotateY.set((px - 0.5) * 5);
+    rotateX.set((0.5 - py) * 4);
+    glowX.set(px * 100);
+    glowY.set(py * 100);
+  };
+
+  const resetCard = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+    glowX.set(50);
+    glowY.set(50);
+  };
+
   useEffect(() => {
-    if (isHovering && !prefersReducedMotion) {
+    if (isHovering && !reducedMotion) {
       iconControls.start({
-        y: [0, -4, 0],
-        rotate: [0, 5, 0],
+        y: [0, -5, 0],
         transition: {
-          duration: 2.2,
+          duration: 2.5,
           repeat: Infinity,
           ease: "easeInOut",
         },
       });
     } else {
       iconControls.stop();
-      iconControls.set({ y: 0, rotate: 0 });
+      iconControls.set({ y: 0 });
     }
-  }, [isHovering, prefersReducedMotion, iconControls]);
+  }, [isHovering, reducedMotion, iconControls]);
+
+  const row = Math.floor(index / 3);
+  const col = index % 3;
+
+  const entryAnimation = reducedMotion
+    ? { opacity: 0, y: 20 }
+    : (row + col) % 2 === 0
+      ? { opacity: 0, y: 44, x: -30, scale: 0.95, rotate: -2 }
+      : { opacity: 0, y: 44, x: 30, scale: 0.95, rotate: 2 };
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 30, scale: 0.98 }}
-      animate={
-        isInView
-          ? { opacity: 1, x: 0, scale: 1 }
-          : { opacity: 0, x: 30, scale: 0.98 }
-      }
+      className="relative h-full"
+      initial={entryAnimation}
+      whileInView={{ opacity: 1, y: 0, x: 0, scale: 1, rotate: 0 }}
+      viewport={{ once: true, amount: 0.22, margin: "-60px 0px -60px 0px" }}
       transition={{
         duration: SECTION_TIMING.item,
-        delay: index * SECTION_TIMING.stagger,
+        delay: (index % 3) * 0.06,
         ease: SECTION_EASE,
       }}
-      whileHover={
-        prefersReducedMotion ? undefined : { x: 4, y: -3, scale: 1.01 }
-      }
-      onPointerEnter={() => setIsHovering(true)}
-      onPointerLeave={() => setIsHovering(false)}
+      whileHover={reducedMotion ? undefined : { y: -6 }}
+      onPointerEnter={reducedMotion ? undefined : () => setIsHovering(true)}
+      onPointerMove={reducedMotion ? undefined : handlePointerMove}
+      onPointerLeave={() => {
+        setIsHovering(false);
+        resetCard();
+      }}
     >
-      <div className="group/reason relative bg-card border border-border rounded-2xl p-4 sm:p-6 hover:border-primary/30 hover:shadow-xl transition-all duration-300 overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-primary/8 via-transparent to-accent/8 opacity-0 transition-opacity duration-300 group-hover/reason:opacity-100" />
-
-        {/* Shimmer effect */}
+      <motion.div
+        className={`relative h-full overflow-hidden rounded-2xl border border-border bg-card p-8 transition-all duration-500 transform-3d ${
+          isHovering
+            ? "border-primary/30 shadow-xl shadow-primary/10"
+            : "hover:border-muted-foreground/20"
+        }`}
+        style={
+          reducedMotion
+            ? undefined
+            : {
+                rotateX: smoothRotateX,
+                rotateY: smoothRotateY,
+                transformPerspective: 1200,
+              }
+        }
+      >
         <motion.div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent"
-          animate={{
-            x: isHovering ? ["-100%", "200%"] : "-100%",
-          }}
-          transition={{
-            duration: 1.2,
-            ease: "easeInOut",
-          }}
+          aria-hidden
+          className="pointer-events-none absolute left-4 right-4 top-0 h-px bg-linear-to-r from-transparent via-primary/60 to-transparent"
+          animate={
+            isHovering
+              ? { opacity: 1, scaleX: 1 }
+              : { opacity: 0.32, scaleX: 0.72 }
+          }
+          transition={{ duration: 0.35, ease: "easeOut" }}
         />
 
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 relative z-10">
-          {/* Icon */}
-          <div className="flex-shrink-0">
+        <div
+          className={`absolute inset-0 bg-linear-to-br from-primary/15 to-accent/5 transition-opacity duration-500 ${
+            isHovering ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
+        <motion.div
+          className="pointer-events-none absolute inset-0"
+          style={reducedMotion ? undefined : { backgroundImage: spotlight }}
+          animate={{ opacity: isHovering ? 1 : 0 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+        />
+
+        <motion.div
+          className="relative z-10 flex h-full flex-col"
+          style={
+            reducedMotion ? undefined : { x: contentOffsetX, y: contentOffsetY }
+          }
+        >
+          <motion.div
+            className="relative mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/20"
+            animate={iconControls}
+            whileHover={reducedMotion ? undefined : { scale: 1.08, rotate: 6 }}
+            transition={{ type: "spring", stiffness: 280, damping: 20 }}
+          >
             <motion.div
-              className="relative w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover/reason:bg-primary/20 transition-colors"
-              animate={iconControls}
-              whileHover={{ scale: 1.1 }}
-            >
-              {/* Icon glow */}
-              <motion.div
-                className="absolute inset-0 rounded-xl bg-primary/20 blur-xl"
-                animate={{
-                  opacity: isHovering ? 0.6 : 0,
-                  scale: isHovering ? 1.3 : 0.8,
-                }}
-                transition={{ duration: 0.3 }}
-              />
-              <reason.icon className="relative w-6 h-6 text-primary" />
-            </motion.div>
+              className="absolute inset-0 rounded-xl bg-primary/20 blur-xl"
+              animate={{
+                opacity: isHovering ? 0.6 : 0,
+                scale: isHovering ? 1.2 : 0.8,
+              }}
+              transition={{ duration: 0.3 }}
+            />
+            <reason.icon className="relative h-7 w-7 text-primary" />
+          </motion.div>
+
+          <h3 className="mb-3 text-xl font-semibold text-foreground transition-colors duration-300 group-hover:text-primary">
+            {reason.title}
+          </h3>
+
+          <p className="mb-6 leading-relaxed text-muted-foreground">
+            {reason.description}
+          </p>
+
+          <div className="mt-auto flex items-center justify-between gap-3 border-t border-border/60 pt-4">
+            <span className="text-xs text-muted-foreground">{reason.label}</span>
+            <span className="text-xl font-bold leading-none text-primary">
+              {reason.value}
+            </span>
           </div>
-
-          {/* Content */}
-          <div className="flex-1 min-w-0">
-            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
-              <div className="flex-1">
-                <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 group-hover/reason:text-primary transition-colors">
-                  {reason.title}
-                </h3>
-
-                {/* Word-by-word description */}
-                <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-                  {reason.description.split(" ").map((word, i) => (
-                    <motion.span
-                      key={i}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={
-                        isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }
-                      }
-                      transition={{
-                        duration: 0.2,
-                        delay: index * SECTION_TIMING.stagger + 0.2 + i * 0.012,
-                        ease: "easeOut",
-                      }}
-                      className="inline-block mr-[0.25em]"
-                    >
-                      {word}
-                    </motion.span>
-                  ))}
-                </p>
-              </div>
-
-              {/* Value badge */}
-              <div className="flex-shrink-0 sm:text-right">
-                <motion.div
-                  className="relative text-xl sm:text-2xl font-bold text-primary"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={
-                    isInView
-                      ? { opacity: 1, scale: 1 }
-                      : { opacity: 0, scale: 0.8 }
-                  }
-                  transition={{
-                    duration: 0.5,
-                    delay: index * SECTION_TIMING.stagger + 0.3,
-                    ease: SECTION_EASE,
-                  }}
-                  whileHover={
-                    prefersReducedMotion ? undefined : { scale: 1.1, rotate: 2 }
-                  }
-                >
-                  {/* Value glow */}
-                  <motion.span
-                    className="absolute inset-0 blur-lg text-primary"
-                    animate={{
-                      opacity: isHovering ? 0.5 : 0,
-                    }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {reason.value}
-                  </motion.span>
-                  <span className="relative">{reason.value}</span>
-                </motion.div>
-                <motion.div
-                  className="text-xs text-muted-foreground whitespace-nowrap mt-1"
-                  initial={{ opacity: 0 }}
-                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{
-                    duration: 0.4,
-                    delay: index * SECTION_TIMING.stagger + 0.4,
-                  }}
-                >
-                  {reason.label}
-                </motion.div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </motion.div>
   );
 }
 
 export function WhyCSI() {
   const ref = useRef<HTMLElement | null>(null);
-  const isInView = useInView(ref, { once: false, margin: "-100px" });
-  const prefersReducedMotion = useReducedMotion();
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section
       id="why-csi"
-      className="relative py-10 sm:py-14 lg:py-20 bg-background/78 overflow-hidden"
+      className="relative overflow-hidden bg-background/78 py-14 sm:py-16 lg:py-20"
       ref={ref}
     >
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
+      <div className="pointer-events-none absolute top-0 right-0 h-full w-1/2 bg-gradient-to-l from-primary/5 to-transparent" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-start">
-          {/* Left column - sticky header */}
-          <div className="lg:sticky lg:top-32">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{
-                duration: SECTION_TIMING.header,
-                ease: SECTION_EASE,
-              }}
-            >
-              <span className="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-primary">
-                Why CSI Smart Tech
-              </span>
-              <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight text-balance">
-                Smart Tech That Actually Works
-              </h2>
-              <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-                Industrial expertise meets cutting-edge technology. Solutions
-                that work today and scale tomorrow. Results you can measure.
-              </p>
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: SECTION_TIMING.header, ease: SECTION_EASE }}
+          className="mx-auto max-w-3xl text-center"
+        >
+          <span className="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-primary">
+            Why CSI Smart Tech
+          </span>
+          <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight text-balance">
+            Smart Tech That Actually Works
+          </h2>
+          <p className="mt-5 text-base sm:text-lg text-muted-foreground leading-relaxed">
+            Industrial expertise meets cutting-edge technology. Built to show
+            proof first, then scale cleanly.
+          </p>
+        </motion.div>
 
-              {/* Trust indicators */}
-              <div className="mt-8 sm:mt-10 flex flex-wrap gap-2 sm:gap-4">
-                {[
-                  {
-                    label: "ISO Certified",
-                    className: "bg-primary/10 text-primary",
-                  },
-                  {
-                    label: "24/7 Support",
-                    className: "bg-accent/10 text-accent",
-                  },
-                  {
-                    label: "Enterprise Ready",
-                    className: "bg-muted text-muted-foreground",
-                  },
-                ].map((badge, index) => (
-                  <motion.div
-                    key={badge.label}
-                    className={`relative px-3 sm:px-4 py-2 rounded-full ${badge.className} cursor-default overflow-hidden`}
-                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                    animate={
-                      isInView
-                        ? { opacity: 1, y: 0, scale: 1 }
-                        : { opacity: 0, y: 10, scale: 0.9 }
-                    }
-                    transition={{
-                      duration: SECTION_TIMING.detail,
-                      ease: SECTION_EASE,
-                      delay: 0.2 + index * SECTION_TIMING.microStagger,
-                    }}
-                    whileHover={
-                      prefersReducedMotion ? undefined : { y: -3, scale: 1.05 }
-                    }
-                  >
-                    <span className="relative text-sm font-medium">
-                      {badge.label}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right column - reasons list */}
-          <div className="space-y-4 sm:space-y-6">
-            {reasons.map((reason, index) => (
-              <ReasonCard
-                key={reason.title}
-                reason={reason}
-                index={index}
-                isInView={isInView}
-              />
-            ))}
-          </div>
+        <div className="mt-8 grid auto-rows-fr gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {reasons.map((reason, index) => (
+            <ReasonCard key={reason.title} reason={reason} index={index} />
+          ))}
         </div>
       </div>
     </section>
