@@ -201,11 +201,11 @@ function IndustryCard({
       >
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute left-4 right-4 top-0 h-px bg-linear-to-r from-transparent via-primary/60 to-transparent"
+          className="pointer-events-none absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent"
           animate={
             isHovering
-              ? { opacity: 1, scaleX: 1 }
-              : { opacity: 0.32, scaleX: 0.72 }
+              ? { opacity: 0.8, scaleX: 1 }
+              : { opacity: 0.2, scaleX: 0.85 }
           }
           transition={{ duration: 0.35, ease: "easeOut" }}
         />
@@ -230,20 +230,12 @@ function IndustryCard({
           }
         >
           <motion.div
-            className="relative mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10"
+            className="relative mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20"
             animate={iconControls}
-            whileHover={reducedMotion ? undefined : { scale: 1.08, rotate: 6 }}
-            transition={{ type: "spring", stiffness: 280, damping: 20 }}
+            whileHover={reducedMotion ? undefined : { scale: 1.12 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-            <motion.div
-              className="absolute inset-0 rounded-xl bg-primary/20 blur-xl"
-              animate={{
-                opacity: isHovering ? 0.6 : 0,
-                scale: isHovering ? 1.2 : 0.8,
-              }}
-              transition={{ duration: 0.3 }}
-            />
-            <industry.icon className="relative h-7 w-7 text-primary" />
+            <industry.icon className="relative h-6 w-6 text-primary/80" />
           </motion.div>
 
           <h3 className="mb-3 text-xl font-semibold text-foreground transition-colors duration-300 group-hover:text-primary">
@@ -254,12 +246,12 @@ function IndustryCard({
             {industry.description}
           </p>
 
-          <div className="mt-auto flex items-center justify-between gap-3 border-t border-border/60 pt-4">
-            <span className="text-xs text-muted-foreground">
-              {industry.label}
-            </span>
-            <span className="text-xl font-bold leading-none text-primary">
+          <div className="mt-auto flex items-center justify-between gap-3 border-t border-border/40 pt-4">
+            <span className="text-lg font-bold text-primary">
               {industry.metric}
+            </span>
+            <span className="text-xs text-muted-foreground text-right">
+              {industry.label}
             </span>
           </div>
         </motion.div>

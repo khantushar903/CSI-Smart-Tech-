@@ -193,17 +193,17 @@ function ReasonCard({
       >
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute left-4 right-4 top-0 h-px bg-linear-to-r from-transparent via-primary/60 to-transparent"
+          className="pointer-events-none absolute left-6 right-6 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"
           animate={
             isHovering
               ? { opacity: 1, scaleX: 1 }
-              : { opacity: 0.32, scaleX: 0.72 }
+              : { opacity: 0.25, scaleX: 0.65 }
           }
-          transition={{ duration: 0.35, ease: "easeOut" }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
         />
 
         <div
-          className={`absolute inset-0 bg-linear-to-br from-primary/15 to-accent/5 transition-opacity duration-500 ${
+          className={`absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/8 transition-opacity duration-500 ${
             isHovering ? "opacity-100" : "opacity-0"
           }`}
         />
@@ -222,20 +222,20 @@ function ReasonCard({
           }
         >
           <motion.div
-            className="relative mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/20"
+            className="relative mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary/30 to-primary/10 ring-2 ring-primary/20"
             animate={iconControls}
-            whileHover={reducedMotion ? undefined : { scale: 1.08, rotate: 6 }}
-            transition={{ type: "spring", stiffness: 280, damping: 20 }}
+            whileHover={reducedMotion ? undefined : { scale: 1.15, rotate: 8 }}
+            transition={{ type: "spring", stiffness: 320, damping: 18 }}
           >
             <motion.div
-              className="absolute inset-0 rounded-xl bg-primary/20 blur-xl"
+              className="absolute inset-0 rounded-full bg-primary/25 blur-lg"
               animate={{
-                opacity: isHovering ? 0.6 : 0,
-                scale: isHovering ? 1.2 : 0.8,
+                opacity: isHovering ? 0.8 : 0.3,
+                scale: isHovering ? 1.35 : 0.95,
               }}
               transition={{ duration: 0.3 }}
             />
-            <reason.icon className="relative h-7 w-7 text-primary" />
+            <reason.icon className="relative h-8 w-8 text-primary" />
           </motion.div>
 
           <h3 className="mb-3 text-xl font-semibold text-foreground transition-colors duration-300 group-hover:text-primary">
@@ -246,11 +246,11 @@ function ReasonCard({
             {reason.description}
           </p>
 
-          <div className="mt-auto flex items-center justify-between gap-3 border-t border-border/60 pt-4">
-            <span className="text-xs text-muted-foreground">
+          <div className="mt-auto flex flex-col items-start gap-2 border-t border-border/50 pt-4">
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
               {reason.label}
             </span>
-            <span className="text-xl font-bold leading-none text-primary">
+            <span className="text-2xl font-bold text-primary">
               {reason.value}
             </span>
           </div>

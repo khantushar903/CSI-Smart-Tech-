@@ -48,22 +48,22 @@ export function Navbar() {
             {/* Logo */}
             <motion.a
               href="#"
-              className="relative z-10 flex items-center gap-2.5 py-2"
+              className="relative z-10 flex items-center gap-2 sm:gap-2.5 py-2"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="flex-shrink-0">
+              <div className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12">
                 <Image
                   src="/images/logo/company_logo.png"
                   alt="CSI Smart Tech Logo"
-                  width={48}
-                  height={48}
+                  fill
                   priority
-                  quality={100}
+                  className="object-contain"
+                  sizes="(max-width: 640px) 40px, 48px"
                 />
               </div>
-              <div className="hidden sm:inline">
-                <span className="text-xs font-bold tracking-wider italic uppercase text-muted-foreground">
+              <div>
+                <span className="text-xs sm:text-xs font-bold tracking-wider italic uppercase text-muted-foreground">
                   CSI SMART TECH
                 </span>
               </div>
