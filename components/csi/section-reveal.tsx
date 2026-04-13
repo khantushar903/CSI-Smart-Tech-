@@ -7,9 +7,8 @@ import {
   useTransform,
 } from "framer-motion";
 import type { ReactNode } from "react";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { useIsTouchDevice } from "@/lib/hooks/use-is-touch-device";
 
 type SectionTone = "emerald" | "teal" | "slate";
 
@@ -29,10 +28,21 @@ export function SectionReveal({
   tone = "emerald",
 }: SectionRevealProps) {
   const prefersReducedMotion = useReducedMotion();
-  const isTouchDevice = useIsTouchDevice();
-  const reducedMotion = prefersReducedMotion || isTouchDevice;
+  const [isMobile, setIsMobile] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Detect mobile on client side to properly handle SSR
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const shouldReduceMotion = prefersReducedMotion || isMobile;
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -50,22 +60,25 @@ export function SectionReveal({
     <motion.div
       ref={containerRef}
       className="relative isolate"
-      initial={reducedMotion ? undefined : { opacity: 0, y: 20 }}
-      whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+      whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1, margin: "-80px 0px -80px 0px" }}
       transition={{
         duration: 0.6,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
-      <motion.div
-        aria-hidden
-        style={reducedMotion ? undefined : { y, opacity }}
-        className={cn(
-          "pointer-events-none absolute inset-x-0 top-8 hidden h-32 blur-3xl will-change-transform lg:block",
-          toneStyles[tone],
-        )}
-      />
+      {/* Gradient blur background - only render on desktop */}
+      {!isMobile && (
+        <motion.div
+          aria-hidden
+          style={shouldReduceMotion ? undefined : { y, opacity }}
+          className={cn(
+            "pointer-events-none absolute inset-x-0 top-8 h-32 blur-3xl will-change-transform",
+            toneStyles[tone],
+          )}
+        />
+      )}
       <div className="relative">{children}</div>
     </motion.div>
   );
