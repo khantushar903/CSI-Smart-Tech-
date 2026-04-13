@@ -277,7 +277,7 @@ function SolutionCard({
             className="text-muted-foreground leading-relaxed mb-6"
             initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
             whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: isTouchDevice, amount: 0.65 }}
+            viewport={{ once: isTouchDevice, amount: 0.3 }}
             transition={{
               duration: 0.36,
               delay: 0.14,
@@ -294,7 +294,7 @@ function SolutionCard({
                 key={feature}
                 initial={{ opacity: 0, scale: 0.8, y: 10 }}
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: isTouchDevice, amount: 0.8 }}
+                viewport={{ once: isTouchDevice, amount: 0.4 }}
                 transition={{
                   duration: 0.32,
                   delay: 0.2 + featureIndex * 0.05,

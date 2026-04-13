@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Logo } from "./logo";
+import Image from "next/image";
 import { Linkedin, Twitter, Mail } from "lucide-react";
 import { useState } from "react";
 import { ContactFormModal } from "@/components/csi/contact-form-modal";
@@ -52,7 +52,22 @@ export function Footer() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <Logo size="md" className="text-background" />
+              <div className="flex items-center gap-2.5">
+                <div className="flex-shrink-0">
+                  <Image
+                    src="/images/logo/company_logo.png"
+                    alt="CSI Smart Tech Logo"
+                    width={48}
+                    height={48}
+                    quality={100}
+                  />
+                </div>
+                <div>
+                  <span className="text-xs font-bold tracking-wider italic uppercase text-background/90">
+                    CSI SMART TECH
+                  </span>
+                </div>
+              </div>
               <p className="mt-4 text-background/60 text-sm leading-relaxed max-w-xs">
                 Building intelligent industrial systems for sustainable,
                 efficient, and future-ready manufacturing.

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { Logo } from "./logo";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -48,11 +48,25 @@ export function Navbar() {
             {/* Logo */}
             <motion.a
               href="#"
-              className="relative z-10"
+              className="relative z-10 flex items-center gap-2.5 py-2"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Logo size="md" />
+              <div className="flex-shrink-0">
+                <Image
+                  src="/images/logo/company_logo.png"
+                  alt="CSI Smart Tech Logo"
+                  width={48}
+                  height={48}
+                  priority
+                  quality={100}
+                />
+              </div>
+              <div className="hidden sm:inline">
+                <span className="text-xs font-bold tracking-wider italic uppercase text-muted-foreground">
+                  CSI SMART TECH
+                </span>
+              </div>
             </motion.a>
 
             {/* Desktop Navigation */}
