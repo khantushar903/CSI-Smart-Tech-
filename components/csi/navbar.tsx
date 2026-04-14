@@ -66,7 +66,7 @@ export function Navbar() {
                 <span
                   className={cn(
                     "text-sm sm:text-xs font-bold tracking-wider italic uppercase whitespace-nowrap",
-                    isScrolled ? "text-foreground" : "text-white",
+                    isScrolled ? "text-foreground" : "text-slate-900",
                   )}
                 >
                   CSI SMART TECH
