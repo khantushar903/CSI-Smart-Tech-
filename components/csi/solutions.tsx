@@ -272,23 +272,10 @@ function SolutionCard({
             {solution.title}
           </h3>
 
-          {/* Description - always visible on mobile */}
-          <motion.p
-            className="text-muted-foreground leading-relaxed mb-6"
-            initial={{
-              opacity: reducedMotion ? 1 : 0,
-              y: reducedMotion ? 0 : 10,
-            }}
-            whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
-            viewport={{ once: isTouchDevice, amount: 0.3 }}
-            transition={{
-              duration: 0.36,
-              delay: 0.14,
-              ease: "easeOut",
-            }}
-          >
+          {/* Description */}
+          <p className="text-muted-foreground leading-relaxed mb-6">
             {solution.description}
-          </motion.p>
+          </p>
 
           {/* Features with stagger animation */}
           <div className="flex flex-wrap gap-2 mb-6">
