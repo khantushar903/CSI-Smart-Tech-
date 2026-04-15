@@ -90,7 +90,7 @@ export function ContactFormModal({
         company: data.company || "Not provided",
         phone: data.phone || "Not provided",
         message: data.message,
-        to_email: "anonymas903@gmail.com", // Company email
+        to_email: "csismarttech@gmail.com", // Company email
       };
 
       await emailjs.send(serviceId, templateId, templateParams, publicKey);
@@ -177,7 +177,7 @@ export function ContactFormModal({
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors ${
                     errors.name ? "border-red-500" : "border-gray-300"
                   }`}
-                  placeholder="John Doe"
+                  placeholder="Sakib Hasan"
                   {...register("name", {
                     required: "Name is required",
                     minLength: {
@@ -206,7 +206,7 @@ export function ContactFormModal({
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors ${
                     errors.email ? "border-red-500" : "border-gray-300"
                   }`}
-                  placeholder="john@company.com"
+                  placeholder="sakib@company.com"
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -251,7 +251,7 @@ export function ContactFormModal({
                   id="phone"
                   type="tel"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
-                  placeholder="+1 (555) 123-4567"
+                  placeholder="+880 1812 345678"
                   {...register("phone")}
                 />
               </div>
@@ -320,17 +320,17 @@ export function ContactFormModal({
           <p className="text-xs text-muted-foreground text-center">
             Or reach us directly at{" "}
             <a
-              href="mailto:anonymas903@gmail.com"
+              href="mailto:csismarttech@gmail.com"
               className="text-primary hover:underline font-medium"
             >
-              anonymas903@gmail.com
+              csismarttech@gmail.com
             </a>{" "}
             or{" "}
             <a
-              href="tel:+1234567890"
+              href="tel:+8801812345678"
               className="text-primary hover:underline font-medium"
             >
-              +1 (234) 567-890
+              +880 1812 345678
             </a>
           </p>
         </div>

@@ -56,10 +56,10 @@ export function Navbar() {
                 <Image
                   src="/images/logo/company_logo.png"
                   alt="CSI Smart Tech Logo"
-                  fill
+                  width={48}
+                  height={48}
                   priority
                   className="object-contain"
-                  sizes="(max-width: 640px) 48px, 48px"
                 />
               </div>
               <div>

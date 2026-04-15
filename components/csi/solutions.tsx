@@ -275,9 +275,13 @@ function SolutionCard({
           {/* Lighter description animation for smoother scroll performance */}
           <motion.p
             className="text-muted-foreground leading-relaxed mb-6"
-            initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
+            initial={
+              reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
+            }
             whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: isTouchDevice, amount: 0.3 }}
+            viewport={
+              reducedMotion ? undefined : { once: isTouchDevice, amount: 0.3 }
+            }
             transition={{
               duration: 0.36,
               delay: 0.14,

@@ -32,7 +32,7 @@ const footerLinks = {
 const socialLinks = [
   { icon: Linkedin, href: "#", label: "LinkedIn" },
   { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Mail, href: "mailto:anonymas903@gmail.com", label: "Email" },
+  { icon: Mail, href: "mailto:csismarttech@gmail.com", label: "Email" },
 ];
 
 export function Footer() {
@@ -193,15 +193,15 @@ export function Footer() {
                   onClick={() => setIsContactModalOpen(true)}
                   className="hover:text-background transition-colors cursor-pointer"
                 >
-                  anonymas903@gmail.com
+                  csismarttech@gmail.com
                 </button>
               </li>
               <li>
                 <a
-                  href="tel:+1234567890"
+                  href="tel:+8801812345678"
                   className="hover:text-background transition-colors"
                 >
-                  +1 (234) 567-890
+                  +880 1812 345678
                 </a>
               </li>
               <li>Dhaka, Bangladesh</li>
