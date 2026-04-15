@@ -272,16 +272,15 @@ function SolutionCard({
             {solution.title}
           </h3>
 
-          {/* Lighter description animation for smoother scroll performance */}
+          {/* Description - always visible on mobile */}
           <motion.p
             className="text-muted-foreground leading-relaxed mb-6"
-            initial={
-              reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
-            }
-            whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
-            viewport={
-              reducedMotion ? undefined : { once: isTouchDevice, amount: 0.3 }
-            }
+            initial={{
+              opacity: reducedMotion ? 1 : 0,
+              y: reducedMotion ? 0 : 10,
+            }}
+            whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: isTouchDevice, amount: 0.3 }}
             transition={{
               duration: 0.36,
               delay: 0.14,
