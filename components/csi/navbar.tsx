@@ -48,16 +48,16 @@ export function Navbar() {
             {/* Logo */}
             <motion.a
               href="#"
-              className="relative z-10 flex items-center gap-2 sm:gap-2.5 py-2"
+              className="relative z-10 flex items-center gap-3 sm:gap-3.5 py-2"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="relative flex-shrink-0 w-12 h-12 sm:w-12 sm:h-12">
+              <div className="relative flex-shrink-0 w-16 h-16 sm:w-16 sm:h-16">
                 <Image
                   src="/images/logo/company_logo.png"
                   alt="CSI Smart Tech Logo"
-                  width={48}
-                  height={48}
+                  width={64}
+                  height={64}
                   priority
                   className="object-contain"
                 />
@@ -65,7 +65,7 @@ export function Navbar() {
               <div>
                 <span
                   className={cn(
-                    "text-sm sm:text-xs font-bold tracking-wider italic uppercase whitespace-nowrap",
+                    "text-lg sm:text-base font-bold tracking-wider italic uppercase whitespace-nowrap",
                     isScrolled ? "text-foreground" : "text-slate-900",
                   )}
                 >

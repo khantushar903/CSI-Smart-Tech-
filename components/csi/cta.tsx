@@ -96,14 +96,14 @@ export function CTA() {
               onClick={() => setIsContactModalOpen(true)}
               className="hover:text-foreground transition-colors cursor-pointer"
             >
-              anonymas903@gmail.com
+              csismarttech@gmail.com
             </button>
             <span className="hidden sm:block">•</span>
             <a
-              href="tel:+1234567890"
+              href="tel:+8801812345678"
               className="hover:text-foreground transition-colors"
             >
-              +1 (234) 567-890
+              +880 1812 345678
             </a>
             <span className="hidden sm:block">•</span>
             <span>Dhaka, Bangladesh</span>
