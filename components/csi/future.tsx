@@ -318,10 +318,10 @@ export function Future() {
           className="text-center max-w-3xl mx-auto mb-8 lg:mb-10"
         >
           <span className="inline-flex items-center rounded-full border border-cyan-300/35 bg-cyan-400/12 px-4 py-1.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-cyan-300">
-            What's Next
+            What&apos;s Next
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-balance">
-            Tomorrow's Solutions
+            Tomorrow&apos;s Solutions
           </h2>
           <p className="mt-6 text-lg text-background/70 leading-relaxed">
             Big ideas coming soon. Enterprise solutions that actually work.

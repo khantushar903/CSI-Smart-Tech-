@@ -37,8 +37,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "CSI Smart Tech" }],
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-icon.png",
+    icon: "/images/logo/company_logo.png",
+    apple: "/images/logo/company_logo.png",
   },
 };
 

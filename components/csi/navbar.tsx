@@ -52,12 +52,12 @@ export function Navbar() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="relative flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16">
+              <div className="relative shrink-0 w-12 h-12 sm:w-16 sm:h-16">
                 <Image
                   src="/images/logo/company_logo.png"
                   alt="CSI Smart Tech Logo"
-                  width={64}
-                  height={64}
+                  fill
+                  sizes="(max-width: 640px) 48px, 64px"
                   priority
                   className="object-contain"
                 />

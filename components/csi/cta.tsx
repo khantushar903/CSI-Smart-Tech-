@@ -104,10 +104,13 @@ export function CTA() {
               </span>
               <a
                 href="tel:+88028991492"
-                className="hover:text-foreground transition-colors font-medium"
+                className="hover:text-foreground transition-colors font-medium sm:hidden"
               >
                 +880 2 8991492
               </a>
+              <span className="hidden sm:inline font-medium text-foreground/80">
+                +880 2 8991492
+              </span>
             </div>
             <p className="text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
               Doyel Centre (Level-3), Plot # 15, Sonargaon Janapath Road, Sector

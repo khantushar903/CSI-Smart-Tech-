@@ -2,17 +2,12 @@
 
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import emailjs from "@emailjs/browser";
 import { motion, AnimatePresence } from "framer-motion";
-
-// Initialize EmailJS
-if (typeof window !== "undefined") {
-  emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "");
-}
 
 interface NewsletterFormData {
   name: string;
   email: string;
+  website?: string;
 }
 
 export default function NewsletterForm() {
@@ -26,22 +21,34 @@ export default function NewsletterForm() {
   });
 
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState(
+    "Something went wrong. Please try again.",
+  );
   const formRef = useRef<HTMLFormElement>(null);
 
   const onSubmit = async (data: NewsletterFormData) => {
     try {
-      await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "",
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "",
-        {
-          from_name: data.name,
-          email: data.email,
-          message: `Newsletter signup from: ${data.name} (${data.email})`,
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "",
-      );
+        body: JSON.stringify({
+          ...data,
+          source: "newsletter-form",
+        }),
+      });
+
+      const result = (await response.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+
+      if (!response.ok) {
+        throw new Error(result?.error || "Failed to subscribe");
+      }
 
       setStatus("success");
+      setErrorMessage("Something went wrong. Please try again.");
       reset();
 
       setTimeout(() => {
@@ -50,6 +57,9 @@ export default function NewsletterForm() {
     } catch (error) {
       console.error("Newsletter subscription error:", error);
       setStatus("error");
+      if (error instanceof Error && error.message) {
+        setErrorMessage(error.message);
+      }
 
       setTimeout(() => {
         setStatus("idle");
@@ -59,6 +69,15 @@ export default function NewsletterForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} ref={formRef} className="space-y-4">
+      <input
+        type="text"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="hidden"
+        {...register("website")}
+      />
+
       <div className="grid gap-4 sm:grid-cols-2">
         {/* Name Field */}
         <div>
@@ -143,7 +162,7 @@ export default function NewsletterForm() {
             exit={{ opacity: 0, y: -10 }}
             className="rounded-lg bg-red-500/10 border border-red-500/30 p-4 text-red-400 text-sm"
           >
-            ✗ Something went wrong. Please try again.
+            ✗ {errorMessage}
           </motion.div>
         )}
       </AnimatePresence>

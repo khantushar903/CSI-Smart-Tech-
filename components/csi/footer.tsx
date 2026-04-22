@@ -32,7 +32,7 @@ const footerLinks = {
 const socialLinks = [
   { icon: Linkedin, href: "#", label: "LinkedIn" },
   { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Mail, href: "mailto:info@csi-enc.com", label: "Email" },
+  { icon: Mail, href: "#", label: "Email" },
 ];
 
 export function Footer() {
@@ -53,14 +53,15 @@ export function Footer() {
               transition={{ duration: 0.5 }}
             >
               <div className="flex items-center gap-2.5">
-                <div className="flex-shrink-0">
+                <div className="relative shrink-0 w-12 h-12">
                   <Image
                     src="/images/logo/company_logo.png"
                     alt="CSI Smart Tech Logo"
-                    width={48}
-                    height={48}
+                    fill
+                    sizes="48px"
                     quality={100}
                     loading="lazy"
+                    className="object-contain"
                   />
                 </div>
                 <div>
@@ -199,12 +200,16 @@ export function Footer() {
               <li>
                 <a
                   href="tel:+88028991492"
-                  className="hover:text-background transition-colors"
+                  className="hover:text-background transition-colors sm:hidden"
                 >
                   +88028991492
                 </a>
+                <span className="hidden sm:inline">+88028991492</span>
               </li>
-              <li>Doyel Centre (Level-3), Plot # 15, Sonargaon Janapath Road, Sector # 13, Uttara, Dhaka-1230.</li>
+              <li>
+                Doyel Centre (Level-3), Plot # 15, Sonargaon Janapath Road,
+                Sector # 13, Uttara, Dhaka-1230.
+              </li>
             </ul>
           </motion.div>
         </div>

@@ -8,7 +8,7 @@ This project focuses on modern presentation, strong visual storytelling, and con
 - Blog content sourced from MDX files
 - Newsletter content sourced from JSON
 - Modal-first reading experiences for blog posts and newsletters
-- Contact and newsletter forms powered by EmailJS
+- Contact and newsletter forms powered by server-side Resend API routes
 - Production analytics through Vercel Analytics
 
 ## Table of Contents
@@ -67,12 +67,12 @@ Blog and newsletter items open in modal dialogs, preserving browsing context whi
 
 - Newsletter entries loaded from `public/data/newsletters.json`
 - Modal reader for newsletter detail content
-- Newsletter signup form integrated with EmailJS
+- Newsletter signup form posting to a server API route
 
 ### 4) Contact workflow
 
 - Contact form modal with field validation via `react-hook-form`
-- Email delivery through EmailJS using public runtime environment variables
+- Email delivery through Resend using server-side environment variables
 
 ### 5) Observability and engagement analytics
 
@@ -103,7 +103,7 @@ Blog and newsletter items open in modal dialogs, preserving browsing context whi
 ### Forms and integrations
 
 - `react-hook-form`
-- EmailJS (`@emailjs/browser`)
+- Resend (`resend`)
 - Vercel Analytics (`@vercel/analytics`)
 
 ### Tooling
@@ -127,7 +127,7 @@ Blog and newsletter items open in modal dialogs, preserving browsing context whi
 3. Blog metadata is read from MDX files via utilities in `lib/blog.ts`.
 4. `app/api/blog/[slug]/route.ts` returns a post payload for modal consumption.
 5. Newsletter data is fetched client-side from `public/data/newsletters.json`.
-6. Contact and newsletter forms send data via EmailJS.
+6. Contact and newsletter forms post to server API routes and are delivered via Resend.
 
 ### Important config behavior
 
@@ -141,6 +141,8 @@ These settings can be useful for rapid iteration, but see Operational Notes for 
 ```text
 app/
   api/blog/[slug]/route.ts      # Blog post API endpoint
+  api/contact/route.ts          # Contact form submission endpoint
+  api/newsletter/route.ts       # Newsletter submission endpoint
   layout.tsx                    # Global shell, analytics, providers
   page.tsx                      # Main one-page app composition
   globals.css                   # Theme tokens and global styles
@@ -203,15 +205,17 @@ Application will be available at `http://localhost:3000`.
 
 ## Environment Variables
 
-Values are expected in `.env.local` and exposed to the client with the `NEXT_PUBLIC_` prefix.
+Values are expected in `.env.local` and read server-side by API routes.
 
-| Variable                          | Required        | Purpose                     |
-| --------------------------------- | --------------- | --------------------------- |
-| `NEXT_PUBLIC_EMAILJS_SERVICE_ID`  | Yes (for forms) | EmailJS service identifier  |
-| `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID` | Yes (for forms) | EmailJS template identifier |
-| `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY`  | Yes (for forms) | EmailJS public API key      |
+| Variable                | Required | Purpose                                 |
+| ----------------------- | -------- | --------------------------------------- |
+| `RESEND_API_KEY`        | Yes      | Resend API key for sending emails       |
+| `CONTACT_FROM_EMAIL`    | Optional | Sender identity for contact submissions |
+| `CONTACT_TO_EMAIL`      | Optional | Recipient email for contact submissions |
+| `NEWSLETTER_FROM_EMAIL` | Optional | Sender identity for newsletter submits  |
+| `NEWSLETTER_TO_EMAIL`   | Optional | Recipient email for newsletter submits  |
 
-If these are missing, contact/newsletter submission will fail gracefully in UI.
+If `RESEND_API_KEY` is missing, contact/newsletter submission will fail gracefully in UI.
 
 ## Available Scripts
 
@@ -334,7 +338,7 @@ Vercel is the most direct hosting target for this Next.js app.
 
 Deployment checklist:
 
-1. Set all EmailJS environment variables in host settings.
+1. Set all Resend environment variables in host settings.
 2. Run lint and production build in CI.
 3. Verify modal workflows and contact/newsletter submissions after deploy.
 4. Validate analytics events in production.
@@ -343,8 +347,8 @@ Deployment checklist:
 
 ### Contact/newsletter forms do not send
 
-- Confirm EmailJS variables exist in `.env.local` (local) or host env settings (production).
-- Ensure EmailJS service/template/key values are correct and active.
+- Confirm `RESEND_API_KEY` exists in `.env.local` (local) or host env settings (production).
+- Ensure sender/recipient addresses are valid and your sender domain is configured in Resend.
 
 ### Blog modal shows "Article unavailable"
 

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import emailjs from "@emailjs/browser";
 import {
   Dialog,
   DialogContent,
@@ -32,6 +31,7 @@ interface ContactFormData {
   company?: string;
   phone?: string;
   message: string;
+  website?: string;
 }
 
 interface ContactFormModalProps {
@@ -73,27 +73,24 @@ export function ContactFormModal({
     setSubmitStatus("idle");
 
     try {
-      // EmailJS configuration
-      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          source: "contact-modal",
+        }),
+      });
 
-      if (!serviceId || !templateId || !publicKey) {
-        throw new Error(
-          "EmailJS configuration is missing. Please check your environment variables.",
-        );
+      const result = (await response.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+
+      if (!response.ok) {
+        throw new Error(result?.error || "Failed to send message");
       }
-
-      const templateParams = {
-        from_name: data.name,
-        from_email: data.email,
-        company: data.company || "Not provided",
-        phone: data.phone || "Not provided",
-        message: data.message,
-        to_email: "info@csi-enc.com", // Company email
-      };
-
-      await emailjs.send(serviceId, templateId, templateParams, publicKey);
 
       setSubmitStatus("success");
       reset();
@@ -121,7 +118,7 @@ export function ContactFormModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[525px]">
+      <DialogContent className="sm:max-w-131.25">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Mail className="w-6 h-6 text-primary" />
@@ -146,16 +143,25 @@ export function ContactFormModal({
           </div>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <input
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="hidden"
+              {...register("website")}
+            />
+
             {submitStatus === "error" && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
-                <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+                <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
                 <div>
                   <p className="text-sm text-red-700 font-medium">
                     Failed to send message
                   </p>
                   <p className="text-xs text-red-600">
-                    Please try again or contact us directly at
-                    info@csi-enc.com or +88028991492.
+                    Please try again or contact us directly at info@csi-enc.com
+                    or +88028991492.
                   </p>
                 </div>
               </div>
@@ -328,10 +334,13 @@ export function ContactFormModal({
             or{" "}
             <a
               href="tel:+88028991492"
-              className="text-primary hover:underline font-medium"
+              className="text-primary hover:underline font-medium sm:hidden"
             >
               +88028991492
             </a>
+            <span className="text-foreground/80 font-medium hidden sm:inline">
+              +88028991492
+            </span>
           </p>
         </div>
       </DialogContent>
