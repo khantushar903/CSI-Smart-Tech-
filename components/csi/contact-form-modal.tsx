@@ -90,7 +90,7 @@ export function ContactFormModal({
         company: data.company || "Not provided",
         phone: data.phone || "Not provided",
         message: data.message,
-        to_email: "csismarttech@gmail.com", // Company email
+        to_email: "info@csi-enc.com", // Company email
       };
 
       await emailjs.send(serviceId, templateId, templateParams, publicKey);
@@ -155,7 +155,7 @@ export function ContactFormModal({
                   </p>
                   <p className="text-xs text-red-600">
                     Please try again or contact us directly at
-                    hello@csismart.tech
+                    info@csi-enc.com or +88028991492.
                   </p>
                 </div>
               </div>
@@ -177,7 +177,7 @@ export function ContactFormModal({
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors ${
                     errors.name ? "border-red-500" : "border-gray-300"
                   }`}
-                  placeholder="Sakib Hasan"
+                  placeholder="Your name"
                   {...register("name", {
                     required: "Name is required",
                     minLength: {
@@ -206,7 +206,7 @@ export function ContactFormModal({
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors ${
                     errors.email ? "border-red-500" : "border-gray-300"
                   }`}
-                  placeholder="sakib@company.com"
+                  placeholder="your@company.com"
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -251,7 +251,7 @@ export function ContactFormModal({
                   id="phone"
                   type="tel"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
-                  placeholder="+880 1812 345678"
+                  placeholder="+880 XXX-XXXXXXX"
                   {...register("phone")}
                 />
               </div>
@@ -320,17 +320,17 @@ export function ContactFormModal({
           <p className="text-xs text-muted-foreground text-center">
             Or reach us directly at{" "}
             <a
-              href="mailto:csismarttech@gmail.com"
+              href="mailto:info@csi-enc.com"
               className="text-primary hover:underline font-medium"
             >
-              csismarttech@gmail.com
+              info@csi-enc.com
             </a>{" "}
             or{" "}
             <a
-              href="tel:+8801812345678"
+              href="tel:+88028991492"
               className="text-primary hover:underline font-medium"
             >
-              +880 1812 345678
+              +88028991492
             </a>
           </p>
         </div>

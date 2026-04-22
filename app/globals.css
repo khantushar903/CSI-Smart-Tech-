@@ -518,10 +518,4 @@ main {
   .ambient-orb-c {
     display: none;
   }
-
-  .rfid-scan-sweep,
-  .rfid-scan-glow {
-    display: none;
-    animation: none !important;
-  }
 }

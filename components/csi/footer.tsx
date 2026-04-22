@@ -32,7 +32,7 @@ const footerLinks = {
 const socialLinks = [
   { icon: Linkedin, href: "#", label: "LinkedIn" },
   { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Mail, href: "mailto:csismarttech@gmail.com", label: "Email" },
+  { icon: Mail, href: "mailto:info@csi-enc.com", label: "Email" },
 ];
 
 export function Footer() {
@@ -193,18 +193,18 @@ export function Footer() {
                   onClick={() => setIsContactModalOpen(true)}
                   className="hover:text-background transition-colors cursor-pointer"
                 >
-                  csismarttech@gmail.com
+                  info@csi-enc.com
                 </button>
               </li>
               <li>
                 <a
-                  href="tel:+8801812345678"
+                  href="tel:+88028991492"
                   className="hover:text-background transition-colors"
                 >
-                  +880 1812 345678
+                  +88028991492
                 </a>
               </li>
-              <li>Dhaka, Bangladesh</li>
+              <li>Doyel Centre (Level-3), Plot # 15, Sonargaon Janapath Road, Sector # 13, Uttara, Dhaka-1230.</li>
             </ul>
           </motion.div>
         </div>

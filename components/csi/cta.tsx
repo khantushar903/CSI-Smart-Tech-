@@ -90,23 +90,29 @@ export function CTA() {
               ease: SECTION_EASE,
               delay: 0.3,
             }}
-            className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-8 text-muted-foreground text-sm"
+            className="mt-10 text-muted-foreground text-sm space-y-3"
           >
-            <button
-              onClick={() => setIsContactModalOpen(true)}
-              className="hover:text-foreground transition-colors cursor-pointer"
-            >
-              csismarttech@gmail.com
-            </button>
-            <span className="hidden sm:block">•</span>
-            <a
-              href="tel:+8801812345678"
-              className="hover:text-foreground transition-colors"
-            >
-              +880 1812 345678
-            </a>
-            <span className="hidden sm:block">•</span>
-            <span>Dhaka, Bangladesh</span>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+              <button
+                onClick={() => setIsContactModalOpen(true)}
+                className="hover:text-foreground transition-colors cursor-pointer font-medium"
+              >
+                info@csi-enc.com
+              </button>
+              <span className="hidden sm:block text-muted-foreground/50">
+                •
+              </span>
+              <a
+                href="tel:+88028991492"
+                className="hover:text-foreground transition-colors font-medium"
+              >
+                +880 2 8991492
+              </a>
+            </div>
+            <p className="text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
+              Doyel Centre (Level-3), Plot # 15, Sonargaon Janapath Road, Sector
+              # 13, Uttara, Dhaka-1230.
+            </p>
           </motion.div>
         </motion.div>
       </div>

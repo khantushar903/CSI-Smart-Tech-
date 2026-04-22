@@ -226,20 +226,20 @@ export function About() {
             transition={{ duration: 0.8, ...spring }}
           >
             {/* Eyebrow */}
-            <div className="mb-6">
+            <div className="mb-6 flex justify-center lg:justify-start">
               <span className="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-primary">
                 Our Vision
               </span>
             </div>
 
             {/* Headline */}
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+            <h2 className="text-center lg:text-left text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
               Smart Industry.{" "}
               <span className="text-primary">Sustainable Future.</span>
             </h2>
 
             {/* Body text */}
-            <div className="mt-8 space-y-5 text-lg text-muted-foreground leading-relaxed">
+            <div className="mt-8 space-y-5 text-center lg:text-left text-lg text-muted-foreground leading-relaxed">
               <p>
                 We merge AI, IoT, and cloud tech to build manufacturing systems
                 that work smarter—not harder.
