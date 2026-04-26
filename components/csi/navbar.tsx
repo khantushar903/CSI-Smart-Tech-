@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { useScrollProgress } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -17,17 +18,11 @@ const navLinks = [
   { href: "#newsletter", label: "Newsletter" },
 ];
 
-export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+import { memo } from "react";
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+function NavbarContent() {
+  const { isScrolled } = useScrollProgress();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <>
@@ -112,11 +107,14 @@ export function Navbar() {
               className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileTap={{ scale: 0.95 }}
+              aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation"
             >
               {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6" aria-hidden="true" />
               ) : (
-                <Menu className="w-6 h-6" />
+                <Menu className="w-6 h-6" aria-hidden="true" />
               )}
             </motion.button>
           </div>
@@ -132,17 +130,22 @@ export function Navbar() {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 lg:hidden"
+            role="presentation"
           >
             <div
               className="absolute inset-0 bg-background/90 backdrop-blur-none"
               onClick={() => setIsMobileMenuOpen(false)}
+              role="presentation"
+              aria-label="Close menu"
             />
             <motion.nav
+              id="mobile-navigation"
               className="relative bg-background border-b border-border pt-20 pb-8 px-6"
               initial={{ y: -100 }}
               animate={{ y: 0 }}
               exit={{ y: -100 }}
               transition={{ duration: 0.3 }}
+              aria-label="Mobile navigation"
             >
               <div className="flex flex-col gap-4">
                 {navLinks.map((link, index) => (
@@ -184,3 +187,6 @@ export function Navbar() {
     </>
   );
 }
+
+// Memoize the Navbar to prevent unnecessary re-renders
+export const Navbar = memo(NavbarContent);

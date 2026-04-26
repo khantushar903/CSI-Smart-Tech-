@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, memo } from "react";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -10,7 +10,7 @@ interface NewsletterFormData {
   website?: string;
 }
 
-export default function NewsletterForm() {
+function NewsletterFormContent() {
   const {
     register,
     handleSubmit,
@@ -151,6 +151,9 @@ export default function NewsletterForm() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             className="rounded-lg bg-green-500/10 border border-green-500/30 p-4 text-green-400 text-sm"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
           >
             ✓ Thank you for subscribing! Check your email for confirmation.
           </motion.div>
@@ -161,6 +164,9 @@ export default function NewsletterForm() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             className="rounded-lg bg-red-500/10 border border-red-500/30 p-4 text-red-400 text-sm"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
           >
             ✗ {errorMessage}
           </motion.div>
@@ -169,3 +175,6 @@ export default function NewsletterForm() {
     </form>
   );
 }
+
+// Memoize the NewsletterForm to prevent unnecessary re-renders
+export default memo(NewsletterFormContent);

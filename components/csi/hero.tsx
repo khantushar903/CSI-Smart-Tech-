@@ -4,93 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TechNeuralField from "@/components/ui/tech-neural-field";
-// Keeping old animation imports commented out for future use
-// import {
-//   TechNeuralField,
-//   MatrixRain,
-//   CircuitBoard,
-//   GeometricWaves,
-//   DataFlow,
-//   TechGrid,
-//   ParticleNetwork,
-//   type AnimationType,
-// } from "@/components/ui/bg-animations";
 
-// ===== ANIMATION SELECTOR =====
-// OLD ANIMATION - Currently disabled, using Lottie instead
-// To switch back, uncomment the imports above and the BackgroundAnimation component below
-// Options: "neural-field" | "matrix-rain" | "circuit-board" | "geometric-waves" | "data-flow" | "tech-grid" | "particle-network"
-// const ACTIVE_ANIMATION = "neural-field" as AnimationType;
-// ==============================
-
-// Render the selected background animation
-// const BackgroundAnimation = () => {
-//   switch (ACTIVE_ANIMATION) {
-//     case "neural-field":
-//       return (
-//         <TechNeuralField
-//           density={22000}
-//           speed={0.18}
-//           lineColor="rgba(22, 101, 52, 0.34)"
-//           nodeColor="rgba(22, 101, 52, 0.82)"
-//           sweepOpacity={0.24}
-//         />
-//       );
-//     case "matrix-rain":
-//       return (
-//         <MatrixRain speed={1} density={0.95} color="rgba(22, 101, 52, 0.8)" />
-//       );
-//     case "circuit-board":
-//       return (
-//         <CircuitBoard
-//           speed={0.5}
-//           lineColor="rgba(22, 101, 52, 0.3)"
-//           nodeColor="rgba(22, 101, 52, 0.6)"
-//           pulseColor="rgba(20, 184, 166, 0.9)"
-//         />
-//       );
-//     case "geometric-waves":
-//       return (
-//         <GeometricWaves
-//           speed={1}
-//           waveCount={4}
-//           color="rgba(22, 101, 52, 0.3)"
-//         />
-//       );
-//     case "data-flow":
-//       return (
-//         <DataFlow
-//           speed={1}
-//           particleCount={30}
-//           lineColor="rgba(22, 101, 52, 0.3)"
-//           particleColor="rgba(20, 184, 166, 0.8)"
-//         />
-//       );
-//     case "tech-grid":
-//       return (
-//         <TechGrid
-//           speed={0.5}
-//           gridSize={60}
-//           lineColor="rgba(22, 101, 52, 0.15)"
-//           dotColor="rgba(22, 101, 52, 0.4}"
-//         />
-//       );
-//     case "particle-network":
-//       return (
-//         <ParticleNetwork
-//           speed={0.5}
-//           particleCount={50}
-//           lineColor="rgba(22, 101, 52, 0.2)"
-//           particleColor="rgba(20, 184, 166, 0.7)"
-//           connectionDistance={120}
-//         />
-//       );
-//     default:
-//       return null;
-//   }
-// };
-
-export function Hero() {
+function HeroContent() {
   return (
     <section
       id="hero"
@@ -233,3 +148,8 @@ export function Hero() {
     </section>
   );
 }
+
+// Memoize the Hero component to prevent unnecessary re-renders
+import { memo } from "react";
+
+export const Hero = memo(HeroContent);

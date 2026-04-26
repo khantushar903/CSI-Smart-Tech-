@@ -1,5 +1,14 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import {
+  createRateLimitMap,
+  getClientIp,
+  isRateLimited,
+  escapeHtml,
+  isValidEmail,
+  isValidString,
+  ErrorResponses,
+} from "@/lib/api-utils";
 
 interface NewsletterPayload {
   name: string;
@@ -8,74 +17,15 @@ interface NewsletterPayload {
   source?: string;
 }
 
-const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX_REQUESTS = 5;
-
-type RateLimitRecord = {
-  count: number;
-  resetAt: number;
-};
-
-const globalForRateLimit = globalThis as typeof globalThis & {
-  __newsletterRateLimitMap?: Map<string, RateLimitRecord>;
-};
-
-const newsletterRateLimitMap =
-  globalForRateLimit.__newsletterRateLimitMap ??
-  new Map<string, RateLimitRecord>();
-
-globalForRateLimit.__newsletterRateLimitMap = newsletterRateLimitMap;
-
-function getClientIp(request: Request): string {
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  if (!forwardedFor) {
-    return "unknown";
-  }
-
-  return forwardedFor.split(",")[0]?.trim() || "unknown";
-}
-
-function isRateLimited(key: string): boolean {
-  const now = Date.now();
-  const record = newsletterRateLimitMap.get(key);
-
-  if (!record || record.resetAt <= now) {
-    newsletterRateLimitMap.set(key, {
-      count: 1,
-      resetAt: now + RATE_LIMIT_WINDOW_MS,
-    });
-    return false;
-  }
-
-  if (record.count >= RATE_LIMIT_MAX_REQUESTS) {
-    return true;
-  }
-
-  newsletterRateLimitMap.set(key, {
-    ...record,
-    count: record.count + 1,
-  });
-
-  return false;
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
+const newsletterRateLimitMap = createRateLimitMap("newsletter");
 
 function validatePayload(payload: NewsletterPayload): string | null {
-  if (!payload.name || payload.name.trim().length < 2) {
-    return "Please provide a valid name.";
+  if (!isValidString(payload.name, 2)) {
+    return ErrorResponses.INVALID_NAME.error;
   }
 
-  if (!payload.email || !EMAIL_REGEX.test(payload.email)) {
-    return "Please provide a valid email address.";
+  if (!isValidEmail(payload.email)) {
+    return ErrorResponses.INVALID_EMAIL.error;
   }
 
   return null;
@@ -84,10 +34,10 @@ function validatePayload(payload: NewsletterPayload): string | null {
 export async function POST(request: Request) {
   const ip = getClientIp(request);
 
-  if (isRateLimited(`newsletter:${ip}`)) {
+  if (isRateLimited(newsletterRateLimitMap, `newsletter:${ip}`)) {
     return NextResponse.json(
-      { error: "Too many requests. Please try again shortly." },
-      { status: 429 },
+      { error: ErrorResponses.TOO_MANY_REQUESTS.error },
+      { status: ErrorResponses.TOO_MANY_REQUESTS.status }
     );
   }
 
@@ -97,11 +47,12 @@ export async function POST(request: Request) {
     payload = (await request.json()) as NewsletterPayload;
   } catch {
     return NextResponse.json(
-      { error: "Invalid request payload." },
-      { status: 400 },
+      { error: ErrorResponses.INVALID_PAYLOAD.error },
+      { status: ErrorResponses.INVALID_PAYLOAD.status }
     );
   }
 
+  // Honeypot field: bots usually populate hidden fields.
   if (payload.website && payload.website.trim().length > 0) {
     return NextResponse.json({ success: true }, { status: 200 });
   }
@@ -114,8 +65,8 @@ export async function POST(request: Request) {
   const resendApiKey = process.env.RESEND_API_KEY;
   if (!resendApiKey) {
     return NextResponse.json(
-      { error: "Newsletter service is not configured." },
-      { status: 500 },
+      { error: ErrorResponses.SERVICE_NOT_CONFIGURED.error },
+      { status: ErrorResponses.SERVICE_NOT_CONFIGURED.status }
     );
   }
 
@@ -143,8 +94,8 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Newsletter email send failed", error);
     return NextResponse.json(
-      { error: "Failed to subscribe. Please try again." },
-      { status: 500 },
+      { error: ErrorResponses.SEND_FAILED.error },
+      { status: ErrorResponses.SEND_FAILED.status }
     );
   }
 }

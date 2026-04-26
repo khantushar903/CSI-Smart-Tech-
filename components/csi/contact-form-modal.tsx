@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { useForm } from "react-hook-form";
 import {
   Dialog,
@@ -39,7 +39,7 @@ interface ContactFormModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function ContactFormModal({
+function ContactFormModalContent({
   open,
   onOpenChange,
 }: ContactFormModalProps) {
@@ -121,7 +121,7 @@ export function ContactFormModal({
       <DialogContent className="sm:max-w-131.25">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-            <Mail className="w-6 h-6 text-primary" />
+            <Mail className="w-6 h-6 text-primary" aria-hidden="true" />
             Start a Conversation
           </DialogTitle>
           <DialogDescription className="text-base">
@@ -131,8 +131,8 @@ export function ContactFormModal({
         </DialogHeader>
 
         {submitStatus === "success" ? (
-          <div className="py-8 text-center">
-            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+          <div className="py-8 text-center" role="status" aria-live="polite">
+            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" aria-hidden="true" />
             <h3 className="text-xl font-semibold text-green-600 mb-2">
               Message Sent Successfully!
             </h3>
@@ -153,15 +153,29 @@ export function ContactFormModal({
             />
 
             {submitStatus === "error" && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
-                <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
+              <div
+                className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3"
+                role="alert"
+                aria-live="assertive"
+              >
+                <AlertCircle className="w-5 h-5 text-red-500 shrink-0" aria-hidden="true" />
                 <div>
                   <p className="text-sm text-red-700 font-medium">
                     Failed to send message
                   </p>
                   <p className="text-xs text-red-600">
-                    Please try again or contact us directly at info@csi-enc.com
-                    or +88028991492.
+                    Please try again or contact us directly at{" "}
+                    <a
+                      href="mailto:info@csi-enc.com"
+                      className="underline hover:no-underline"
+                    >
+                      info@csi-enc.com
+                    </a>{" "}
+                    or{" "}
+                    <a href="tel:+88028991492" className="underline hover:no-underline">
+                      +88028991492
+                    </a>
+                    .
                   </p>
                 </div>
               </div>
@@ -174,8 +188,8 @@ export function ContactFormModal({
                   htmlFor="name"
                   className="text-sm font-medium flex items-center gap-2"
                 >
-                  <User className="w-4 h-4" />
-                  Full Name *
+                  <User className="w-4 h-4" aria-hidden="true" />
+                  Full Name <span aria-label="required">*</span>
                 </label>
                 <input
                   id="name"
@@ -203,8 +217,8 @@ export function ContactFormModal({
                   htmlFor="email"
                   className="text-sm font-medium flex items-center gap-2"
                 >
-                  <Mail className="w-4 h-4" />
-                  Email Address *
+                  <Mail className="w-4 h-4" aria-hidden="true" />
+                  Email Address <span aria-label="required">*</span>
                 </label>
                 <input
                   id="email"
@@ -232,7 +246,7 @@ export function ContactFormModal({
                   htmlFor="company"
                   className="text-sm font-medium flex items-center gap-2"
                 >
-                  <Building className="w-4 h-4" />
+                  <Building className="w-4 h-4" aria-hidden="true" />
                   Company
                 </label>
                 <input
@@ -250,7 +264,7 @@ export function ContactFormModal({
                   htmlFor="phone"
                   className="text-sm font-medium flex items-center gap-2"
                 >
-                  <Phone className="w-4 h-4" />
+                  <Phone className="w-4 h-4" aria-hidden="true" />
                   Phone
                 </label>
                 <input
@@ -269,8 +283,8 @@ export function ContactFormModal({
                 htmlFor="message"
                 className="text-sm font-medium flex items-center gap-2"
               >
-                <MessageSquare className="w-4 h-4" />
-                Message *
+                <MessageSquare className="w-4 h-4" aria-hidden="true" />
+                Message <span aria-label="required">*</span>
               </label>
               <textarea
                 id="message"
@@ -347,3 +361,6 @@ export function ContactFormModal({
     </Dialog>
   );
 }
+
+// Memoize the ContactFormModal to prevent unnecessary re-renders
+export const ContactFormModal = memo(ContactFormModalContent);
